@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Fase 2 — Python Humano</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111;
+    --surface2: #181818;
+    --border: #222;
+    --border2: #2a2a2a;
+    --accent: #c8f135;
+    --accent2: #5bffd8;
+    --accent3: #ff6b6b;
+    --accent4: #ffb347;
+    --accent5: #b388ff;
+    --text: #ebebeb;
+    --muted: #666;
+    --muted2: #888;
+    --code-bg: #0d0d0d;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { background: var(--bg); color: var(--text); font-family: 'Fraunces', Georgia, serif; min-height: 100vh; }
+  #post-list { padding: 0 0 80px; }
+  #post-view { display: none; padding-bottom: 100px; }
+  .list-header { padding: 28px 20px 20px; border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 0; z-index: 10; }
+  .phase-badge { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent2); background: rgba(91,255,216,0.08); border: 1px solid rgba(91,255,216,0.15); padding: 3px 10px; border-radius: 20px; display: inline-block; margin-bottom: 10px; }
+  .list-title { font-size: 1.5rem; font-weight: 700; color: var(--accent2); letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 4px; }
+  .list-sub { font-size: 0.8rem; font-style: italic; font-weight: 300; color: var(--muted2); }
+  .posts-container { padding: 16px 20px; }
+  .block-header { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); padding: 12px 0 8px; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+  .post-item { display: flex; align-items: center; gap: 12px; padding: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 8px; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+  .post-item:active { background: var(--surface2); }
+  .post-num-badge { width: 32px; height: 32px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--muted); flex-shrink: 0; }
+  .post-item-info { flex: 1; }
+  .post-item-title { font-size: 0.9rem; font-weight: 600; color: var(--text); line-height: 1.3; margin-bottom: 2px; }
+  .post-item-sub { font-size: 0.75rem; font-weight: 300; font-style: italic; color: var(--muted2); }
+  .post-item-arrow { color: var(--muted); font-size: 0.8rem; }
+  .post-view-header { padding: 16px 20px; border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 12px; }
+  .back-btn { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.08em; color: var(--muted); background: none; border: none; cursor: pointer; padding: 6px 0; display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+  .back-btn:active { color: var(--text); }
+  .post-view-tag { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.1em; color: var(--muted); flex: 1; text-align: right; }
+  .post-content-wrap { padding: 0 20px 20px; }
+  .post-hero { padding: 24px 0 20px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+  .post-emoji { font-size: 2rem; display: block; margin-bottom: 12px; line-height: 1; }
+  .post-title { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; color: var(--text); margin-bottom: 8px; }
+  .post-intro { font-size: 0.9rem; font-weight: 300; font-style: italic; color: var(--muted2); line-height: 1.6; }
+  .block { margin-bottom: 24px; }
+  .block-label { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; display: block; }
+  .text { font-size: 0.9rem; font-weight: 300; line-height: 1.85; color: #c0c0c0; }
+  .text p { margin-bottom: 10px; }
+  .text strong { color: var(--text); font-weight: 600; }
+  .text em { font-style: italic; color: var(--muted2); }
+  .code-wrap { position: relative; margin: 12px 0; }
+  .code-block { background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px; padding: 16px; font-family: 'DM Mono', monospace; font-size: 0.78rem; line-height: 1.8; overflow-x: auto; color: #c0c0c0; white-space: pre; }
+  .copy-btn { position: absolute; top: 8px; right: 8px; font-family: 'DM Mono', monospace; font-size: 0.55rem; color: var(--muted); background: var(--surface2); border: 1px solid var(--border2); padding: 3px 8px; border-radius: 4px; cursor: pointer; letter-spacing: 0.06em; transition: all 0.2s; }
+  .copy-btn:active { color: var(--accent); border-color: var(--accent); }
+  .kw { color: var(--accent); }
+  .str { color: var(--accent2); }
+  .num { color: var(--accent4); }
+  .fn { color: var(--accent5); }
+  .cm { color: #444; font-style: italic; }
+  .bl { color: #ff79c6; }
+  .op { color: #666; }
+  .out { color: #5a8a3a; }
+  .highlight { background: rgba(200,241,53,0.05); border-left: 2px solid var(--accent); border-radius: 0 8px 8px 0; padding: 12px 14px; margin: 12px 0; font-size: 0.87rem; line-height: 1.7; color: #aaa; }
+  .highlight.red { background: rgba(255,107,107,0.05); border-left-color: var(--accent3); }
+  .highlight.cyan { background: rgba(91,255,216,0.05); border-left-color: var(--accent2); }
+  .highlight strong { color: var(--text); font-weight: 600; }
+  .rule-box { background: var(--surface2); border-radius: 10px; padding: 14px 16px; margin: 12px 0; font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--accent); line-height: 1.7; }
+  .rule-box.cyan { color: var(--accent2); }
+  .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
+  .comp-item { background: var(--surface2); border-radius: 8px; padding: 12px; }
+  .comp-label { font-family: 'DM Mono', monospace; font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+  .comp-label.bad { color: var(--accent3); }
+  .comp-label.good { color: var(--accent); }
+  .comp-code { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: #aaa; line-height: 1.6; white-space: pre-wrap; }
+  .steps-list { margin: 12px 0; }
+  .step-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+  .step-item:last-child { border-bottom: none; }
+  .step-num { width: 24px; height: 24px; border-radius: 50%; background: rgba(200,241,53,0.1); border: 1px solid rgba(200,241,53,0.2); display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--accent); flex-shrink: 0; }
+  .step-num.cyan { background: rgba(91,255,216,0.1); border-color: rgba(91,255,216,0.2); color: var(--accent2); }
+  .step-content { flex: 1; }
+  .step-title { font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .step-desc { font-size: 0.8rem; font-weight: 300; color: var(--muted2); line-height: 1.5; font-style: italic; }
+  .pattern-grid { display: grid; grid-template-columns: 1fr; gap: 8px; margin: 12px 0; }
+  .pattern-card { background: var(--surface2); border-radius: 10px; padding: 14px; border-left: 2px solid var(--accent); }
+  .pattern-card.cyan { border-left-color: var(--accent2); }
+  .pattern-card.orange { border-left-color: var(--accent4); }
+  .pattern-card.purple { border-left-color: var(--accent5); }
+  .pattern-card.red { border-left-color: var(--accent3); }
+  .pattern-name { font-family: 'DM Mono', monospace; font-size: 0.7rem; font-weight: 500; color: var(--accent); margin-bottom: 4px; }
+  .pattern-name.cyan { color: var(--accent2); }
+  .pattern-name.orange { color: var(--accent4); }
+  .pattern-name.purple { color: var(--accent5); }
+  .pattern-name.red { color: var(--accent3); }
+  .pattern-trigger { font-size: 0.78rem; color: var(--muted2); font-style: italic; margin-bottom: 8px; }
+  .pattern-struct { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: #888; line-height: 1.6; }
+  .challenge { background: rgba(91,255,216,0.04); border: 1px solid rgba(91,255,216,0.15); border-radius: 12px; padding: 16px; margin-top: 20px; }
+  .challenge-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .challenge-icon { font-size: 1rem; }
+  .challenge-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent2); }
+  .challenge-text { font-size: 0.87rem; line-height: 1.75; color: #aaa; font-weight: 300; }
+  .challenge-text strong { color: #ccc; font-weight: 600; }
+  .error-box { background: rgba(255,107,107,0.05); border: 1px solid rgba(255,107,107,0.15); border-radius: 10px; padding: 14px; margin: 12px 0; }
+  .error-header { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent3); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .error-text { font-size: 0.85rem; line-height: 1.7; color: #aaa; font-weight: 300; }
+  .post-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 24px; }
+  .nav-btn-post { padding: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; cursor: pointer; transition: border-color 0.2s; text-align: left; }
+  .nav-btn-post:active { border-color: var(--border2); }
+  .nav-btn-post.next { text-align: right; }
+  .nav-post-label { font-family: 'DM Mono', monospace; font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 4px; }
+  .nav-post-title { font-size: 0.8rem; font-weight: 600; color: var(--text); line-height: 1.3; }
+  .hashtags { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: var(--muted); margin-top: 20px; line-height: 1.8; padding-top: 16px; border-top: 1px solid var(--border); }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 12px 0; }
+  .mini-card { background: var(--surface2); border-radius: 8px; padding: 10px; text-align: center; }
+  .mini-card-icon { font-size: 1.2rem; margin-bottom: 4px; }
+  .mini-card-title { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: var(--accent); margin-bottom: 2px; }
+  .mini-card-desc { font-size: 0.7rem; color: var(--muted2); font-style: italic; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .fade-in { animation: fadeIn 0.2s ease; }
+  .tag-cyan { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent2); background: rgba(91,255,216,0.08); border: 1px solid rgba(91,255,216,0.15); padding: 2px 8px; border-radius: 10px; display: inline-block; margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<!-- POST LIST -->
+<div id="post-list">
+  <div class="list-header">
+    <div class="phase-badge">⚙️ fase 2 de 6</div>
+    <div class="list-title">Aprende a pensar como programador</div>
+    <div class="list-sub">18 posts · lógica de programación</div>
+  </div>
+  <div class="posts-container">
+    <div class="block-header">bloque 1 — antes de escribir una línea de código</div>
+    <div class="post-item" onclick="showPost(1)"><div class="post-num-badge">01</div><div class="post-item-info"><div class="post-item-title">Qué es un algoritmo</div><div class="post-item-sub">el orden importa</div></div><div class="post-item-arrow">›</div></div>
+    <div class="post-item" onclick="showPost(2)"><div class="post-num-badge">02</div><div class="post-item-info"><div class="post-item-title">Pseudocódigo</div><div class="post-item-sub">piensa en español antes de escribir Python</div></div><div class="post-item-arrow">›</div></div>
+    <div class="post-item" onclick="showPost(3)"><div class="post-num-badge">03</div><div class="post-item-info"><div class="post-item-title">Cómo leer un problema de verdad</div><div class="post-item-sub">diseccionar antes de codificar</div></div><div class="post-item-arrow">›</div></div>
+    <div class="post-item" onclick="showPost(4)"><div class="post-num-badge">04</div><div class="post-item-info"><div class="post-item-title">Cómo descomponer un problema grande</div><div class="post-item-sub">divide y vencerás</div></div><div class="post-item-arrow">›</div></div>
+    <div class="block-header">bloque 2 — patrones que nadie explica pero todos usan</div>
+    <div class="post-item" onclick="showPost(5)"><div class="post-num-badge">05</div><div class="post-item-info"><div class="post-item-title">Contadores</div><div class="post-item-sub">llevar la cuenta de algo</div></div><div class="post-item-arrow">›</div></div>
+    <div class="post-item" onclick="showPost(6)"><div class="post-num-badge">06</div><div class="post-item-info"><div class="post-item-title">Acumuladores</div><div class="post-item-sub">sumar, juntar, construir</div></div><div class="post-item-arrow">›</div></div>
+    <div class="post-item" onclick="showPost(7)"><div class="post-num-badge">07</div><div class="post-item-info"><div class="post-item-title">Banderas</div><div class="post-item-sub">variables que toman decisiones</div></div><div class="post-item-arrow">›</div></div>
+    <div class="post-item" onclick="showPost(8)"><div class="post-num-badge">08</div><div class="post-item-info"><div class="post-item-title">Validaciones</div><div class="post-item-sub">no confíes en el usuario</div></div><div class="post-item-arrow">›</div></div>
+    <div class="post-item" onclick="showPost(9)"><div class="post-num-badge">09</div><div class="post-item-info"><div class="post-item-title">Casos extremos</div><div class="post-item-sub">qué pasa cuando algo sale diferente</div></div><div class="post-item-arrow">›</div></div>
+    <div class="block-header">bloque 3 — cómo construir sin bloquearse</div>
+    <div class="post-item" onclick="showPost(10)"><div class="post-num-badge">10</div><div class="post-item-info"><div class="post-item-title">Cómo diseñar el flujo</div><div class="post-item-sub">antes de escribir una línea de código</div></div><div class="post-item-arrow">›</div></div>
+    <div class="post-item" onclick="showPost(11)"><div class="post-num-badge">11</div><div class="post-item-info"><div class="post-item-title">Construye de adentro hacia afuera</div><div class="post-item-sub">capa por capa</div></div><div class="post-item-arrow">›</div></div>
+    <div class="post-item" onclick="showPost(12)"><div class="post-num-badge">12</div><div class="post-item-info"><div class="post-item-title">Qué hacer cuando te bloqueas</div><div class="post-item-sub">4 tipos de bloqueo y cómo salir</div></div><div class="post-item-arrow">›</div></div>
+    <div class="post-item" onclick="showPost(13)"><div class="post-num-badge">13</div><div class="post-item-info"><div class="post-item-title">Trazabilidad</div><div class="post-item-sub">sigue el código línea por línea</div></div><div class="post-item-arrow">›</div></div>
+    <div class="post-item" onclick="showPost(14)"><div class="post-num-badge">14</div><div class="post-item-info"><div class="post-item-title">Avanzar con información incompleta</div><div class="post-item-sub">cómo tomar decisiones conscientes</div></div><div class="post-item-arrow">›</div></div>
+    <div class="post-item" onclick="showPost(15)"><div class="post-num-badge">15</div><div class="post-item-info"><div class="post-item-title">Refactorización</div><div class="post-item-sub">mejora código que ya funciona</div></div><div class="post-item-arrow">›</div></div>
+    <div class="post-item" onclick="showPost(16)"><div class="post-num-badge">16</div><div class="post-item-info"><div class="post-item-title">Reconocer patrones</div><div class="post-item-sub">ver la solución antes de construirla</div></div><div class="post-item-arrow">›</div></div>
+    <div class="post-item" onclick="showPost(17)"><div class="post-num-badge">17</div><div class="post-item-info"><div class="post-item-title">El ciclo completo</div><div class="post-item-sub">de problema a código terminado</div></div><div class="post-item-arrow">›</div></div>
+    <div class="post-item" onclick="showPost(18)"><div class="post-num-badge">18</div><div class="post-item-info"><div class="post-item-title">Pruebas mentales</div><div class="post-item-sub">verifica la lógica antes de ejecutar</div></div><div class="post-item-arrow">›</div></div>
+  </div>
+</div>
+
+<!-- POST VIEW -->
+<div id="post-view">
+  <div class="post-view-header">
+    <button class="back-btn" onclick="showList()">← lista</button>
+    <span class="post-view-tag" id="post-tag"></span>
+  </div>
+  <div class="post-content-wrap" id="post-content"></div>
+</div>
+
+<script>
+const POSTS = {
+  1: {
+    emoji: '🧩',
+    title: 'Qué es un algoritmo',
+    intro: 'Todo programa que existe fue un algoritmo antes de ser código. Entender esto cambia cómo atacas cualquier problema.',
+    tag: 'Fase 2 · Post 01 de 18',
+    prev: null, next: 2, nextTitle: 'Pseudocódigo',
+    content: `
+    <div class="block">
+      <div class="text"><p>Un algoritmo no es nada complicado. Es simplemente una <strong>secuencia de pasos ordenados para resolver un problema</strong>. Nada más.</p><p>Ya usas algoritmos todos los días sin darte cuenta.</p></div>
+    </div>
+    <div class="block">
+      <span class="block-label">ejemplo cotidiano — preparar un café</span>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num">1</div><div class="step-content"><div class="step-title">Pon agua en la cafetera</div></div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-content"><div class="step-title">Agrega el café</div></div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-content"><div class="step-title">Enciende la cafetera</div></div></div>
+        <div class="step-item"><div class="step-num">4</div><div class="step-content"><div class="step-title">Espera a que esté listo</div></div></div>
+        <div class="step-item"><div class="step-num">5</div><div class="step-content"><div class="step-title">Sirve en la taza</div></div></div>
+      </div>
+      <div class="highlight">Eso es un algoritmo. Una secuencia de pasos que lleva de un problema — <strong>no tengo café</strong> — a una solución — <strong>tengo café</strong>.</div>
+    </div>
+    <div class="block">
+      <span class="block-label">3 características que siempre se cumplen</span>
+      <div class="three-col">
+        <div class="mini-card"><div class="mini-card-icon">🎯</div><div class="mini-card-title">Inicio claro</div><div class="mini-card-desc">siempre sabes desde dónde arranca</div></div>
+        <div class="mini-card"><div class="mini-card-icon">📋</div><div class="mini-card-title">Pasos ordenados</div><div class="mini-card-desc">el orden importa — si lo cambias, falla</div></div>
+        <div class="mini-card"><div class="mini-card-icon">✅</div><div class="mini-card-title">Fin claro</div><div class="mini-card-desc">siempre llega a un resultado</div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">cómo construir un algoritmo desde cero</span>
+      <div class="text"><p>Cuando tengas un problema en blanco hazte estas <strong>3 preguntas</strong>:</p></div>
+      <div class="rule-box">¿Qué tengo? → los datos con los que arrancas
+¿Qué necesito lograr? → el resultado final
+¿Qué tiene que pasar en medio? → los pasos</div>
+    </div>
+    <div class="block">
+      <span class="block-label">ejemplo — caja registradora</span>
+      <div class="highlight cyan">¿Qué tengo? → precios de productos + dinero del cliente
+¿Qué necesito lograr? → saber cuánto cambio devolver
+¿Qué pasa en medio? → sumar precios → comparar → calcular diferencia</div>
+      <div class="text" style="margin-top:12px"><p>Con esas respuestas el algoritmo se construye solo:</p></div>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num cyan">1</div><div class="step-content"><div class="step-title">Recibir los productos y sus precios</div></div></div>
+        <div class="step-item"><div class="step-num cyan">2</div><div class="step-content"><div class="step-title">Sumar todos los precios</div></div></div>
+        <div class="step-item"><div class="step-num cyan">3</div><div class="step-content"><div class="step-title">Recibir el dinero del cliente</div></div></div>
+        <div class="step-item"><div class="step-num cyan">4</div><div class="step-content"><div class="step-title">Verificar que el dinero es suficiente</div></div></div>
+        <div class="step-item"><div class="step-num cyan">5</div><div class="step-content"><div class="step-title">Calcular el cambio</div></div></div>
+        <div class="step-item"><div class="step-num cyan">6</div><div class="step-content"><div class="step-title">Mostrar el cambio al cliente</div></div></div>
+      </div>
+    </div>
+    <div class="error-box">
+      <div class="error-header">⚠️ el error más común</div>
+      <div class="error-text">Saltar directo al código. Parece más rápido pero cuando te pierdes a mitad del camino, el tiempo que "ahorraste" lo pagas con intereses. <strong>Los buenos programadores son lentos antes de escribir código. Y rápidos cuando lo escriben.</strong></div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+      <div class="challenge-text">Sin escribir una sola línea de Python, usa las <strong>3 preguntas</strong> para construir el algoritmo de una caja registradora que recibe 3 productos, calcula el total, recibe el dinero y calcula el cambio. Solo pasos numerados en español.</div>
+    </div>
+    <div class="hashtags">#PythonHumano #Python #Fase2 #Algoritmos #LógicaDeProgramación #ProgramaciónDesde0</div>`
+  },
+  2: {
+    emoji: '📝',
+    title: 'Pseudocódigo: piensa en español antes de escribir Python',
+    intro: 'El puente entre tu algoritmo y el código real. La herramienta que usan los buenos programadores y nadie enseña.',
+    tag: 'Fase 2 · Post 02 de 18',
+    prev: 1, prevTitle: 'Qué es un algoritmo', next: 3, nextTitle: 'Cómo leer un problema',
+    content: `
+    <div class="block">
+      <div class="text"><p>El pseudocódigo es escribir tu programa en español usando una estructura parecida al código pero <strong>sin preocuparte por la sintaxis</strong>.</p><p>No es Python. Es el puente entre el algoritmo y el código. Lo escribes para ti, no para la computadora.</p></div>
+    </div>
+    <div class="block">
+      <span class="block-label">¿por qué existe?</span>
+      <div class="highlight">Escribir código y pensar en la solución al mismo tiempo es demasiado. El pseudocódigo te permite pensar solo en la lógica — sin preocuparte por los dos puntos, los paréntesis o la indentación.</div>
+    </div>
+    <div class="block">
+      <span class="block-label">palabras clave del pseudocódigo</span>
+      <div class="code-wrap">
+        <div class="code-block">INICIO / FIN      → dónde empieza y termina el programa
+PEDIR / MOSTRAR   → equivale a input() y print()
+SI / SINO         → equivale a if / else
+PARA / MIENTRAS   → equivale a for / while
+GUARDAR EN / =    → equivale a asignar una variable</div>
+      </div>
+      <div class="highlight cyan">No hay reglas fijas. No hay estándar oficial. Lo importante es que cualquiera que lo lea entienda qué hace el programa.</div>
+    </div>
+    <div class="block">
+      <span class="block-label">del algoritmo al pseudocódigo</span>
+      <div class="code-wrap">
+        <div class="code-block">INICIO
+
+   total = 0
+
+   PARA cada producto en la compra:
+      PEDIR precio del producto
+      total = total + precio
+
+   PEDIR dinero del cliente
+
+   SI dinero del cliente >= total:
+      cambio = dinero del cliente - total
+      MOSTRAR "El cambio es: " + cambio
+   SINO:
+      MOSTRAR "Dinero insuficiente"
+
+FIN</div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">del pseudocódigo al código Python</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">total</span> <span class="op">=</span> <span class="num">0</span>
+
+<span class="bl">for</span> <span class="kw">i</span> <span class="bl">in</span> <span class="fn">range</span><span class="op">(</span><span class="num">3</span><span class="op">):</span>
+    <span class="kw">precio</span> <span class="op">=</span> <span class="fn">float</span><span class="op">(</span><span class="fn">input</span><span class="op">(</span><span class="str">"Precio del producto: "</span><span class="op">))</span>
+    <span class="kw">total</span> <span class="op">=</span> <span class="kw">total</span> <span class="op">+</span> <span class="kw">precio</span>
+
+<span class="kw">dinero</span> <span class="op">=</span> <span class="fn">float</span><span class="op">(</span><span class="fn">input</span><span class="op">(</span><span class="str">"Dinero del cliente: "</span><span class="op">))</span>
+
+<span class="bl">if</span> <span class="kw">dinero</span> <span class="op">>=</span> <span class="kw">total</span><span class="op">:</span>
+    <span class="kw">cambio</span> <span class="op">=</span> <span class="kw">dinero</span> <span class="op">-</span> <span class="kw">total</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"El cambio es: {cambio}"</span><span class="op">)</span>
+<span class="bl">else</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Dinero insuficiente"</span><span class="op">)</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+      <div class="highlight">Cada línea del pseudocódigo se convirtió en una línea de Python. <strong>Cuando el pseudocódigo está bien, el código casi se escribe solo.</strong></div>
+    </div>
+    <div class="block">
+      <span class="block-label">técnica profesional — pseudocódigo como comentarios</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="cm"># 1. Pedir los precios de los productos</span>
+<span class="cm"># 2. Calcular el total</span>
+<span class="cm"># 3. Pedir el dinero del cliente</span>
+<span class="cm"># 4. Calcular el cambio</span>
+<span class="cm"># 5. Mostrar el resultado</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+      <div class="text"><p>Defines el esqueleto primero. Luego rellenas el código debajo de cada comentario. Nunca te pierdes porque siempre sabes en qué paso estás.</p></div>
+    </div>
+    <div class="block">
+      <span class="block-label">¿cuándo usar pseudocódigo y cuándo no?</span>
+      <div class="comparison">
+        <div class="comp-item"><div class="comp-label bad">no lo necesitas</div><div class="comp-code">Problema simple que puedes ver completo en tu cabeza de un vistazo.</div></div>
+        <div class="comp-item"><div class="comp-label good">úsalo siempre</div><div class="comp-code">Programa con varias partes, decisiones múltiples, bucles que interactúan.</div></div>
+      </div>
+    </div>
+    <div class="error-box">
+      <div class="error-header">⚠️ el error más común</div>
+      <div class="error-text">Querer que el pseudocódigo sea perfecto. No lo corrijas mil veces. Su único trabajo es ayudarte a pensar. <strong>No existe un pseudocódigo incorrecto mientras tú lo entiendas.</strong></div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+      <div class="challenge-text">Toma el algoritmo del reto anterior. Conviértelo en pseudocódigo usando las palabras clave. Luego escribe los pasos como comentarios en Python y empieza a rellenar el código debajo de cada uno.</div>
+    </div>
+    <div class="hashtags">#PythonHumano #Python #Fase2 #Pseudocódigo #LógicaDeProgramación #ProgramaciónDesde0</div>`
+  },
+  3: {
+    emoji: '🔍',
+    title: 'Cómo leer un problema de verdad',
+    intro: 'La mayoría falla antes de escribir una sola línea — no entienden bien qué se les está pidiendo.',
+    tag: 'Fase 2 · Post 03 de 18',
+    prev: 2, prevTitle: 'Pseudocódigo', next: 4, nextTitle: 'Descomponer un problema',
+    content: `
+    <div class="block">
+      <div class="text"><p>Leer un problema no es leerlo una vez y empezar a escribir código. Es <strong>diseccionarlo</strong>. Extraer exactamente lo que necesitas antes de escribir una sola línea.</p></div>
+    </div>
+    <div class="block">
+      <span class="block-label">todo problema tiene 3 partes</span>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num">1</div><div class="step-content"><div class="step-title">¿Qué tengo?</div><div class="step-desc">Los datos con los que arranca el programa. Todo lo que ya existe antes de que el programa haga cualquier cosa.</div></div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-content"><div class="step-title">¿Qué necesito lograr?</div><div class="step-desc">El resultado final. Qué tiene que mostrar, calcular o producir el programa al terminar.</div></div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-content"><div class="step-title">¿Qué condiciones existen?</div><div class="step-desc">Las reglas que el programa tiene que seguir. Los casos especiales. Los límites que no se pueden cruzar.</div></div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">ejemplo — diseccionando la caja registradora</span>
+      <div class="highlight cyan"><strong>¿Qué tengo?</strong>
+→ 3 precios de productos
+→ El dinero que entrega el cliente
+→ Una regla de descuento: 10% si paga 500 o más
+
+<strong>¿Qué necesito lograr?</strong>
+→ Mostrar el total con o sin descuento
+→ Mostrar el cambio correcto
+
+<strong>¿Qué condiciones existen?</strong>
+→ Si el pago es ≥ 500 → descuento del 10%
+→ El cambio solo existe si el dinero es suficiente</div>
+    </div>
+    <div class="block">
+      <span class="block-label">verifica que entendiste — resuelve a mano</span>
+      <div class="text"><p>Antes de escribir pseudocódigo o código, <strong>resuelve el problema a mano con números concretos</strong>. Si no puedes resolverlo a mano, no puedes programarlo.</p></div>
+      <div class="code-wrap">
+        <div class="code-block">Producto 1: $50
+Producto 2: $30
+Producto 3: $20
+Total: $100
+Cliente paga: $150
+Cambio: $150 - $100 = $50 ✓</div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">palabras clave que te dicen qué usar</span>
+      <div class="pattern-grid">
+        <div class="pattern-card"><div class="pattern-name">"calcula", "suma", "multiplica"</div><div class="pattern-trigger">→ necesitas operadores aritméticos</div></div>
+        <div class="pattern-card cyan"><div class="pattern-name cyan">"si", "cuando", "en caso de"</div><div class="pattern-trigger">→ necesitas un condicional</div></div>
+        <div class="pattern-card orange"><div class="pattern-name orange">"por cada", "para todos", "repite"</div><div class="pattern-trigger">→ necesitas un bucle</div></div>
+        <div class="pattern-card purple"><div class="pattern-name purple">"verifica", "comprueba"</div><div class="pattern-trigger">→ necesitas una validación</div></div>
+        <div class="pattern-card red"><div class="pattern-name red">"guarda", "almacena"</div><div class="pattern-trigger">→ necesitas una variable</div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">qué hacer cuando el problema es ambiguo</span>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num cyan">A</div><div class="step-content"><div class="step-title">Si estás en un ejercicio</div><div class="step-desc">Relee buscando pistas. A veces la respuesta está ahí.</div></div></div>
+        <div class="step-item"><div class="step-num cyan">B</div><div class="step-content"><div class="step-title">Si estás trabajando con alguien</div><div class="step-desc">Pregunta antes de asumir. Una pregunta de 30 segundos te ahorra horas.</div></div></div>
+        <div class="step-item"><div class="step-num cyan">C</div><div class="step-content"><div class="step-title">Si es tu proyecto</div><div class="step-desc">Toma la decisión más lógica y documéntala en un comentario.</div></div></div>
+      </div>
+    </div>
+    <div class="error-box">
+      <div class="error-header">⚠️ el error más común</div>
+      <div class="error-text">Leer el problema una sola vez y asumir que lo entendiste. Los buenos programadores leen mínimo dos veces. <strong>Primera lectura: panorama general. Segunda lectura: diseccionar con las 3 preguntas.</strong></div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+      <div class="challenge-text">Lee este problema y disecciónalo con las 3 preguntas. No escribas código todavía.<br><br><em>"Una caja necesita calcular el precio final. El cliente puede tener cupón DESCUENTO10 (10%) o DESCUENTO20 (20%). Si el total después del descuento es mayor a $1000, el envío es gratis. Si no, el envío cuesta $99."</em></div>
+    </div>
+    <div class="hashtags">#PythonHumano #Python #Fase2 #LeerUnProblema #LógicaDeProgramación #ProgramaciónDesde0</div>`
+  },
+  4: {
+    emoji: '✂️',
+    title: 'Cómo descomponer un problema grande en partes pequeñas',
+    intro: 'Ningún programador resuelve un problema grande de un golpe. Lo parte, resuelve cada parte y al final las une.',
+    tag: 'Fase 2 · Post 04 de 18',
+    prev: 3, prevTitle: 'Cómo leer un problema', next: 5, nextTitle: 'Contadores',
+    content: `
+    <div class="block">
+      <div class="text"><p>El problema no es el que es difícil. Es el que es <strong>grande</strong>. Lo ves completo y no sabes por dónde empezar. La solución se llama <strong>descomposición</strong>.</p></div>
+      <div class="rule-box">Divide y vencerás. No es solo una frase. Es el método más usado en programación.</div>
+    </div>
+    <div class="block">
+      <span class="block-label">cómo descomponer — 4 pasos</span>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num">1</div><div class="step-content"><div class="step-title">Identifica las responsabilidades</div><div class="step-desc">¿Cuántas cosas diferentes tiene que hacer el programa? Cada cosa diferente es una parte.</div></div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-content"><div class="step-title">Ordénalas</div><div class="step-desc">¿Cuál tiene que pasar primero? ¿Cuál depende de otra? ¿Cuál puede ir sola?</div></div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-content"><div class="step-title">Resuelve una a la vez</div><div class="step-desc">Empieza por la más simple. Verifícala. Que funcione. Luego pasa a la siguiente.</div></div></div>
+        <div class="step-item"><div class="step-num">4</div><div class="step-content"><div class="step-title">Únelas</div><div class="step-desc">Cuando cada parte funciona sola, las conectas y tienes el programa completo.</div></div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">la caja registradora descompuesta</span>
+      <div class="pattern-grid">
+        <div class="pattern-card"><div class="pattern-name">Parte 1 — Recibir productos</div><div class="pattern-trigger">Pedir nombre y precio de cada producto</div></div>
+        <div class="pattern-card cyan"><div class="pattern-name cyan">Parte 2 — Calcular el total</div><div class="pattern-trigger">Sumar todos los precios</div></div>
+        <div class="pattern-card orange"><div class="pattern-name orange">Parte 3 — Aplicar descuento</div><div class="pattern-trigger">Verificar si aplica y calcular</div></div>
+        <div class="pattern-card purple"><div class="pattern-name purple">Parte 4 — Procesar el pago</div><div class="pattern-trigger">Pedir dinero, verificar, calcular cambio</div></div>
+        <div class="pattern-card red"><div class="pattern-name red">Parte 5 — Generar el recibo</div><div class="pattern-trigger">Mostrar detalle completo de la compra</div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">la regla del problema más pequeño</span>
+      <div class="text"><p>Cuando no sabes por dónde empezar — arranca por la parte más simple y más aislada. En la caja registradora:</p></div>
+      <div class="code-wrap">
+        <div class="code-block"><span class="cm"># Parte 2 — la más simple: solo sumar</span>
+<span class="kw">total</span> <span class="op">=</span> <span class="num">50</span> <span class="op">+</span> <span class="num">30</span> <span class="op">+</span> <span class="num">20</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">total</span><span class="op">)</span>  <span class="out"># 100 ✓</span>
+<span class="cm"># Funciona. Ahora sí agrega la siguiente parte.</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+      <div class="highlight">Cada parte que funciona es una base sólida para la siguiente. <strong>Eso es construir con confianza.</strong></div>
+    </div>
+    <div class="block">
+      <span class="block-label">las partes también se descomponen</span>
+      <div class="code-wrap">
+        <div class="code-block">Parte 1 — Recibir productos
+   1.1 → Preguntar cuántos productos hay
+   1.2 → Por cada producto pedir su nombre
+   1.3 → Por cada producto pedir su precio
+   1.4 → Verificar que el precio sea válido</div>
+      </div>
+      <div class="text"><p>Eso se llama <strong>descomposición jerárquica</strong>. Partir las partes en subpartes. Una parte está lista para resolverse cuando puedes responder sin dudar: <em>¿sé qué tiene que hacer? ¿Puedo escribir el código ahora?</em></p></div>
+    </div>
+    <div class="error-box">
+      <div class="error-header">⚠️ el error más común</div>
+      <div class="error-text">Querer resolver todas las partes al mismo tiempo. Cuando algo falla no sabes qué parte lo causó. <strong>La disciplina de resolver una parte, verificarla y recién entonces pasar a la siguiente es lo que separa al que termina del que siempre está "casi listo".</strong></div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+      <div class="challenge-text">Toma el problema del reto anterior — la caja con cupones y envío — y descompónlo en partes. Para cada parte define: qué hace, qué necesita para funcionar y qué produce cuando termina. Luego ordénalas.</div>
+    </div>
+    <div class="hashtags">#PythonHumano #Python #Fase2 #Descomposición #LógicaDeProgramación #ProgramaciónDesde0</div>`
+  },
+  5: {
+    emoji: '🔢',
+    title: 'Contadores: llevar la cuenta de algo',
+    intro: 'Un patrón que aparece en casi todo programa. Si no lo conoces como patrón, lo vas a reinventar cada vez sin saber que ya existe.',
+    tag: 'Fase 2 · Post 05 de 18',
+    prev: 4, prevTitle: 'Descomponer un problema', next: 6, nextTitle: 'Acumuladores',
+    content: `
+    <div class="block">
+      <div class="text"><p>Un contador es una variable que lleva la cuenta de <strong>cuántas veces ocurre algo</strong>. Nada más.</p></div>
+      <div class="rule-box">contador = 0  ← nace en cero
+contador += 1  ← crece con cada evento
+print(contador)  ← se usa cuando necesitas el total</div>
+    </div>
+    <div class="block">
+      <span class="block-label">estructura fija — memorízala</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">productos_registrados</span> <span class="op">=</span> <span class="num">0</span>  <span class="cm"># ← nace ANTES del bucle</span>
+
+<span class="bl">for</span> <span class="kw">i</span> <span class="bl">in</span> <span class="fn">range</span><span class="op">(</span><span class="num">5</span><span class="op">):</span>
+    <span class="kw">precio</span> <span class="op">=</span> <span class="fn">float</span><span class="op">(</span><span class="fn">input</span><span class="op">(</span><span class="str">"Precio: "</span><span class="op">))</span>
+    <span class="kw">productos_registrados</span> <span class="op">+=</span> <span class="num">1</span>  <span class="cm"># ← crece DENTRO</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Registraste {productos_registrados} productos."</span><span class="op">)</span>  <span class="cm"># ← se usa DESPUÉS</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+      <div class="three-col">
+        <div class="mini-card"><div class="mini-card-icon">🟢</div><div class="mini-card-title">Nace antes</div><div class="mini-card-desc">siempre inicializa en cero antes del bucle</div></div>
+        <div class="mini-card"><div class="mini-card-icon">🔄</div><div class="mini-card-title">Crece dentro</div><div class="mini-card-desc">se actualiza dentro del bucle</div></div>
+        <div class="mini-card"><div class="mini-card-icon">📊</div><div class="mini-card-title">Se usa después</div><div class="mini-card-desc">lo usas cuando el bucle terminó</div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">contador con condición</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">productos_caros</span> <span class="op">=</span> <span class="num">0</span>
+
+<span class="bl">for</span> <span class="kw">i</span> <span class="bl">in</span> <span class="fn">range</span><span class="op">(</span><span class="num">5</span><span class="op">):</span>
+    <span class="kw">precio</span> <span class="op">=</span> <span class="fn">float</span><span class="op">(</span><span class="fn">input</span><span class="op">(</span><span class="str">"Precio: "</span><span class="op">))</span>
+    <span class="bl">if</span> <span class="kw">precio</span> <span class="op">></span> <span class="num">100</span><span class="op">:</span>
+        <span class="kw">productos_caros</span> <span class="op">+=</span> <span class="num">1</span>  <span class="cm"># solo cuenta cuando se cumple</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Productos caros: {productos_caros}"</span><span class="op">)</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">contador con paso diferente a 1</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="cm"># 10 puntos por cada producto</span>
+<span class="kw">puntos</span> <span class="op">=</span> <span class="num">0</span>
+
+<span class="bl">for</span> <span class="kw">i</span> <span class="bl">in</span> <span class="fn">range</span><span class="op">(</span><span class="num">4</span><span class="op">):</span>
+    <span class="kw">puntos</span> <span class="op">+=</span> <span class="num">10</span>  <span class="cm"># suma 10, no 1</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Puntos acumulados: {puntos}"</span><span class="op">)</span>  <span class="out"># 40</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">contador que baja</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">intentos_restantes</span> <span class="op">=</span> <span class="num">3</span>
+
+<span class="bl">while</span> <span class="kw">intentos_restantes</span> <span class="op">></span> <span class="num">0</span><span class="op">:</span>
+    <span class="kw">codigo</span> <span class="op">=</span> <span class="fn">input</span><span class="op">(</span><span class="str">"Código de descuento: "</span><span class="op">)</span>
+    <span class="bl">if</span> <span class="kw">codigo</span> <span class="op">==</span> <span class="str">"DESCUENTO10"</span><span class="op">:</span>
+        <span class="fn">print</span><span class="op">(</span><span class="str">"Código válido."</span><span class="op">)</span>
+        <span class="bl">break</span>
+    <span class="kw">intentos_restantes</span> <span class="op">-=</span> <span class="num">1</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Inválido. Te quedan {intentos_restantes} intentos."</span><span class="op">)</span>
+
+<span class="bl">if</span> <span class="kw">intentos_restantes</span> <span class="op">==</span> <span class="num">0</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Demasiados intentos fallidos."</span><span class="op">)</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+    <div class="error-box">
+      <div class="error-header">⚠️ el error más común</div>
+      <div class="error-text">Inicializar el contador dentro del bucle — se reinicia a 0 en cada vuelta y nunca acumula nada.</div>
+      <div class="code-wrap" style="margin-top:10px">
+        <div class="code-block"><span class="bl">for</span> <span class="kw">i</span> <span class="bl">in</span> <span class="fn">range</span><span class="op">(</span><span class="num">5</span><span class="op">):</span>
+    <span class="kw">total</span> <span class="op">=</span> <span class="num">0</span>   <span class="out"># 💥 se reinicia en cada vuelta</span>
+    <span class="kw">total</span> <span class="op">+=</span> <span class="num">1</span>
+
+<span class="cm"># La solución — siempre antes del bucle:</span>
+<span class="kw">total</span> <span class="op">=</span> <span class="num">0</span>   <span class="out"># ✓</span>
+<span class="bl">for</span> <span class="kw">i</span> <span class="bl">in</span> <span class="fn">range</span><span class="op">(</span><span class="num">5</span><span class="op">):</span>
+    <span class="kw">total</span> <span class="op">+=</span> <span class="num">1</span></div>
+      </div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+      <div class="challenge-text">La caja registradora necesita mostrar al final: cuántos productos se registraron, cuántos costaron más de $50, cuántos costaron $50 o menos, y cuántos puntos acumuló el cliente (10 puntos por producto). Pruébalo con 5 productos.</div>
+    </div>
+    <div class="hashtags">#PythonHumano #Python #Fase2 #Contadores #LógicaDeProgramación #ProgramaciónDesde0</div>`
+  },
+  6: {
+    emoji: '➕',
+    title: 'Acumuladores: sumar, juntar, construir',
+    intro: 'No quieres contar eventos. Quieres acumular valores. No cuántos productos, sino cuánto suman en total.',
+    tag: 'Fase 2 · Post 06 de 18',
+    prev: 5, prevTitle: 'Contadores', next: 7, nextTitle: 'Banderas',
+    content: `
+    <div class="block">
+      <div class="comparison">
+        <div class="comp-item"><div class="comp-label">contador</div><div class="comp-code">contador += 1
+siempre suma 1
+→ lleva la cuenta de eventos</div></div>
+        <div class="comp-item"><div class="comp-label good">acumulador</div><div class="comp-code">acumulador += valor
+suma el valor real
+→ lleva la suma de valores</div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">estructura — igual que el contador</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">total</span> <span class="op">=</span> <span class="num">0</span>   <span class="cm"># ← nace ANTES del bucle</span>
+
+<span class="bl">for</span> <span class="kw">i</span> <span class="bl">in</span> <span class="fn">range</span><span class="op">(</span><span class="num">5</span><span class="op">):</span>
+    <span class="kw">precio</span> <span class="op">=</span> <span class="fn">float</span><span class="op">(</span><span class="fn">input</span><span class="op">(</span><span class="str">"Precio: "</span><span class="op">))</span>
+    <span class="kw">total</span> <span class="op">+=</span> <span class="kw">precio</span>   <span class="cm"># ← crece DENTRO — suma el valor real</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Total: ${total:.2f}"</span><span class="op">)</span>   <span class="cm"># ← se usa DESPUÉS</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">acumulador que no suma números — acumula texto</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">recibo</span> <span class="op">=</span> <span class="str">""</span>   <span class="cm"># empieza vacío</span>
+
+<span class="bl">for</span> <span class="kw">i</span> <span class="bl">in</span> <span class="fn">range</span><span class="op">(</span><span class="num">3</span><span class="op">):</span>
+    <span class="kw">nombre</span> <span class="op">=</span> <span class="fn">input</span><span class="op">(</span><span class="str">"Nombre del producto: "</span><span class="op">)</span>
+    <span class="kw">precio</span> <span class="op">=</span> <span class="fn">float</span><span class="op">(</span><span class="fn">input</span><span class="op">(</span><span class="str">"Precio: "</span><span class="op">))</span>
+    <span class="kw">recibo</span> <span class="op">+=</span> <span class="fn">f</span><span class="str">"{nombre}: ${precio:.2f}\n"</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="str">"─── Tu recibo ───"</span><span class="op">)</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">recibo</span><span class="op">)</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">acumulador de máximo y mínimo</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">precio_maximo</span> <span class="op">=</span> <span class="num">0</span>
+<span class="kw">precio_minimo</span> <span class="op">=</span> <span class="bl">None</span>   <span class="cm"># None porque 0 sería incorrecto</span>
+
+<span class="bl">for</span> <span class="kw">i</span> <span class="bl">in</span> <span class="fn">range</span><span class="op">(</span><span class="num">3</span><span class="op">):</span>
+    <span class="kw">precio</span> <span class="op">=</span> <span class="fn">float</span><span class="op">(</span><span class="fn">input</span><span class="op">(</span><span class="str">"Precio: "</span><span class="op">))</span>
+
+    <span class="bl">if</span> <span class="kw">precio</span> <span class="op">></span> <span class="kw">precio_maximo</span><span class="op">:</span>
+        <span class="kw">precio_maximo</span> <span class="op">=</span> <span class="kw">precio</span>
+
+    <span class="bl">if</span> <span class="kw">precio_minimo</span> <span class="bl">is</span> <span class="bl">None</span> <span class="bl">or</span> <span class="kw">precio</span> <span class="op"><</span> <span class="kw">precio_minimo</span><span class="op">:</span>
+        <span class="kw">precio_minimo</span> <span class="op">=</span> <span class="kw">precio</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Más caro: ${precio_maximo:.2f}"</span><span class="op">)</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Más barato: ${precio_minimo:.2f}"</span><span class="op">)</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+      <div class="highlight cyan">¿Por qué <strong>precio_minimo = None</strong> y no 0? Porque si arrancara en 0, cualquier precio real sería mayor y nunca se actualizaría. None significa "todavía no tengo ningún valor".</div>
+    </div>
+    <div class="error-box">
+      <div class="error-header">⚠️ el error más común</div>
+      <div class="error-text">Olvidar inicializar el acumulador antes del bucle.</div>
+      <div class="code-wrap" style="margin-top:10px">
+        <div class="code-block"><span class="bl">for</span> <span class="kw">i</span> <span class="bl">in</span> <span class="fn">range</span><span class="op">(</span><span class="num">3</span><span class="op">):</span>
+    <span class="kw">precio</span> <span class="op">=</span> <span class="fn">float</span><span class="op">(</span><span class="fn">input</span><span class="op">(</span><span class="str">"Precio: "</span><span class="op">))</span>
+    <span class="kw">total</span> <span class="op">+=</span> <span class="kw">precio</span>   <span class="out"># 💥 total no existe todavía</span>
+
+<span class="kw">total</span> <span class="op">=</span> <span class="num">0</span>   <span class="out"># ✓ siempre inicializa antes</span></div>
+      </div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+      <div class="challenge-text">La caja necesita mostrar: el total de todos los productos, el total solo de productos con descuento, el total sin descuento, el producto más caro y el más barato, y un recibo con el nombre y precio de cada producto.</div>
+    </div>
+    <div class="hashtags">#PythonHumano #Python #Fase2 #Acumuladores #LógicaDeProgramación #ProgramaciónDesde0</div>`
+  },
+  7: {
+    emoji: '🚩',
+    title: 'Banderas: variables que toman decisiones',
+    intro: 'Para cuando necesitas recordar si algo ocurrió o no durante un bucle. No cuántas veces. Solo si pasó.',
+    tag: 'Fase 2 · Post 07 de 18',
+    prev: 6, prevTitle: 'Acumuladores', next: 8, nextTitle: 'Validaciones',
+    content: `
+    <div class="block">
+      <div class="text"><p>Una bandera es una variable booleana que actúa como un <strong>interruptor</strong>. Empieza en False y cambia a True cuando ocurre lo que estás vigilando.</p></div>
+      <div class="rule-box">descuento_aplicado = False  ← interruptor apagado
+# cuando ocurre:
+descuento_aplicado = True   ← interruptor encendido</div>
+    </div>
+    <div class="block">
+      <span class="block-label">cómo nombrar una bandera</span>
+      <div class="comparison">
+        <div class="comp-item"><div class="comp-label bad">✗ nombres malos</div><div class="comp-code">estado = False
+x = False
+flag = False
+¿estado de qué? no dice nada.</div></div>
+        <div class="comp-item"><div class="comp-label good">✓ nombres buenos</div><div class="comp-code">descuento_aplicado = False
+pago_exitoso = False
+envio_gratis = False
+Lees el nombre → sabes qué pregunta.</div></div>
+      </div>
+      <div class="rule-box">Si lees el nombre y no puedes responder sí o no inmediatamente — el nombre está mal.</div>
+    </div>
+    <div class="block">
+      <span class="block-label">estructura — igual que contadores y acumuladores</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">descuento_aplicado</span> <span class="op">=</span> <span class="bl">False</span>   <span class="cm"># ← nace ANTES</span>
+
+<span class="bl">for</span> <span class="kw">i</span> <span class="bl">in</span> <span class="fn">range</span><span class="op">(</span><span class="num">3</span><span class="op">):</span>
+    <span class="kw">precio</span> <span class="op">=</span> <span class="fn">float</span><span class="op">(</span><span class="fn">input</span><span class="op">(</span><span class="str">"Precio: "</span><span class="op">))</span>
+    <span class="kw">tiene_desc</span> <span class="op">=</span> <span class="fn">input</span><span class="op">(</span><span class="str">"¿Descuento? (s/n): "</span><span class="op">)</span>
+    <span class="bl">if</span> <span class="kw">tiene_desc</span> <span class="op">==</span> <span class="str">"s"</span><span class="op">:</span>
+        <span class="kw">descuento_aplicado</span> <span class="op">=</span> <span class="bl">True</span>   <span class="cm"># ← cambia DENTRO</span>
+
+<span class="bl">if</span> <span class="kw">descuento_aplicado</span><span class="op">:</span>   <span class="cm"># ← se usa DESPUÉS</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Se aplicaron descuentos."</span><span class="op">)</span>
+<span class="bl">else</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Ningún producto tenía descuento."</span><span class="op">)</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">la diferencia con un contador</span>
+      <div class="comparison">
+        <div class="comp-item"><div class="comp-label">contador</div><div class="comp-code">descuentos = 0
+descuentos += 1
+→ te dice cuántas veces</div></div>
+        <div class="comp-item"><div class="comp-label good">bandera</div><div class="comp-code">descuento_aplicado = False
+descuento_aplicado = True
+→ te dice si ocurrió o no</div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">banderas para controlar el flujo del bucle</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">compra_activa</span> <span class="op">=</span> <span class="bl">True</span>
+
+<span class="bl">while</span> <span class="kw">compra_activa</span><span class="op">:</span>
+    <span class="kw">accion</span> <span class="op">=</span> <span class="fn">input</span><span class="op">(</span><span class="str">"¿Agregar producto o terminar? (a/t): "</span><span class="op">)</span>
+
+    <span class="bl">if</span> <span class="kw">accion</span> <span class="op">==</span> <span class="str">"a"</span><span class="op">:</span>
+        <span class="fn">print</span><span class="op">(</span><span class="str">"Producto agregado."</span><span class="op">)</span>
+    <span class="bl">elif</span> <span class="kw">accion</span> <span class="op">==</span> <span class="str">"t"</span><span class="op">:</span>
+        <span class="kw">compra_activa</span> <span class="op">=</span> <span class="bl">False</span>   <span class="cm"># apaga la bandera → termina</span>
+
+<span class="cm"># Más legible que usar break directamente</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+    <div class="error-box">
+      <div class="error-header">⚠️ el error más común</div>
+      <div class="error-text">Olvidar resetear la bandera cuando se reutiliza en una nueva operación. Si en la primera compra se aplicó descuento, la bandera queda en True — la segunda compra arranca con True aunque no haya pasado nada.</div>
+      <div class="code-wrap" style="margin-top:10px">
+        <div class="code-block"><span class="cm"># ✓ resetear antes de cada nueva operación</span>
+<span class="kw">descuento_aplicado</span> <span class="op">=</span> <span class="bl">False</span></div>
+      </div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+      <div class="challenge-text">La caja necesita saber al final: ¿se aplicó algún descuento?, ¿el pago fue exitoso?, ¿la compra califica para envío gratis (total mayor a $500)?. Usa banderas para responder cada pregunta.</div>
+    </div>
+    <div class="hashtags">#PythonHumano #Python #Fase2 #Banderas #LógicaDeProgramación #ProgramaciónDesde0</div>`
+  },
+  8: {
+    emoji: '🛡️',
+    title: 'Validaciones: no confíes en el usuario',
+    intro: 'El usuario va a hacer exactamente lo que no esperas. Tu programa tiene que estar preparado.',
+    tag: 'Fase 2 · Post 08 de 18',
+    prev: 7, prevTitle: 'Banderas', next: 9, nextTitle: 'Casos extremos',
+    content: `
+    <div class="block">
+      <div class="text"><p>Le pides un número — escribe texto. Le pides precio positivo — escribe -50. Le pides "s" o "n" — escribe "SI". Un programa sin validaciones explota en cuanto alguien lo usa de verdad.</p></div>
+    </div>
+    <div class="block">
+      <span class="block-label">las 4 preguntas de toda validación</span>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num">1</div><div class="step-content"><div class="step-title">¿Qué tipo de dato espero?</div><div class="step-desc">número, texto, opción específica</div></div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-content"><div class="step-title">¿Qué rango es válido?</div><div class="step-desc">mayor a cero, entre 1 y 100, etc.</div></div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-content"><div class="step-title">¿Qué pasa si está vacío?</div><div class="step-desc">¿lo acepto o lo rechazo?</div></div></div>
+        <div class="step-item"><div class="step-num">4</div><div class="step-content"><div class="step-title">¿Cuántos intentos tiene el usuario?</div><div class="step-desc">infinitos con while, o limitados con contador</div></div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">patrón base — pedir, verificar, repetir</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">precio</span> <span class="op">=</span> <span class="fn">float</span><span class="op">(</span><span class="fn">input</span><span class="op">(</span><span class="str">"Precio: "</span><span class="op">))</span>
+
+<span class="bl">while</span> <span class="kw">precio</span> <span class="op"><=</span> <span class="num">0</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"El precio tiene que ser mayor a cero."</span><span class="op">)</span>
+    <span class="kw">precio</span> <span class="op">=</span> <span class="fn">float</span><span class="op">(</span><span class="fn">input</span><span class="op">(</span><span class="str">"Precio: "</span><span class="op">))</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Precio registrado: ${precio:.2f}"</span><span class="op">)</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">validar opciones específicas</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">respuesta</span> <span class="op">=</span> <span class="fn">input</span><span class="op">(</span><span class="str">"¿Tiene descuento? (s/n): "</span><span class="op">)</span>
+
+<span class="bl">while</span> <span class="kw">respuesta</span> <span class="op">!=</span> <span class="str">"s"</span> <span class="bl">and</span> <span class="kw">respuesta</span> <span class="op">!=</span> <span class="str">"n"</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Escribe 's' para sí o 'n' para no."</span><span class="op">)</span>
+    <span class="kw">respuesta</span> <span class="op">=</span> <span class="fn">input</span><span class="op">(</span><span class="str">"¿Tiene descuento? (s/n): "</span><span class="op">)</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">validar que no esté vacío</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">nombre</span> <span class="op">=</span> <span class="fn">input</span><span class="op">(</span><span class="str">"Nombre del producto: "</span><span class="op">)</span><span class="op">.</span><span class="fn">strip</span><span class="op">()</span>
+
+<span class="bl">while</span> <span class="kw">nombre</span> <span class="op">==</span> <span class="str">""</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"El nombre no puede estar vacío."</span><span class="op">)</span>
+    <span class="kw">nombre</span> <span class="op">=</span> <span class="fn">input</span><span class="op">(</span><span class="str">"Nombre del producto: "</span><span class="op">)</span><span class="op">.</span><span class="fn">strip</span><span class="op">()</span>
+
+<span class="cm"># .strip() elimina espacios — si el usuario escribe</span>
+<span class="cm"># solo espacios, queda vacío y la validación lo atrapa</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">validar rangos numéricos</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">descuento</span> <span class="op">=</span> <span class="fn">float</span><span class="op">(</span><span class="fn">input</span><span class="op">(</span><span class="str">"Porcentaje de descuento: "</span><span class="op">))</span>
+
+<span class="bl">while</span> <span class="kw">descuento</span> <span class="op"><</span> <span class="num">0</span> <span class="bl">or</span> <span class="kw">descuento</span> <span class="op">></span> <span class="num">100</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"El descuento tiene que estar entre 0 y 100."</span><span class="op">)</span>
+    <span class="kw">descuento</span> <span class="op">=</span> <span class="fn">float</span><span class="op">(</span><span class="fn">input</span><span class="op">(</span><span class="str">"Porcentaje de descuento: "</span><span class="op">))</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">validación con límite de intentos</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">intentos</span> <span class="op">=</span> <span class="num">0</span>
+<span class="kw">LIMITE</span> <span class="op">=</span> <span class="num">3</span>
+<span class="kw">codigo_valido</span> <span class="op">=</span> <span class="bl">False</span>
+
+<span class="bl">while</span> <span class="kw">intentos</span> <span class="op"><</span> <span class="kw">LIMITE</span><span class="op">:</span>
+    <span class="kw">codigo</span> <span class="op">=</span> <span class="fn">input</span><span class="op">(</span><span class="str">"Código de descuento: "</span><span class="op">)</span><span class="op">.</span><span class="fn">strip</span><span class="op">()</span><span class="op">.</span><span class="fn">upper</span><span class="op">()</span>
+    <span class="bl">if</span> <span class="kw">codigo</span> <span class="op">==</span> <span class="str">"DESCUENTO10"</span><span class="op">:</span>
+        <span class="kw">codigo_valido</span> <span class="op">=</span> <span class="bl">True</span>
+        <span class="fn">print</span><span class="op">(</span><span class="str">"Código válido."</span><span class="op">)</span>
+        <span class="bl">break</span>
+    <span class="kw">intentos</span> <span class="op">+=</span> <span class="num">1</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Inválido. Te quedan {LIMITE - intentos} intentos."</span><span class="op">)</span>
+
+<span class="bl">if</span> <span class="bl">not</span> <span class="kw">codigo_valido</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Código bloqueado."</span><span class="op">)</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+    <div class="error-box">
+      <div class="error-header">⚠️ el error más común</div>
+      <div class="error-text">Validar después de usar el dato en lugar de antes.</div>
+      <div class="code-wrap" style="margin-top:10px">
+        <div class="code-block"><span class="kw">total</span> <span class="op">+=</span> <span class="kw">precio</span>     <span class="out"># 💥 ya lo usaste</span>
+<span class="bl">if</span> <span class="kw">precio</span> <span class="op"><=</span> <span class="num">0</span><span class="op">:</span>     <span class="cm"># demasiado tarde</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Inválido"</span><span class="op">)</span>
+
+<span class="cm"># ✓ siempre valida ANTES de usar</span>
+<span class="bl">if</span> <span class="kw">precio</span> <span class="op">></span> <span class="num">0</span><span class="op">:</span>
+    <span class="kw">total</span> <span class="op">+=</span> <span class="kw">precio</span></div>
+      </div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+      <div class="challenge-text">Agrega validaciones a la caja registradora: nombre no vacío, precio mayor a cero, descuento entre 0 y 100, respuesta de descuento solo "s" o "n", y código de descuento con máximo 3 intentos.</div>
+    </div>
+    <div class="hashtags">#PythonHumano #Python #Fase2 #Validaciones #LógicaDeProgramación #ProgramaciónDesde0</div>`
+  },
+  9: {
+    emoji: '⚠️',
+    title: 'Casos extremos: qué pasa cuando algo sale diferente a lo esperado',
+    intro: 'El código feliz siempre funciona — para eso lo diseñaste. Los casos extremos son los que revelan los huecos reales.',
+    tag: 'Fase 2 · Post 09 de 18',
+    prev: 8, prevTitle: 'Validaciones', next: 10, nextTitle: 'Diseñar el flujo',
+    content: `
+    <div class="block">
+      <div class="text"><p>Escribes el programa. Lo pruebas con un ejemplo normal. Funciona perfectamente. Lo das por terminado. Y entonces alguien lo usa de verdad y explota de una forma que nunca imaginaste.</p><p>Esos casos que no tuviste en mente se llaman <strong>casos extremos</strong>.</p></div>
+    </div>
+    <div class="block">
+      <span class="block-label">los 5 casos extremos más comunes</span>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num">1</div><div class="step-content"><div class="step-title">¿Qué pasa si el valor es cero?</div></div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-content"><div class="step-title">¿Qué pasa si el valor es negativo?</div></div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-content"><div class="step-title">¿Qué pasa si la lista está vacía?</div></div></div>
+        <div class="step-item"><div class="step-num">4</div><div class="step-content"><div class="step-title">¿Qué pasa si hay un solo elemento?</div></div></div>
+        <div class="step-item"><div class="step-num">5</div><div class="step-content"><div class="step-title">¿Qué pasa si el valor es extremadamente grande?</div></div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">caso 1 — el cliente no compra nada</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">total</span> <span class="op">=</span> <span class="num">0</span>
+<span class="kw">productos</span> <span class="op">=</span> <span class="num">0</span>
+
+<span class="bl">if</span> <span class="kw">productos</span> <span class="op">==</span> <span class="num">0</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"No se registraron productos."</span><span class="op">)</span>
+<span class="bl">else</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Total: ${total:.2f}"</span><span class="op">)</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">caso 2 — el cambio es exactamente cero</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">cambio</span> <span class="op">=</span> <span class="kw">dinero</span> <span class="op">-</span> <span class="kw">total</span>
+
+<span class="bl">if</span> <span class="kw">dinero</span> <span class="op"><</span> <span class="kw">total</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Dinero insuficiente."</span><span class="op">)</span>
+<span class="bl">elif</span> <span class="kw">cambio</span> <span class="op">==</span> <span class="num">0</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Pago exacto. No hay cambio."</span><span class="op">)</span>
+<span class="bl">else</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Cambio: ${cambio:.2f}"</span><span class="op">)</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">caso 3 — decimales con error flotante</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="fn">print</span><span class="op">(</span><span class="num">19.99</span> <span class="op">+</span> <span class="num">29.99</span><span class="op">)</span>   <span class="out"># 49.980000000000004 😱</span>
+
+<span class="cm"># La solución: round() en cada cálculo</span>
+<span class="kw">total</span> <span class="op">=</span> <span class="fn">round</span><span class="op">(</span><span class="num">19.99</span> <span class="op">+</span> <span class="num">29.99</span><span class="op">,</span> <span class="num">2</span><span class="op">)</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">total</span><span class="op">)</span>  <span class="out"># 49.98 ✓</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">caso 4 — combinaciones válidas con resultado inválido</span>
+      <div class="highlight red">Este es el caso más difícil de anticipar. No es un valor inválido — es una combinación de valores válidos que juntos producen algo inesperado.</div>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">descuento</span> <span class="op">=</span> <span class="num">100</span>    <span class="cm"># válido — entre 0 y 100</span>
+<span class="kw">precio</span> <span class="op">=</span> <span class="num">50.0</span>       <span class="cm"># válido — mayor a cero</span>
+<span class="kw">total</span> <span class="op">=</span> <span class="kw">precio</span> <span class="op">-</span> <span class="op">(</span><span class="kw">precio</span> <span class="op">*</span> <span class="kw">descuento</span> <span class="op">/</span> <span class="num">100</span><span class="op">)</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">total</span><span class="op">)</span>  <span class="out"># 0.0 — ¿puede el cliente pagar $0?</span>
+
+<span class="bl">if</span> <span class="kw">total</span> <span class="op"><=</span> <span class="num">0</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"El total no puede ser cero. Verifica los descuentos."</span><span class="op">)</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">los 7 escenarios de prueba</span>
+      <div class="pattern-grid">
+        <div class="pattern-card"><div class="pattern-name">Caso normal</div><div class="pattern-trigger">lo que imaginaste cuando lo escribiste</div></div>
+        <div class="pattern-card cyan"><div class="pattern-name cyan">Caso vacío</div><div class="pattern-trigger">sin datos, sin productos, sin entrada</div></div>
+        <div class="pattern-card orange"><div class="pattern-name orange">Caso mínimo</div><div class="pattern-trigger">el valor más pequeño posible — cero, uno</div></div>
+        <div class="pattern-card purple"><div class="pattern-name purple">Caso máximo</div><div class="pattern-trigger">el valor más grande posible</div></div>
+        <div class="pattern-card"><div class="pattern-name">Caso exacto</div><div class="pattern-trigger">justo en el límite — si el límite es 500, prueba con 500</div></div>
+        <div class="pattern-card red"><div class="pattern-name red">Caso inesperado</div><div class="pattern-trigger">lo que el usuario no debería hacer pero hará</div></div>
+        <div class="pattern-card cyan"><div class="pattern-name cyan">Caso de combinación</div><div class="pattern-trigger">valores válidos que juntos producen algo raro</div></div>
+      </div>
+    </div>
+    <div class="error-box">
+      <div class="error-header">⚠️ el error más común</div>
+      <div class="error-text">Probar solo el caso feliz y asumir que el programa está listo. <strong>Tu trabajo no es eliminar todos los casos extremos — es anticipar los más probables y manejarlos con gracia en lugar de dejar que el programa explote.</strong></div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+      <div class="challenge-text">Prueba tu caja registradora con: sin productos, un solo producto, pago exacto, precio de $0.01, descuento del 100%, nombre con solo espacios, y descuento 100% con envío de $99. Para cada caso que explote — agrégale el manejo que necesita.</div>
+    </div>
+    <div class="hashtags">#PythonHumano #Python #Fase2 #CasosExtremos #LógicaDeProgramación #ProgramaciónDesde0</div>`
+  },
+  10: {
+    emoji: '🗺️',
+    title: 'Cómo diseñar el flujo de tu programa antes de escribirlo',
+    intro: 'Diseñar el flujo es decidir el camino que va a recorrer tu código antes de escribir una sola línea.',
+    tag: 'Fase 2 · Post 10 de 18',
+    prev: 9, prevTitle: 'Casos extremos', next: 11, nextTitle: 'Construir por capas',
+    content: `
+    <div class="block">
+      <div class="text"><p>Todo programa está construido con solo <strong>3 tipos de flujo combinados</strong>:</p></div>
+      <div class="three-col">
+        <div class="mini-card"><div class="mini-card-icon">➡️</div><div class="mini-card-title">Secuencial</div><div class="mini-card-desc">instrucciones en orden, sin decisiones</div></div>
+        <div class="mini-card"><div class="mini-card-icon">🔀</div><div class="mini-card-title">Condicional</div><div class="mini-card-desc">el programa toma una decisión → if/else</div></div>
+        <div class="mini-card"><div class="mini-card-icon">🔁</div><div class="mini-card-title">Repetitivo</div><div class="mini-card-desc">repite un bloque hasta que algo cambie</div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">cómo diseñar el flujo — 4 pasos</span>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num">1</div><div class="step-content"><div class="step-title">Flujo principal</div><div class="step-desc">Solo el camino normal. Sin condiciones ni casos extremos todavía.</div></div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-content"><div class="step-title">Agrega las decisiones</div><div class="step-desc">¿En qué puntos el programa puede tomar caminos diferentes?</div></div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-content"><div class="step-title">Agrega las repeticiones</div><div class="step-desc">¿Qué partes se repiten? ¿Cuántas veces? ¿Hasta cuándo?</div></div></div>
+        <div class="step-item"><div class="step-num">4</div><div class="step-content"><div class="step-title">Agrega los casos extremos</div><div class="step-desc">¿Qué pasa si no hay productos? ¿Si el total es cero?</div></div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">diagramas de flujo — 4 símbolos</span>
+      <div class="code-wrap">
+        <div class="code-block">⬭ Óvalo      → inicio y fin del programa
+▭ Rectángulo → una instrucción o proceso
+◇ Rombo      → una decisión (sí o no)
+→ Flecha     → la dirección del flujo</div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">flujo como comentarios en Python</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="cm"># 1. registrar productos del cliente</span>
+<span class="cm"># 2. calcular el total de la compra</span>
+<span class="cm"># 3. verificar si hay código de descuento</span>
+<span class="cm"># 4. aplicar descuento si corresponde</span>
+<span class="cm"># 5. pedir el pago al cliente</span>
+<span class="cm"># 6. verificar que el pago sea suficiente</span>
+<span class="cm"># 7. calcular el cambio</span>
+<span class="cm"># 8. mostrar el recibo final</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+      <div class="highlight">Ahora tienes el esqueleto completo. Solo tienes que rellenar cada comentario con el código. <strong>Nunca te pierdes porque siempre sabes en qué paso estás.</strong></div>
+    </div>
+    <div class="error-box">
+      <div class="error-header">⚠️ el error más común</div>
+      <div class="error-text">Diseñar el flujo en tu cabeza en lugar de escribirlo. Cuando el programa tiene más de 5 o 6 pasos, tu cabeza empieza a perder hilos. <strong>Escríbelo siempre — en papel, en documento, como comentarios. No importa dónde. Importa que esté escrito.</strong></div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+      <div class="challenge-text">Toma el problema de la caja con cupones y envío. Diseña su flujo completo en 4 pasos. Dibuja el diagrama en papel. Luego escríbelo como comentarios en Python. El código viene después — primero el camino.</div>
+    </div>
+    <div class="hashtags">#PythonHumano #Python #Fase2 #DiseñoDelFlujo #LógicaDeProgramación #ProgramaciónDesde0</div>`
+  },
+  11: {
+    emoji: '🏗️',
+    title: 'Construye de adentro hacia afuera',
+    intro: 'Empieza por la parte más pequeña y más central. Verifica que funciona. Agrega la siguiente capa. Repite.',
+    tag: 'Fase 2 · Post 11 de 18',
+    prev: 10, prevTitle: 'Diseñar el flujo', next: 12, nextTitle: 'Qué hacer cuando te bloqueas',
+    content: `
+    <div class="block">
+      <div class="text"><p>Cuando intentas escribir todo de una vez no sabes qué parte está fallando cuando algo sale mal. Siempre sale algo mal.</p></div>
+      <div class="rule-box">Primero los cimientos. Luego las paredes. Luego el techo. El código funciona igual.</div>
+    </div>
+    <div class="block">
+      <span class="block-label">el método de construcción por capas</span>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num">1</div><div class="step-content"><div class="step-title">Capa 1 — El núcleo</div><div class="step-desc">La lógica más básica sin nada extra. Sin validaciones. Sin casos extremos.</div></div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-content"><div class="step-title">Capa 2 — Agrega el input</div><div class="step-desc">El usuario ingresa los datos reales.</div></div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-content"><div class="step-title">Capa 3 — Agrega las condiciones</div><div class="step-desc">Descuentos, casos especiales, decisiones.</div></div></div>
+        <div class="step-item"><div class="step-num">4</div><div class="step-content"><div class="step-title">Capa 4 — Agrega las validaciones</div><div class="step-desc">Protege cada entrada del usuario.</div></div></div>
+        <div class="step-item"><div class="step-num">5</div><div class="step-content"><div class="step-title">Capa 5 — Agrega los casos extremos</div><div class="step-desc">Maneja lo que puede salir mal.</div></div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">las 3 pruebas después de cada capa</span>
+      <div class="three-col">
+        <div class="mini-card"><div class="mini-card-icon">✅</div><div class="mini-card-title">Caso normal</div><div class="mini-card-desc">¿hace lo que debería con datos válidos?</div></div>
+        <div class="mini-card"><div class="mini-card-icon">🎯</div><div class="mini-card-title">Caso límite</div><div class="mini-card-desc">¿qué pasa justo en el borde?</div></div>
+        <div class="mini-card"><div class="mini-card-icon">💥</div><div class="mini-card-title">Caso roto</div><div class="mini-card-desc">¿qué pasa con datos inválidos?</div></div>
+      </div>
+      <div class="highlight red">Si una pasa falla — arréglala ahora. No después. Un error no arreglado en la capa 2 se convierte en un error invisible en la capa 5.</div>
+    </div>
+    <div class="block">
+      <span class="block-label">debugging con print() — tus ojos mientras construyes</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">total</span> <span class="op">=</span> <span class="num">0</span>
+<span class="bl">for</span> <span class="kw">i</span> <span class="bl">in</span> <span class="fn">range</span><span class="op">(</span><span class="num">2</span><span class="op">):</span>
+    <span class="kw">precio</span> <span class="op">=</span> <span class="fn">float</span><span class="op">(</span><span class="fn">input</span><span class="op">(</span><span class="str">"Precio: "</span><span class="op">))</span>
+    <span class="kw">total</span> <span class="op">+=</span> <span class="kw">precio</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"DEBUG — total acumulado: {total}"</span><span class="op">)</span>   <span class="cm"># ← eliminas al final</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Total final: ${total:.2f}"</span><span class="op">)</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+      <div class="text"><p>Los print() de DEBUG no son parte del programa final. Son tus ojos mientras construyes. Cuando todo funcione, los borras o comentas.</p></div>
+    </div>
+    <div class="error-box">
+      <div class="error-header">⚠️ el error más común</div>
+      <div class="error-text">Agregar demasiadas cosas entre una verificación y la siguiente. Si algo falla no sabes qué fue. <strong>Una cosa a la vez. Verifica. Luego agrega la siguiente.</strong></div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+      <div class="challenge-text">Construye la caja con cupones y envío por capas. Capa 1: solo calcular el total. Capa 2: agregar el input. Capa 3: agregar el cupón. Capa 4: agregar el envío. Capa 5: validaciones. Capa 6: casos extremos. Prueba las 3 pruebas después de cada capa.</div>
+    </div>
+    <div class="hashtags">#PythonHumano #Python #Fase2 #ConstruirPorCapas #LógicaDeProgramación #ProgramaciónDesde0</div>`
+  },
+  12: {
+    emoji: '🧱',
+    title: 'Qué hacer cuando te bloqueas',
+    intro: 'Va a pasar. No es cuestión de si. Es cuestión de cuándo. La diferencia está en saber qué hacer.',
+    tag: 'Fase 2 · Post 12 de 18',
+    prev: 11, prevTitle: 'Construir por capas', next: 13, nextTitle: 'Trazabilidad',
+    content: `
+    <div class="block">
+      <div class="highlight">El bloqueo no es falta de talento. Es falta de método. Con el método correcto cualquier bloqueo tiene salida.</div>
+    </div>
+    <div class="block">
+      <span class="block-label">tipo 1 — bloqueo de comprensión (no entiendes el problema)</span>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num">1</div><div class="step-content"><div class="step-title">Léelo en voz alta</div><div class="step-desc">Lo que no se entiende al leer a veces se entiende al escuchar.</div></div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-content"><div class="step-title">Reescríbelo con tus palabras</div><div class="step-desc">Sin copiar el enunciado. Explícalo como si se lo contaras a alguien.</div></div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-content"><div class="step-title">Hazte las 3 preguntas</div><div class="step-desc">¿Qué tengo? ¿Qué necesito lograr? ¿Qué condiciones existen?</div></div></div>
+        <div class="step-item"><div class="step-num">4</div><div class="step-content"><div class="step-title">Resuelve a mano con números reales</div><div class="step-desc">Si no puedes resolverlo a mano, no puedes programarlo.</div></div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">tipo 2 — bloqueo de diseño (entiendes pero no sabes cómo)</span>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num cyan">1</div><div class="step-content"><div class="step-title">No abras el editor todavía</div><div class="step-desc">El bloqueo de diseño se resuelve en papel, no en código.</div></div></div>
+        <div class="step-item"><div class="step-num cyan">2</div><div class="step-content"><div class="step-title">Escribe el flujo principal</div><div class="step-desc">Solo el camino normal. Sin condiciones ni casos extremos.</div></div></div>
+        <div class="step-item"><div class="step-num cyan">3</div><div class="step-content"><div class="step-title">Resuelve el problema más pequeño posible</div><div class="step-desc">La parte más simple y aislada. Solo esa.</div></div></div>
+        <div class="step-item"><div class="step-num cyan">4</div><div class="step-content"><div class="step-title">Si sigues bloqueado, simplifica</div><div class="step-desc">Quita condiciones, casos extremos y validaciones. ¿Puedes resolver el núcleo?</div></div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">tipo 3 — bloqueo de ejecución (el código no funciona)</span>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num">1</div><div class="step-content"><div class="step-title">Lee el error completo</div><div class="step-desc">Python te dice exactamente qué salió mal y en qué línea. No lo ignores.</div></div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-content"><div class="step-title">Agrega print() para ver qué pasa</div><div class="step-desc">Imprime todas las variables antes de la línea que falla.</div></div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-content"><div class="step-title">Comenta el código hasta que funcione</div><div class="step-desc">Comenta todo excepto las primeras líneas. Descomenta de a poco.</div></div></div>
+        <div class="step-item"><div class="step-num">4</div><div class="step-content"><div class="step-title">Reproduce el error con el caso más simple</div><div class="step-desc">Si el error ocurre con 5 productos, ¿ocurre con 1?</div></div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">tipo 4 — bloqueo mental (tu cabeza no da más)</span>
+      <div class="highlight red"><strong>Para. Ahora mismo.</strong> No es rendirse. Es la decisión más inteligente. Tu cerebro necesita procesar lo que estás aprendiendo — y ese procesamiento no ocurre frente a la pantalla.</div>
+      <div class="highlight cyan"><strong>Rubber duck debugging:</strong> explícale el problema en voz alta a cualquier objeto. Al explicarlo en voz alta tu cerebro lo procesa diferente y encuentra el error que no podías ver. No es broma. Funciona.</div>
+    </div>
+    <div class="block">
+      <span class="block-label">el proceso completo cuando te bloqueas</span>
+      <div class="rule-box">1. ¿Entiendo el problema? → No: Tipo 1
+2. ¿Sé cómo resolverlo? → No: Tipo 2
+3. ¿El código corre sin errores? → No: Tipo 3
+4. ¿El resultado es correcto? → No: Tipo 3
+5. ¿Tu cabeza ya no da más? → Tipo 4</div>
+    </div>
+    <div class="error-box">
+      <div class="error-header">⚠️ el error más común</div>
+      <div class="error-text">Cambiar código al azar esperando que algo funcione. Sin entender por qué algo falla no puedes arreglarlo. Solo puedes adivinar. <strong>Siempre entiende primero. Luego cambia.</strong></div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+      <div class="challenge-text">La próxima vez que te bloquees — en este canal o en cualquier otro código — sigue el proceso completo. Identifica el tipo de bloqueo. Sigue los pasos. Anota qué funcionó. Con el tiempo tendrás tu propio manual de desbloqueo.</div>
+    </div>
+    <div class="hashtags">#PythonHumano #Python #Fase2 #CuandoTeBloqueas #LógicaDeProgramación #ProgramaciónDesde0</div>`
+  },
+  13: {
+    emoji: '🔍',
+    title: 'Trazabilidad: sigue el código línea por línea',
+    intro: 'Leer un programa y seguir mentalmente qué valor tiene cada variable en cada momento — sin ejecutarlo.',
+    tag: 'Fase 2 · Post 13 de 18',
+    prev: 12, prevTitle: 'Qué hacer cuando te bloqueas', next: 14, nextTitle: 'Información incompleta',
+    content: `
+    <div class="block">
+      <div class="text"><p>Cuando tu código falla y no hay mensaje de error — solo resultados incorrectos — tu única herramienta es trazar el código línea por línea hasta encontrar dónde se torció.</p></div>
+    </div>
+    <div class="block">
+      <span class="block-label">cómo trazar — tabla de variables</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">total</span> <span class="op">=</span> <span class="num">0</span>
+<span class="kw">precio</span> <span class="op">=</span> <span class="num">50</span>
+<span class="kw">total</span> <span class="op">+=</span> <span class="kw">precio</span>
+<span class="kw">precio</span> <span class="op">=</span> <span class="num">30</span>
+<span class="kw">total</span> <span class="op">+=</span> <span class="kw">precio</span>
+<span class="kw">descuento</span> <span class="op">=</span> <span class="kw">total</span> <span class="op">*</span> <span class="num">0.10</span>
+<span class="kw">total</span> <span class="op">=</span> <span class="kw">total</span> <span class="op">-</span> <span class="kw">descuento</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+      <div class="code-wrap">
+        <div class="code-block">LÍNEA                         total   precio   descuento
+total = 0                 →     0       —          —
+precio = 50               →     0      50          —
+total += precio           →    50      50          —
+precio = 30               →    50      30          —
+total += precio           →    80      30          —
+descuento = total * 0.10  →    80      30          8
+total = total - descuento →    72      30          8</div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">la diferencia entre += y = — crítica para trazar</span>
+      <div class="comparison">
+        <div class="comp-item"><div class="comp-label">+= acumula</div><div class="comp-code">total += precio
+suma al valor anterior
+el valor anterior se conserva</div></div>
+        <div class="comp-item"><div class="comp-label bad">= reemplaza</div><div class="comp-code">total = precio
+borra el valor anterior
+el valor anterior desaparece</div></div>
+      </div>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">mensaje</span> <span class="op">=</span> <span class="str">"Bienvenido"</span>
+<span class="kw">total</span> <span class="op">=</span> <span class="num">150</span>
+
+<span class="bl">if</span> <span class="kw">total</span> <span class="op">></span> <span class="num">100</span><span class="op">:</span>
+    <span class="kw">mensaje</span> <span class="op">=</span> <span class="str">"Descuento aplicado"</span>  <span class="cm"># reemplaza completamente</span>
+
+<span class="bl">if</span> <span class="kw">total</span> <span class="op">></span> <span class="num">200</span><span class="op">:</span>
+    <span class="kw">mensaje</span> <span class="op">=</span> <span class="str">"Envío gratis"</span>  <span class="cm"># esta NO se ejecuta</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="kw">mensaje</span><span class="op">)</span>  <span class="out"># "Descuento aplicado"</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">trazabilidad con print() — Python construye la tabla por ti</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">total</span> <span class="op">=</span> <span class="num">0</span>
+<span class="kw">precios</span> <span class="op">=</span> <span class="op">[</span><span class="num">50</span><span class="op">,</span> <span class="num">30</span><span class="op">,</span> <span class="num">20</span><span class="op">]</span>
+
+<span class="bl">for</span> <span class="kw">precio</span> <span class="bl">in</span> <span class="kw">precios</span><span class="op">:</span>
+    <span class="kw">total</span> <span class="op">+=</span> <span class="kw">precio</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"DEBUG — precio: {precio} | total: {total}"</span><span class="op">)</span>
+
+<span class="out"># DEBUG — precio: 50 | total: 50</span>
+<span class="out"># DEBUG — precio: 30 | total: 80</span>
+<span class="out"># DEBUG — precio: 20 | total: 100</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+    <div class="error-box">
+      <div class="error-header">⚠️ el error más común</div>
+      <div class="error-text">Asumir que sabes qué valor tiene una variable sin verificarlo. <strong>"Aquí total debería ser 100." ¿Debería? ¿O es? La diferencia entre lo que crees que vale y lo que realmente vale es donde viven la mayoría de los errores.</strong></div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+      <div class="challenge-text">Sin ejecutar este código, traza cada línea y di qué valor tiene cada variable al final:<br><br><code style="background:var(--code-bg);padding:4px 8px;border-radius:4px;font-size:0.72rem;color:var(--accent2)">total = 0; productos = 0; bandera = False; precios = [120, 45, 200, 30]; for precio in precios: total += precio; productos += 1; if precio > 100: bandera = True; if bandera: total = total - (total * 0.15); total = round(total, 2)</code><br><br>Luego ejecútalo y verifica.</div>
+    </div>
+    <div class="hashtags">#PythonHumano #Python #Fase2 #Trazabilidad #LógicaDeProgramación #ProgramaciónDesde0</div>`
+  },
+  14: {
+    emoji: '🧩',
+    title: 'Cómo avanzar cuando la información no está completa',
+    intro: 'En la vida real los problemas casi nunca están perfectamente definidos. Esperar información perfecta es esperar para siempre.',
+    tag: 'Fase 2 · Post 14 de 18',
+    prev: 13, prevTitle: 'Trazabilidad', next: 15, nextTitle: 'Refactorización',
+    content: `
+    <div class="block">
+      <div class="text"><p>Siempre hay huecos en los problemas. Tu trabajo no es paralizarte — es tomar decisiones conscientes sobre lo que falta y documentarlas.</p></div>
+    </div>
+    <div class="block">
+      <span class="block-label">3 tipos de información incompleta</span>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num">1</div><div class="step-content"><div class="step-title">Información que puedes asumir con lógica</div><div class="step-desc">El problema no lo dice pero tiene una respuesta obvia. Toma la decisión y sigue adelante.</div></div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-content"><div class="step-title">Información que puedes parametrizar</div><div class="step-desc">No sabes el valor exacto pero puedes dejarlo como constante que se cambia fácil.</div></div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-content"><div class="step-title">Información que afecta el diseño completo</div><div class="step-desc">Pregunta si puedes. Si no, construye la versión más simple primero y extiende después.</div></div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">parametrizar — constantes en mayúsculas</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="cm"># No sabes el límite exacto — parametrízalo</span>
+<span class="kw">LIMITE_INTENTOS</span> <span class="op">=</span> <span class="num">3</span>      <span class="cm"># fácil de cambiar después</span>
+<span class="kw">PORCENTAJE_DESC</span> <span class="op">=</span> <span class="num">0.10</span>   <span class="cm"># fácil de cambiar después</span>
+<span class="kw">COSTO_ENVIO</span> <span class="op">=</span> <span class="num">99</span>         <span class="cm"># fácil de cambiar después</span>
+
+<span class="cm"># Cuando tengas la respuesta, cambias solo esa línea.</span>
+<span class="cm"># El resto del código no se toca.</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">documentar tus decisiones — comentarios</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="cm"># DECISIÓN: productos ilimitados hasta escribir "fin"</span>
+<span class="cm"># lógico para una caja registradora real</span>
+<span class="cm"># cambiar si se necesita un límite fijo</span>
+
+<span class="cm"># DECISIÓN: el código acepta mayúsculas y minúsculas</span>
+<span class="cm"># mejor experiencia para el usuario</span>
+
+<span class="cm"># PENDIENTE: confirmar si envío aplica con total = 0</span>
+<span class="cm"># por ahora no aplica envío si total es cero</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">suposiciones por defecto</span>
+      <div class="rule-box">Cuando no sabes qué valor elegir — elige la opción más conservadora. Es más fácil relajar un límite que explicar por qué el sistema fue demasiado permisivo.</div>
+    </div>
+    <div class="block">
+      <span class="block-label">qué hacer cuando tu suposición estuvo mal</span>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num cyan">1</div><div class="step-content"><div class="step-title">Encuentra el comentario donde documentaste esa decisión</div></div></div>
+        <div class="step-item"><div class="step-num cyan">2</div><div class="step-content"><div class="step-title">Si usaste una constante, cambias solo esa línea</div></div></div>
+        <div class="step-item"><div class="step-num cyan">3</div><div class="step-content"><div class="step-title">Prueba con los mismos casos extremos de antes</div></div></div>
+      </div>
+      <div class="highlight">La diferencia entre una suposición documentada y una no documentada es la diferencia entre un cambio de 5 minutos y una hora buscando qué tocó qué.</div>
+    </div>
+    <div class="error-box">
+      <div class="error-header">⚠️ dos errores opuestos, igual de malos</div>
+      <div class="error-text"><strong>Error 1:</strong> Paralizarse esperando información perfecta. El programa nunca avanza.<br><br><strong>Error 2:</strong> Asumir sin documentar. Nadie sabe por qué las cosas funcionan como funcionan.</div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+      <div class="challenge-text">Lee este problema con huecos y aplica el método: <em>"Una caja necesita registrar productos. Los clientes pueden tener membresía. Los miembros tienen beneficios especiales. El sistema debe manejar devoluciones."</em> Identifica todos los huecos, decide qué puedes asumir y documenta cada decisión.</div>
+    </div>
+    <div class="hashtags">#PythonHumano #Python #Fase2 #InformaciónIncompleta #LógicaDeProgramación #ProgramaciónDesde0</div>`
+  },
+  15: {
+    emoji: '♻️',
+    title: 'Refactorización: mejora código que ya funciona',
+    intro: 'Funcionar no es lo mismo que estar bien escrito. El código lo lees muchas más veces de las que lo escribes.',
+    tag: 'Fase 2 · Post 15 de 18',
+    prev: 14, prevTitle: 'Información incompleta', next: 16, nextTitle: 'Reconocer patrones',
+    content: `
+    <div class="block">
+      <div class="rule-box">Primero hazlo funcionar. Luego hazlo funcionar bien. En ese orden. Siempre.</div>
+    </div>
+    <div class="block">
+      <span class="block-label">las 6 señales de que tu código necesita refactorización</span>
+    </div>
+    <div class="block">
+      <span class="block-label">señal 1 — variables con nombres malos</span>
+      <div class="comparison">
+        <div class="comp-item"><div class="comp-label bad">✗ antes</div><div class="comp-code">x = 0
+p = float(input("Precio: "))
+x += p
+d = x * 0.10</div></div>
+        <div class="comp-item"><div class="comp-label good">✓ después</div><div class="comp-code">total = 0
+precio = float(input("Precio: "))
+total += precio
+descuento = total * 0.10</div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">señal 2 — números mágicos</span>
+      <div class="comparison">
+        <div class="comp-item"><div class="comp-label bad">✗ antes</div><div class="comp-code">total = total * 0.10
+if total > 500:
+    envio = 99
+# ¿qué es 0.10? ¿qué es 500? ¿qué es 99?</div></div>
+        <div class="comp-item"><div class="comp-label good">✓ después</div><div class="comp-code">PORCENTAJE_DESC = 0.10
+LIMITE_ENVIO = 500
+COSTO_ENVIO = 99
+
+total = total * PORCENTAJE_DESC
+if total > LIMITE_ENVIO:
+    envio = COSTO_ENVIO</div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">señal 3 — condiciones innecesariamente complejas</span>
+      <div class="comparison">
+        <div class="comp-item"><div class="comp-label bad">✗ antes</div><div class="comp-code">if tiene_descuento == True:
+    aplicar()
+
+if activo == False:
+    error()</div></div>
+        <div class="comp-item"><div class="comp-label good">✓ después</div><div class="comp-code">if tiene_descuento:
+    aplicar()
+
+if not activo:
+    error()</div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">señal 4 — código flecha</span>
+      <div class="comparison">
+        <div class="comp-item"><div class="comp-label bad">✗ antes — código flecha</div><div class="comp-code">if productos > 0:
+  if total > 0:
+    if dinero >= total:
+      if desc:
+        print("con desc")
+      else:
+        print("sin desc")</div></div>
+        <div class="comp-item"><div class="comp-label good">✓ después — cláusulas de guardia</div><div class="comp-code">if productos == 0:
+    print("No hay productos")
+elif total == 0:
+    print("Total cero")
+elif dinero < total:
+    print("Insuficiente")
+elif desc:
+    print("con desc")
+else:
+    print("sin desc")</div></div>
+      </div>
+      <div class="highlight cyan"><strong>Cláusulas de guardia:</strong> resuelve primero los casos que terminan el programa. Deja la lógica principal al final. Sin anidación. Mucho más fácil de leer.</div>
+    </div>
+    <div class="block">
+      <span class="block-label">cómo refactorizar sin romper nada</span>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num">1</div><div class="step-content"><div class="step-title">Verifica que funciona antes de refactorizar</div></div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-content"><div class="step-title">Refactoriza una cosa a la vez</div></div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-content"><div class="step-title">Verifica después de cada cambio</div></div></div>
+        <div class="step-item"><div class="step-num">4</div><div class="step-content"><div class="step-title">Para cuando el código se explique solo</div></div></div>
+      </div>
+    </div>
+    <div class="error-box">
+      <div class="error-header">⚠️ el error más común</div>
+      <div class="error-text">Refactorizar demasiado. La pregunta que guía es simple: <strong>¿Lo entendería alguien que no lo escribió?</strong> Si la respuesta es sí — para. La perfección es el enemigo de lo que funciona bien.</div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+      <div class="challenge-text">Toma el código de tu caja registradora y busca las 6 señales: variables con nombres malos, números mágicos, condiciones complejas, código repetido, comentarios que explican código confuso y código flecha. Refactoriza una cosa a la vez y verifica después de cada cambio.</div>
+    </div>
+    <div class="hashtags">#PythonHumano #Python #Fase2 #Refactorización #LógicaDeProgramación #ProgramaciónDesde0</div>`
+  },
+  16: {
+    emoji: '🔎',
+    title: 'Reconocer patrones: ver la solución antes de construirla',
+    intro: 'Con el tiempo los programadores reconocen que ciertos problemas siempre se resuelven de la misma forma.',
+    tag: 'Fase 2 · Post 16 de 18',
+    prev: 15, prevTitle: 'Refactorización', next: 17, nextTitle: 'El ciclo completo',
+    content: `
+    <div class="block">
+      <div class="text"><p>Cuando reconoces el patrón ya sabes cómo resolver el problema antes de escribir una línea. No tienes que inventar la solución desde cero cada vez.</p></div>
+    </div>
+    <div class="block">
+      <span class="block-label">los 6 patrones que ya conoces</span>
+      <div class="pattern-grid">
+        <div class="pattern-card"><div class="pattern-name">🔢 Contador</div><div class="pattern-trigger">Lo reconoces cuando dice: "cuántos", "cantidad de", "número de", "veces que"</div><div class="pattern-struct">contador = 0
+for/while ...:
+    if condición:
+        contador += 1</div></div>
+        <div class="pattern-card cyan"><div class="pattern-name cyan">➕ Acumulador</div><div class="pattern-trigger">Lo reconoces cuando dice: "total", "suma", "acumula", "construye"</div><div class="pattern-struct">acumulador = 0  # o ""
+for/while ...:
+    acumulador += valor</div></div>
+        <div class="pattern-card orange"><div class="pattern-name orange">📈 Máximo y mínimo</div><div class="pattern-trigger">Lo reconoces cuando dice: "el más caro", "el mayor", "el mejor"</div><div class="pattern-struct">maximo = 0
+minimo = None
+for/while ...:
+    if valor > maximo: maximo = valor
+    if minimo is None or valor < minimo: minimo = valor</div></div>
+        <div class="pattern-card purple"><div class="pattern-name purple">🚩 Bandera</div><div class="pattern-trigger">Lo reconoces cuando dice: "si hubo algún", "si ocurrió", "si existe"</div><div class="pattern-struct">bandera = False
+for/while ...:
+    if condición:
+        bandera = True</div></div>
+        <div class="pattern-card"><div class="pattern-name">🛡️ Validación</div><div class="pattern-trigger">Lo reconoces cuando dice: "verificar", "solo acepta", "tiene que ser"</div><div class="pattern-struct">valor = input(...)
+while not es_valido(valor):
+    print("error")
+    valor = input(...)</div></div>
+        <div class="pattern-card red"><div class="pattern-name red">🔍 Búsqueda</div><div class="pattern-trigger">Lo reconoces cuando dice: "encontrar", "existe", "el primero que"</div><div class="pattern-struct">encontrado = False
+for elemento in colección:
+    if condición:
+        encontrado = True
+        resultado = elemento
+        break</div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">cómo identificar el patrón correcto</span>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num">?</div><div class="step-content"><div class="step-title">¿El problema pide contar algo?</div><div class="step-desc">→ Contador</div></div></div>
+        <div class="step-item"><div class="step-num">?</div><div class="step-content"><div class="step-title">¿El problema pide sumar o juntar algo?</div><div class="step-desc">→ Acumulador</div></div></div>
+        <div class="step-item"><div class="step-num">?</div><div class="step-content"><div class="step-title">¿El problema pide el mayor o menor?</div><div class="step-desc">→ Máximo y mínimo</div></div></div>
+        <div class="step-item"><div class="step-num">?</div><div class="step-content"><div class="step-title">¿El problema pregunta si algo ocurrió?</div><div class="step-desc">→ Bandera</div></div></div>
+        <div class="step-item"><div class="step-num">?</div><div class="step-content"><div class="step-title">¿El problema pide verificar datos?</div><div class="step-desc">→ Validación</div></div></div>
+        <div class="step-item"><div class="step-num">?</div><div class="step-content"><div class="step-title">¿El problema pide encontrar algo?</div><div class="step-desc">→ Búsqueda</div></div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">los patrones se combinan</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="cm"># "Encuentra el producto más caro con descuento.
+# Si no hay ninguno, dilo."</span>
+<span class="cm"># → Bandera + Máximo + Búsqueda</span>
+
+<span class="kw">precio_max_con_desc</span> <span class="op">=</span> <span class="num">0</span>
+<span class="kw">hay_con_descuento</span> <span class="op">=</span> <span class="bl">False</span>
+
+<span class="bl">for</span> <span class="kw">producto</span> <span class="bl">in</span> <span class="kw">productos</span><span class="op">:</span>
+    <span class="bl">if</span> <span class="kw">producto</span><span class="op">[</span><span class="str">"tiene_descuento"</span><span class="op">]:</span>
+        <span class="kw">hay_con_descuento</span> <span class="op">=</span> <span class="bl">True</span>
+        <span class="bl">if</span> <span class="kw">producto</span><span class="op">[</span><span class="str">"precio"</span><span class="op">]</span> <span class="op">></span> <span class="kw">precio_max_con_desc</span><span class="op">:</span>
+            <span class="kw">precio_max_con_desc</span> <span class="op">=</span> <span class="kw">producto</span><span class="op">[</span><span class="str">"precio"</span><span class="op">]</span>
+
+<span class="bl">if</span> <span class="kw">hay_con_descuento</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"El más caro con descuento: ${precio_max_con_desc:.2f}"</span><span class="op">)</span>
+<span class="bl">else</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"No hay productos con descuento."</span><span class="op">)</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+    <div class="error-box">
+      <div class="error-header">⚠️ el error más común</div>
+      <div class="error-text">Inventar una solución nueva para cada problema. Cuando un problema pide "cuántos productos cuestan más de $100" — ya sabes que es un contador con condición. Solo tienes que escribirlo. <strong>El reconocimiento de patrones convierte problemas desconocidos en variaciones de problemas que ya sabes resolver.</strong></div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+      <div class="challenge-text">Identifica qué patrones necesitas para cada uno — sin escribir código todavía:<br><br>1. ¿Cuántos productos tienen precio entre $50 y $150?<br>2. ¿Cuál es el total de todas las ventas del día?<br>3. ¿Hubo alguna venta con más de 10 productos?<br>4. Encuentra la venta más pequeña del día.<br>5. ¿Existe algún producto con stock menor a 5?</div>
+    </div>
+    <div class="hashtags">#PythonHumano #Python #Fase2 #Patrones #LógicaDeProgramación #ProgramaciónDesde0</div>`
+  },
+  17: {
+    emoji: '🔄',
+    title: 'El ciclo completo: de problema a código terminado',
+    intro: '7 pasos que convierten cualquier problema en código terminado. El sistema integrado de todo lo que aprendiste en esta fase.',
+    tag: 'Fase 2 · Post 17 de 18',
+    prev: 16, prevTitle: 'Reconocer patrones', next: 18, nextTitle: 'Pruebas mentales',
+    content: `
+    <div class="block">
+      <div class="text"><p>Aprendiste muchas herramientas en esta fase. Ahora necesitas verlas todas juntas. Porque en la vida real no resuelves un problema con una sola herramienta — las usas todas, en orden.</p></div>
+      <div class="rule-box">Los 7 pasos no son opcionales. No los puedes saltear. Cada uno existe porque los que vienen después lo necesitan.</div>
+    </div>
+    <div class="block">
+      <span class="block-label">los 7 pasos del ciclo completo</span>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num">1</div><div class="step-content"><div class="step-title">Entiende el problema</div><div class="step-desc">Lee dos veces. Disecciona con las 3 preguntas. Resuelve a mano con números concretos. No avances hasta poder explicarlo con tus palabras.</div></div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-content"><div class="step-title">Descompón el problema</div><div class="step-desc">Identifica las responsabilidades. Ordénalas por dependencia. Descompón las partes grandes en subpartes.</div></div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-content"><div class="step-title">Identifica los patrones</div><div class="step-desc">Para cada parte: ¿es un contador, acumulador, bandera, validación, búsqueda o máximo/mínimo?</div></div></div>
+        <div class="step-item"><div class="step-num">4</div><div class="step-content"><div class="step-title">Diseña el flujo</div><div class="step-desc">Flujo principal → agrega decisiones → agrega repeticiones → agrega casos extremos. Escríbelo como comentarios en Python.</div></div></div>
+        <div class="step-item"><div class="step-num">5</div><div class="step-content"><div class="step-title">Construye por capas</div><div class="step-desc">Núcleo → input → condiciones → validaciones → casos extremos. Prueba el caso normal, límite y roto después de cada capa.</div></div></div>
+        <div class="step-item"><div class="step-num">6</div><div class="step-content"><div class="step-title">Verifica los casos extremos</div><div class="step-desc">Cero, vacío, negativo, en el límite, combinaciones válidas con resultado inválido.</div></div></div>
+        <div class="step-item"><div class="step-num">7</div><div class="step-content"><div class="step-title">Refactoriza</div><div class="step-desc">Nombres malos, números mágicos, condiciones complejas, código flecha. Para cuando el código se explique solo.</div></div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">el ciclo aplicado a la caja registradora</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="cm"># PASO 4 — Flujo como comentarios</span>
+<span class="kw">LIMITE_DESC</span> <span class="op">=</span> <span class="num">500</span>
+<span class="kw">PORCENTAJE_DESC</span> <span class="op">=</span> <span class="num">0.10</span>
+<span class="kw">COSTO_ENVIO</span> <span class="op">=</span> <span class="num">99</span>
+<span class="kw">LIMITE_INTENTOS</span> <span class="op">=</span> <span class="num">3</span>
+
+<span class="kw">total</span> <span class="op">=</span> <span class="num">0</span>
+<span class="kw">productos</span> <span class="op">=</span> <span class="num">0</span>
+<span class="kw">descuento_aplicado</span> <span class="op">=</span> <span class="bl">False</span>
+<span class="kw">recibo</span> <span class="op">=</span> <span class="str">""</span>
+
+<span class="cm"># 1. registrar productos</span>
+<span class="bl">while</span> <span class="bl">True</span><span class="op">:</span>
+    <span class="kw">nombre</span> <span class="op">=</span> <span class="fn">input</span><span class="op">(</span><span class="str">"Producto ('fin' para terminar): "</span><span class="op">)</span><span class="op">.</span><span class="fn">strip</span><span class="op">()</span>
+    <span class="bl">if</span> <span class="kw">nombre</span><span class="op">.</span><span class="fn">lower</span><span class="op">()</span> <span class="op">==</span> <span class="str">"fin"</span><span class="op">:</span>
+        <span class="bl">break</span>
+    <span class="kw">precio</span> <span class="op">=</span> <span class="fn">float</span><span class="op">(</span><span class="fn">input</span><span class="op">(</span><span class="str">"Precio: "</span><span class="op">))</span>
+    <span class="kw">total</span> <span class="op">+=</span> <span class="kw">precio</span>
+    <span class="kw">productos</span> <span class="op">+=</span> <span class="num">1</span>
+    <span class="kw">recibo</span> <span class="op">+=</span> <span class="fn">f</span><span class="str">"{nombre}: ${precio:.2f}\n"</span>
+
+<span class="cm"># 2. verificar que haya productos</span>
+<span class="bl">if</span> <span class="kw">productos</span> <span class="op">==</span> <span class="num">0</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"No se registraron productos."</span><span class="op">)</span>
+<span class="bl">else</span><span class="op">:</span>
+    <span class="cm"># 3. aplicar descuento</span>
+    <span class="kw">codigo</span> <span class="op">=</span> <span class="fn">input</span><span class="op">(</span><span class="str">"¿Código de descuento? (Enter para omitir): "</span><span class="op">)</span><span class="op">.</span><span class="fn">strip</span><span class="op">()</span><span class="op">.</span><span class="fn">upper</span><span class="op">()</span>
+    <span class="bl">if</span> <span class="kw">codigo</span> <span class="op">==</span> <span class="str">"DESCUENTO10"</span><span class="op">:</span>
+        <span class="kw">total</span> <span class="op">=</span> <span class="fn">round</span><span class="op">(</span><span class="kw">total</span> <span class="op">*</span> <span class="op">(</span><span class="num">1</span> <span class="op">-</span> <span class="kw">PORCENTAJE_DESC</span><span class="op">),</span> <span class="num">2</span><span class="op">)</span>
+        <span class="kw">descuento_aplicado</span> <span class="op">=</span> <span class="bl">True</span>
+
+    <span class="cm"># 4. procesar pago</span>
+    <span class="kw">intentos</span> <span class="op">=</span> <span class="num">0</span>
+    <span class="kw">pago_exitoso</span> <span class="op">=</span> <span class="bl">False</span>
+
+    <span class="bl">while</span> <span class="kw">intentos</span> <span class="op"><</span> <span class="kw">LIMITE_INTENTOS</span> <span class="bl">and</span> <span class="bl">not</span> <span class="kw">pago_exitoso</span><span class="op">:</span>
+        <span class="kw">dinero</span> <span class="op">=</span> <span class="fn">float</span><span class="op">(</span><span class="fn">input</span><span class="op">(</span><span class="str">"Dinero del cliente: "</span><span class="op">))</span>
+        <span class="bl">if</span> <span class="kw">dinero</span> <span class="op">>=</span> <span class="kw">total</span><span class="op">:</span>
+            <span class="kw">pago_exitoso</span> <span class="op">=</span> <span class="bl">True</span>
+        <span class="bl">else</span><span class="op">:</span>
+            <span class="kw">intentos</span> <span class="op">+=</span> <span class="num">1</span>
+            <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Insuficiente. {LIMITE_INTENTOS - intentos} intentos restantes."</span><span class="op">)</span>
+
+    <span class="cm"># 5. mostrar recibo</span>
+    <span class="bl">if</span> <span class="bl">not</span> <span class="kw">pago_exitoso</span><span class="op">:</span>
+        <span class="fn">print</span><span class="op">(</span><span class="str">"Demasiados intentos fallidos."</span><span class="op">)</span>
+    <span class="bl">else</span><span class="op">:</span>
+        <span class="kw">cambio</span> <span class="op">=</span> <span class="fn">round</span><span class="op">(</span><span class="kw">dinero</span> <span class="op">-</span> <span class="kw">total</span><span class="op">,</span> <span class="num">2</span><span class="op">)</span>
+        <span class="fn">print</span><span class="op">(</span><span class="str">"─── Recibo ───"</span><span class="op">)</span>
+        <span class="fn">print</span><span class="op">(</span><span class="kw">recibo</span><span class="op">)</span>
+        <span class="bl">if</span> <span class="kw">descuento_aplicado</span><span class="op">:</span>
+            <span class="fn">print</span><span class="op">(</span><span class="str">"Descuento 10% aplicado"</span><span class="op">)</span>
+        <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Total: ${total:.2f}"</span><span class="op">)</span>
+        <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Cambio: ${cambio:.2f}"</span> <span class="bl">if</span> <span class="kw">cambio</span> <span class="op">></span> <span class="num">0</span> <span class="bl">else</span> <span class="str">"Pago exacto."</span><span class="op">)</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+    <div class="error-box">
+      <div class="error-header">⚠️ el error más común</div>
+      <div class="error-text">Saltarse pasos cuando el problema parece simple. Los problemas que parecen simples y se resuelven sin proceso son los que más sorpresas dan a mitad del camino. <strong>El ciclo no es para problemas difíciles. Es para todos los problemas.</strong></div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+      <div class="challenge-text">Aplica el ciclo completo a este problema nuevo: <em>"Un gimnasio necesita registrar miembros que asistieron hoy. Por cada miembro: nombre y horas entrenadas. Al final: total de asistentes, promedio de horas, miembro que más entrenó y si alguno entrenó más de 3 horas."</em></div>
+    </div>
+    <div class="hashtags">#PythonHumano #Python #Fase2 #CicloCompleto #LógicaDeProgramación #ProgramaciónDesde0</div>`
+  },
+  18: {
+    emoji: '🧠',
+    title: 'Pruebas mentales: verifica la lógica antes de ejecutar',
+    intro: 'Ejecutar el programa en tu cabeza con datos concretos — antes de escribir una sola línea de código.',
+    tag: 'Fase 2 · Post 18 de 18',
+    prev: 17, prevTitle: 'El ciclo completo', next: null,
+    content: `
+    <div class="block">
+      <div class="text"><p>Los errores de sintaxis Python los detecta inmediatamente. Los errores costosos son los de lógica — cuando el código corre perfectamente pero hace algo diferente a lo que querías. La única forma de anticiparlos es verificar la lógica <strong>antes de que el código exista</strong>.</p></div>
+    </div>
+    <div class="block">
+      <span class="block-label">cómo hacer una prueba mental — 4 pasos</span>
+      <div class="steps-list">
+        <div class="step-item"><div class="step-num">1</div><div class="step-content"><div class="step-title">Elige datos concretos</div><div class="step-desc">No variables abstractas. Números reales. "Si precio es 150" no "si precio es mayor a límite".</div></div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-content"><div class="step-title">Sigue el algoritmo línea por línea</div><div class="step-desc">Exactamente como lo haría Python. Sin asumir. Sin saltarte pasos.</div></div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-content"><div class="step-title">Actualiza los valores después de cada línea</div><div class="step-desc">Igual que la trazabilidad — pero antes de que exista el código.</div></div></div>
+        <div class="step-item"><div class="step-num">4</div><div class="step-content"><div class="step-title">Verifica el resultado</div><div class="step-desc">¿Es lo que esperabas? Si sí — la lógica está bien. Si no — encontraste el error.</div></div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">prueba mental que detecta un error</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">total</span> <span class="op">=</span> <span class="num">0</span>
+<span class="kw">descuento</span> <span class="op">=</span> <span class="num">0</span>
+<span class="kw">precios</span> <span class="op">=</span> <span class="op">[</span><span class="num">50</span><span class="op">,</span> <span class="num">30</span><span class="op">]</span>
+
+<span class="bl">for</span> <span class="kw">precio</span> <span class="bl">in</span> <span class="kw">precios</span><span class="op">:</span>
+    <span class="kw">total</span> <span class="op">+=</span> <span class="kw">precio</span>
+
+<span class="bl">if</span> <span class="kw">codigo</span> <span class="op">==</span> <span class="str">"DESCUENTO10"</span><span class="op">:</span>
+    <span class="kw">descuento</span> <span class="op">=</span> <span class="kw">total</span> <span class="op">*</span> <span class="num">0.10</span>
+
+<span class="kw">total</span> <span class="op">=</span> <span class="kw">total</span> <span class="op">-</span> <span class="kw">total</span> <span class="op">*</span> <span class="num">0.10</span>  <span class="out"># 💥 error — aplica siempre</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+      <div class="highlight red">Prueba mental con código <strong>INVÁLIDO</strong>: si el código es incorrecto, total = 80. total = 80 - 80*0.10 = 72 — ¡el descuento se aplica aunque el código sea malo! El error está en que la última línea está fuera del if.</div>
+    </div>
+    <div class="block">
+      <span class="block-label">las 3 pruebas que siempre debes hacer</span>
+      <div class="three-col">
+        <div class="mini-card"><div class="mini-card-icon">✅</div><div class="mini-card-title">Caso normal</div><div class="mini-card-desc">el camino que debería funcionar siempre</div></div>
+        <div class="mini-card"><div class="mini-card-icon">🎯</div><div class="mini-card-title">Caso límite</div><div class="mini-card-desc">los valores en el borde de una condición</div></div>
+        <div class="mini-card"><div class="mini-card-icon">💥</div><div class="mini-card-title">Caso que falla</div><div class="mini-card-desc">datos que deberían producir error</div></div>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">prueba mental vs trazabilidad</span>
+      <div class="comparison">
+        <div class="comp-item"><div class="comp-label good">Prueba mental</div><div class="comp-code">ANTES de escribir el código.
+Verificas que el algoritmo
+es correcto en papel.
+→ Previene errores</div></div>
+        <div class="comp-item"><div class="comp-label">Trazabilidad</div><div class="comp-code">DESPUÉS de escribir el código.
+Verificas que el código hace
+lo que el algoritmo decía.
+→ Detecta errores</div></div>
+      </div>
+      <div class="highlight">Las dos juntas forman un escudo contra los errores de lógica. <strong>La prueba mental los previene. La trazabilidad los detecta.</strong></div>
+    </div>
+    <div class="error-box">
+      <div class="error-header">⚠️ el error más común</div>
+      <div class="error-text">Hacer la prueba mental solo con el caso que funciona. <strong>Los errores reales viven en los casos límite y en los casos que deberían fallar. Siempre prueba los tres.</strong></div>
+    </div>
+    <div class="challenge">
+      <div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto final de la fase</span></div>
+      <div class="challenge-text">
+        Sin ejecutar este código, haz la prueba mental con los 3 casos:<br><br>
+        <code style="background:var(--code-bg);padding:8px;border-radius:6px;font-size:0.72rem;color:var(--accent2);display:block;margin-top:8px;white-space:pre-wrap">total = 0
+mayor_compra = 0
+compras = [150, 80, 200, 50, 175]
+
+for compra in compras:
+    total += compra
+    if compra > mayor_compra:
+        mayor_compra = compra
+
+promedio = total / len(compras)
+
+if promedio > 100:
+    descuento = total * 0.05
+    total = total - descuento</code><br>
+        Caso normal → ¿cuánto es total? ¿cuál es mayor_compra? ¿se aplica el descuento?<br>
+        Caso límite → ¿qué pasa si promedio es exactamente 100?<br>
+        Caso que falla → ¿qué pasa si compras está vacío?<br><br>
+        Luego ejecútalo y verifica.
+      </div>
+    </div>
+    <div class="hashtags">#PythonHumano #Python #Fase2 #PruebasMentales #LógicaDeProgramación #ProgramaciónDesde0</div>`
+  }
+};
+
+function showPost(id) {
+  const post = POSTS[id];
+  if (!post) return;
+  document.getElementById('post-tag').textContent = post.tag;
+  document.getElementById('post-content').innerHTML = `
+    <div class="post-hero fade-in">
+      <span class="post-emoji">${post.emoji}</span>
+      <div class="post-title">${post.title}</div>
+      <div class="post-intro">${post.intro}</div>
+    </div>
+    <div class="fade-in">
+      ${post.content}
+      <div class="post-nav">
+        ${post.prev ? `<div class="nav-btn-post" onclick="showPost(${post.prev})"><span class="nav-post-label">← anterior</span><span class="nav-post-title">${post.prevTitle}</span></div>` : '<div></div>'}
+        ${post.next ? `<div class="nav-btn-post next" onclick="showPost(${post.next})"><span class="nav-post-label">siguiente →</span><span class="nav-post-title">${post.nextTitle}</span></div>` : '<div></div>'}
+      </div>
+    </div>
+  `;
+  document.getElementById('post-list').style.display = 'none';
+  document.getElementById('post-view').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+function showList() {
+  document.getElementById('post-view').style.display = 'none';
+  document.getElementById('post-list').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+function copyCode(btn) {
+  const code = btn.previousElementSibling.innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = '✓ copiado';
+    setTimeout(() => btn.textContent = 'copiar', 2000);
+  });
+}
+
+// Auto-load post from URL hash e.g. #post-5
+window.addEventListener('load', () => {
+  const hash = window.location.hash;
+  if (hash && hash.startsWith('#post-')) {
+    const num = parseInt(hash.replace('#post-', ''));
+    if (num && POSTS[num]) showPost(num);
+  }
+});
+</script>
+</body>
+</html>

@@ -850,12 +850,17 @@
 
 <!-- POST SCREEN -->
 <div id="post" class="screen">
-  <div class="post-header">
-    <button class="back-btn" onclick="goBackToPhase()">← volver a la fase</button>
-    <span class="post-phase-tag" id="post-phase-tag"></span>
-    <div class="post-title" id="post-title"></div>
+  <div class="post-header" style="display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:10;">
+    <button class="back-btn" onclick="goBackToPhase()" style="flex-shrink:0">← fase</button>
+    <span class="post-phase-tag" id="post-phase-tag" style="flex:1;text-align:right"></span>
   </div>
-  <div class="post-body" id="post-body"></div>
+  <iframe id="post-iframe"
+    style="width:100%;border:none;min-height:calc(100vh - 110px);background:var(--bg);"
+    src="about:blank">
+  </iframe>
+  <div style="padding:16px 20px;border-top:1px solid var(--border);display:flex;gap:10px;" id="post-footer">
+    <button class="complete-btn" id="complete-btn-current" onclick="toggleCurrentPost()" style="flex:1;margin:0"></button>
+  </div>
 </div>
 
 <!-- PROMPT SCREEN -->
@@ -1158,6 +1163,12 @@ function openPhase(phaseId) {
   document.getElementById('nav-ruta').classList.add('active');
 }
 
+// Map phase ID to HTML file
+const PHASE_FILES = {
+  1: 'fase1_posts.html',
+  2: 'fase2_posts.html'
+};
+
 function openPost(postId) {
   const phase = PHASES.find(p => p.posts.some(post => post.id === postId));
   const post = phase.posts.find(p => p.id === postId);
@@ -1166,39 +1177,43 @@ function openPost(postId) {
   screenHistory.push('post');
 
   document.getElementById('post-phase-tag').textContent = `Fase ${phase.id} · Post ${post.num} de ${phase.posts.length}`;
-  document.getElementById('post-title').textContent = post.title;
 
   const isDone = completed.includes(postId);
-  const prevPost = phase.posts[postIndex - 1];
-  const nextPost = phase.posts[postIndex + 1];
+  const completeBtn = document.getElementById('complete-btn-current');
+  completeBtn.textContent = isDone ? '✓ completado' : 'marcar como completado';
+  completeBtn.className = `complete-btn ${isDone ? 'done' : ''}`;
+  completeBtn.style.flex = '1';
+  completeBtn.style.margin = '0';
 
-  document.getElementById('post-body').innerHTML = `
-    <div class="post-section">
-      <div class="post-text">
-        <p>El contenido completo de este post está disponible en el canal de Telegram.</p>
-        <p>Sigue la ruta, lee cada post en orden y vuelve aquí para marcar tu progreso.</p>
-      </div>
-    </div>
-
-    <button class="complete-btn ${isDone ? 'done' : ''}" onclick="toggleComplete('${postId}')" id="complete-btn-${postId}">
-      ${isDone ? '✓ completado' : 'marcar como completado'}
-    </button>
-
-    <div class="post-nav">
-      ${prevPost ? `<div class="post-nav-btn" onclick="openPost('${prevPost.id}')">
-        <span class="post-nav-label">← anterior</span>
-        <span class="post-nav-title">${prevPost.title}</span>
-      </div>` : '<div></div>'}
-      ${nextPost ? `<div class="post-nav-btn next" onclick="openPost('${nextPost.id}')">
-        <span class="post-nav-label">siguiente →</span>
-        <span class="post-nav-title">${nextPost.title}</span>
-      </div>` : '<div></div>'}
-    </div>
-
-    <div class="hashtags">#PythonHumano #Python #Fase${phase.id} #ProgramaciónDesde0</div>
-  `;
+  // Load the phase file and navigate to the specific post
+  const phaseFile = PHASE_FILES[phase.id];
+  if (phaseFile) {
+    const iframe = document.getElementById('post-iframe');
+    const postNum = parseInt(post.num);
+    // Use hash to pass post number to the iframe
+    iframe.src = `${phaseFile}#post-${postNum}`;
+    // After load, call showPost in the iframe
+    iframe.onload = () => {
+      try {
+        iframe.contentWindow.showPost(postNum);
+      } catch(e) {
+        // cross-origin fallback — shouldn't happen on same domain
+      }
+    };
+  }
 
   showScreen('post');
+}
+
+function toggleCurrentPost() {
+  if (!currentPostId) return;
+  toggleComplete(currentPostId);
+  const isDone = completed.includes(currentPostId);
+  const btn = document.getElementById('complete-btn-current');
+  btn.textContent = isDone ? '✓ completado' : 'marcar como completado';
+  btn.className = `complete-btn ${isDone ? 'done' : ''}`;
+  btn.style.flex = '1';
+  btn.style.margin = '0';
 }
 
 function toggleComplete(postId) {
@@ -1271,13 +1286,68 @@ function showProgress() {
   window.scrollTo(0, 0);
 }
 
-// ─── INIT ───
-if (window.Telegram?.WebApp) {
-  window.Telegram.WebApp.ready();
-  window.Telegram.WebApp.expand();
+// ─── TELEGRAM PROTECTION ───
+function checkTelegramAccess() {
+  const isTelegram = window.Telegram &&
+    window.Telegram.WebApp &&
+    window.Telegram.WebApp.initData &&
+    window.Telegram.WebApp.initData.length > 0;
+
+  if (!isTelegram) {
+    document.body.innerHTML = `
+      <div style="
+        min-height:100vh;background:#0a0a0a;
+        display:flex;flex-direction:column;
+        align-items:center;justify-content:center;
+        padding:40px 24px;
+        font-family:'Fraunces',Georgia,serif;
+        text-align:center;
+      ">
+        <div style="font-size:3rem;margin-bottom:24px">🐍</div>
+        <div style="
+          font-family:'DM Mono',monospace;
+          font-size:0.62rem;letter-spacing:0.16em;
+          text-transform:uppercase;color:#c8f135;
+          background:rgba(200,241,53,0.08);
+          border:1px solid rgba(200,241,53,0.2);
+          padding:4px 12px;border-radius:20px;
+          margin-bottom:20px;display:inline-block;
+        ">acceso restringido</div>
+        <div style="
+          font-size:1.6rem;font-weight:700;
+          color:#ebebeb;letter-spacing:-0.02em;
+          line-height:1.2;margin-bottom:12px;
+        ">Python Humano</div>
+        <p style="
+          font-size:0.88rem;font-weight:300;
+          font-style:italic;color:#666;
+          line-height:1.7;margin-bottom:28px;
+          max-width:280px;
+        ">Esta app solo está disponible dentro de Telegram.</p>
+        <a href="https://t.me/PythonHumanoBot" style="
+          display:inline-block;padding:14px 24px;
+          background:rgba(200,241,53,0.1);color:#c8f135;
+          font-family:'DM Mono',monospace;
+          font-size:0.72rem;font-weight:500;
+          letter-spacing:0.1em;text-transform:uppercase;
+          border:1px solid rgba(200,241,53,0.2);
+          border-radius:12px;text-decoration:none;
+        ">Abrir en Telegram →</a>
+      </div>
+    `;
+    return false;
+  }
+  return true;
 }
 
-updateProgress();
+// ─── INIT ───
+if (checkTelegramAccess()) {
+  if (window.Telegram?.WebApp) {
+    window.Telegram.WebApp.ready();
+    window.Telegram.WebApp.expand();
+  }
+  updateProgress();
+}
 </script>
 </body>
 </html>
