@@ -732,139 +732,97 @@
     line-height: 1.8;
   }
 
-  /* ─── FASE CONTENT STYLES ─── */
-  #post-content-area { min-height: calc(100vh - 110px); background: var(--bg); }
-
-  .post-hero {
-    padding: 24px 20px 20px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 20px;
-  }
-  .post-emoji { font-size: 2rem; display: block; margin-bottom: 12px; line-height: 1; }
-  .post-intro { font-size: 0.9rem; font-weight: 300; font-style: italic; color: var(--muted2); line-height: 1.6; }
-
-  .post-body-wrap { padding: 0 20px 20px; }
-
-  .block { margin-bottom: 24px; }
-  .block-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.58rem; letter-spacing: 0.14em;
-    text-transform: uppercase; color: var(--muted);
-    margin-bottom: 10px; display: block;
-  }
-  .text { font-size: 0.9rem; font-weight: 300; line-height: 1.85; color: #c0c0c0; }
-  .text p { margin-bottom: 10px; }
-  .text strong { color: var(--text); font-weight: 600; }
-  .text em { font-style: italic; color: var(--muted2); }
-
-  .copy-btn {
-    position: absolute; top: 8px; right: 8px;
-    font-family: 'DM Mono', monospace; font-size: 0.55rem;
-    color: var(--muted); background: var(--surface2);
-    border: 1px solid var(--border2); padding: 3px 8px;
-    border-radius: 4px; cursor: pointer; letter-spacing: 0.06em;
-    transition: all 0.2s;
-  }
-  .copy-btn:active { color: var(--accent); border-color: var(--accent); }
-  .out { color: #5a8a3a; }
-
-  .highlight {
-    background: rgba(200,241,53,0.05);
-    border-left: 2px solid var(--accent);
-    border-radius: 0 8px 8px 0;
-    padding: 12px 14px; margin: 12px 0;
-    font-size: 0.87rem; line-height: 1.7; color: #aaa;
-  }
-  .highlight.red { background: rgba(255,107,107,0.05); border-left-color: var(--accent3); }
-  .highlight.cyan { background: rgba(91,255,216,0.05); border-left-color: var(--accent2); }
-  .highlight strong { color: var(--text); font-weight: 600; }
-
-  .rule-box {
-    background: var(--surface2); border-radius: 10px;
-    padding: 14px 16px; margin: 12px 0;
-    font-family: 'DM Mono', monospace; font-size: 0.78rem;
-    color: var(--accent); line-height: 1.7;
-  }
-
-  .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
-  .comp-item { background: var(--surface2); border-radius: 8px; padding: 12px; }
-  .comp-label {
-    font-family: 'DM Mono', monospace; font-size: 0.55rem;
-    letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px;
-  }
-  .comp-label.bad { color: var(--accent3); }
-  .comp-label.good { color: var(--accent); }
-  .comp-code { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: #aaa; line-height: 1.6; }
-
-  .types-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
-  .type-card { background: var(--surface2); border-radius: 10px; padding: 12px; border: 1px solid var(--border2); }
-  .type-name { font-family: 'DM Mono', monospace; font-size: 0.7rem; font-weight: 500; margin-bottom: 4px; }
-  .type-name.int { color: var(--accent4); }
-  .type-name.flt { color: var(--accent); }
-  .type-name.str { color: var(--accent2); }
-  .type-name.bool { color: #ff79c6; }
-  .type-name.none { color: var(--muted2); }
-  .type-desc { font-size: 0.72rem; color: var(--muted2); font-style: italic; margin-bottom: 6px; }
-  .type-example { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: #aaa; line-height: 1.6; }
-
-  .ops-list { margin: 12px 0; }
-  .op-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
-  .op-row:last-child { border-bottom: none; }
-  .op-sym { font-family: 'DM Mono', monospace; font-size: 0.9rem; color: var(--accent); width: 36px; flex-shrink: 0; font-weight: 500; }
-  .op-name { font-size: 0.8rem; color: var(--muted2); flex: 1; }
-  .op-ex { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: #777; }
-
-  .flow-diagram { margin: 16px 0; background: var(--surface2); border-radius: 12px; padding: 16px; }
-  .flow-node { text-align: center; margin-bottom: 4px; }
-  .flow-box { display: inline-block; padding: 8px 16px; border-radius: 8px; font-family: 'DM Mono', monospace; font-size: 0.72rem; line-height: 1.4; }
-  .flow-box.start { background: rgba(200,241,53,0.1); color: var(--accent); border: 1px solid rgba(200,241,53,0.2); }
-  .flow-box.condition { background: rgba(255,179,71,0.1); color: var(--accent4); border: 1px solid rgba(255,179,71,0.2); border-radius: 20px; }
-  .flow-box.action { background: rgba(91,255,216,0.08); color: var(--accent2); border: 1px solid rgba(91,255,216,0.15); }
-  .flow-box.end { background: rgba(179,136,255,0.1); color: var(--accent5); border: 1px solid rgba(179,136,255,0.2); }
-  .flow-arrow { text-align: center; color: var(--muted); font-size: 1rem; margin: 2px 0; }
-  .flow-branches { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 4px 0; }
-  .flow-branch-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted); text-align: center; margin-bottom: 4px; }
-
-  .challenge {
-    background: rgba(91,255,216,0.04); border: 1px solid rgba(91,255,216,0.15);
-    border-radius: 12px; padding: 16px; margin-top: 20px;
-  }
-  .challenge-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-  .challenge-icon { font-size: 1rem; }
-  .challenge-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent2); }
-  .challenge-text { font-size: 0.87rem; line-height: 1.75; color: #aaa; font-weight: 300; }
-  .challenge-text strong { color: #ccc; font-weight: 600; }
-
-  .error-box { background: rgba(255,107,107,0.05); border: 1px solid rgba(255,107,107,0.15); border-radius: 10px; padding: 14px; margin: 12px 0; }
-  .error-header { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent3); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
-  .error-text { font-size: 0.85rem; line-height: 1.7; color: #aaa; font-weight: 300; }
-
-  .nav-btn-post {
-    padding: 12px; background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; cursor: pointer; transition: border-color 0.2s; text-align: left;
-  }
-  .nav-btn-post:active { border-color: var(--border2); }
-  .nav-btn-post.next { text-align: right; }
-  .nav-post-label { font-family: 'DM Mono', monospace; font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 4px; }
-  .nav-post-title { font-size: 0.8rem; font-weight: 600; color: var(--text); line-height: 1.3; }
-
-  .methods-list { margin: 12px 0; }
-  .method-row { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
-  .method-row:last-child { border-bottom: none; }
-  .method-name { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--accent5); flex-shrink: 0; min-width: 100px; }
-  .method-desc { font-size: 0.78rem; color: var(--muted2); font-style: italic; line-height: 1.5; }
-
-  .format-table { margin: 12px 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
-  .format-row { display: grid; grid-template-columns: 1fr 1fr 1fr; border-bottom: 1px solid var(--border); }
-  .format-row:last-child { border-bottom: none; }
-  .format-row.header { background: var(--surface2); }
-  .format-cell { padding: 10px 12px; font-family: 'DM Mono', monospace; font-size: 0.7rem; color: #aaa; border-right: 1px solid var(--border); }
-  .format-cell:last-child { border-right: none; }
-  .format-row.header .format-cell { color: var(--muted); font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; }
-  .format-cell.accent { color: var(--accent); }
-
-  @keyframes fadeIn2 { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
-  .fade-in { animation: fadeIn2 0.2s ease; }
+  /* ── Fase post content styles ── */
+  .post-nav-btn { padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:border-color 0.2s;display:block; }
+  .post-nav-btn:active { border-color:var(--border2); }
+  .post-nav-btn.next { text-align:right; }
+  .post-nav-label { font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px; }
+  .post-nav-title { font-size:0.78rem;font-weight:600;color:var(--text);line-height:1.3; }
+  .block { margin-bottom:24px; }
+  .block-label { font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:block; }
+  .text { font-size:0.9rem;font-weight:300;line-height:1.85;color:#c0c0c0; }
+  .text p { margin-bottom:10px; }
+  .text strong { color:var(--text);font-weight:600; }
+  .highlight { background:rgba(200,241,53,0.05);border-left:2px solid var(--accent);border-radius:0 8px 8px 0;padding:12px 14px;margin:12px 0;font-size:0.87rem;line-height:1.7;color:#aaa; }
+  .highlight.red { background:rgba(255,107,107,0.05);border-left-color:var(--accent3); }
+  .highlight.cyan { background:rgba(91,255,216,0.05);border-left-color:var(--accent2); }
+  .highlight strong { color:var(--text);font-weight:600; }
+  .rule-box { background:var(--surface2);border-radius:10px;padding:14px 16px;margin:12px 0;font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--accent);line-height:1.7; }
+  .comparison { display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0; }
+  .comp-item { background:var(--surface2);border-radius:8px;padding:12px; }
+  .comp-label { font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px; }
+  .comp-label.bad { color:var(--accent3); } .comp-label.good { color:var(--accent); }
+  .comp-code { font-family:'DM Mono',monospace;font-size:0.75rem;color:#aaa;line-height:1.6; }
+  .types-grid { display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0; }
+  .type-card { background:var(--surface2);border-radius:10px;padding:12px;border:1px solid var(--border2); }
+  .type-name { font-family:'DM Mono',monospace;font-size:0.7rem;font-weight:500;margin-bottom:4px; }
+  .type-name.int{color:var(--accent4);}.type-name.flt{color:var(--accent);}.type-name.str{color:var(--accent2);}.type-name.bool{color:#ff79c6;}.type-name.none{color:var(--muted2);}
+  .type-desc { font-size:0.72rem;color:var(--muted2);font-style:italic;margin-bottom:6px; }
+  .type-example { font-family:'DM Mono',monospace;font-size:0.68rem;color:#aaa;line-height:1.6; }
+  .ops-list { margin:12px 0; }
+  .op-row { display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border); }
+  .op-row:last-child { border-bottom:none; }
+  .op-sym { font-family:'DM Mono',monospace;font-size:0.9rem;color:var(--accent);width:36px;flex-shrink:0;font-weight:500; }
+  .op-name { font-size:0.8rem;color:var(--muted2);flex:1; }
+  .op-ex { font-family:'DM Mono',monospace;font-size:0.72rem;color:#777; }
+  .flow-diagram { margin:16px 0;background:var(--surface2);border-radius:12px;padding:16px; }
+  .flow-node { text-align:center;margin-bottom:4px; }
+  .flow-box { display:inline-block;padding:8px 16px;border-radius:8px;font-family:'DM Mono',monospace;font-size:0.72rem;line-height:1.4; }
+  .flow-box.start{background:rgba(200,241,53,0.1);color:var(--accent);border:1px solid rgba(200,241,53,0.2);}
+  .flow-box.condition{background:rgba(255,179,71,0.1);color:var(--accent4);border:1px solid rgba(255,179,71,0.2);border-radius:20px;}
+  .flow-box.action{background:rgba(91,255,216,0.08);color:var(--accent2);border:1px solid rgba(91,255,216,0.15);}
+  .flow-box.end{background:rgba(179,136,255,0.1);color:var(--accent5);border:1px solid rgba(179,136,255,0.2);}
+  .flow-arrow { text-align:center;color:var(--muted);font-size:1rem;margin:2px 0; }
+  .flow-branches { display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:4px 0; }
+  .flow-branch-label { font-family:'DM Mono',monospace;font-size:0.6rem;color:var(--muted);text-align:center;margin-bottom:4px; }
+  .challenge { background:rgba(91,255,216,0.04);border:1px solid rgba(91,255,216,0.15);border-radius:12px;padding:16px;margin-top:20px; }
+  .challenge-header { display:flex;align-items:center;gap:8px;margin-bottom:10px; }
+  .challenge-icon { font-size:1rem; }
+  .challenge-label { font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent2); }
+  .challenge-text { font-size:0.87rem;line-height:1.75;color:#aaa;font-weight:300; }
+  .challenge-text strong { color:#ccc;font-weight:600; }
+  .error-box { background:rgba(255,107,107,0.05);border:1px solid rgba(255,107,107,0.15);border-radius:10px;padding:14px;margin:12px 0; }
+  .error-header { font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent3);margin-bottom:8px;display:flex;align-items:center;gap:6px; }
+  .error-text { font-size:0.85rem;line-height:1.7;color:#aaa;font-weight:300; }
+  .methods-list { margin:12px 0; }
+  .method-row { display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border); }
+  .method-row:last-child { border-bottom:none; }
+  .method-name { font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--accent5);flex-shrink:0;min-width:100px; }
+  .method-desc { font-size:0.78rem;color:var(--muted2);font-style:italic;line-height:1.5; }
+  .format-table { margin:12px 0;border:1px solid var(--border);border-radius:10px;overflow:hidden; }
+  .format-row { display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--border); }
+  .format-row:last-child { border-bottom:none; }
+  .format-row.header { background:var(--surface2); }
+  .format-cell { padding:10px 12px;font-family:'DM Mono',monospace;font-size:0.7rem;color:#aaa;border-right:1px solid var(--border); }
+  .format-cell:last-child { border-right:none; }
+  .format-row.header .format-cell { color:var(--muted);font-size:0.6rem;letter-spacing:0.08em;text-transform:uppercase; }
+  .format-cell.accent { color:var(--accent); }
+  .hashtags { font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--muted);margin-top:20px;line-height:1.8;padding-top:16px;border-top:1px solid var(--border); }
+  .copy-btn { position:absolute;top:8px;right:8px;font-family:'DM Mono',monospace;font-size:0.55rem;color:var(--muted);background:var(--surface2);border:1px solid var(--border2);padding:3px 8px;border-radius:4px;cursor:pointer;letter-spacing:0.06em;transition:all 0.2s; }
+  .copy-btn:active { color:var(--accent);border-color:var(--accent); }
+  .out { color:#5a8a3a; }
+  .kw { color:var(--accent); } .str { color:var(--accent2); } .num { color:var(--accent4); }
+  .fn { color:var(--accent5); } .cm { color:#444;font-style:italic; } .bl { color:#ff79c6; } .op { color:#666; }
+  /* fase3 specific */
+  .methods-grid { display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0; }
+  .method-card { background:var(--surface2);border-radius:10px;padding:12px;border:1px solid var(--border2); }
+  .method-sig { font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--accent2);margin-bottom:4px; }
+  .method-what { font-size:0.75rem;color:var(--muted2);font-style:italic;margin-bottom:6px; }
+  .method-ex { font-family:'DM Mono',monospace;font-size:0.65rem;color:#aaa; }
+  .struct-table { margin:12px 0;border:1px solid var(--border);border-radius:10px;overflow:hidden; }
+  .struct-row { display:grid;border-bottom:1px solid var(--border); }
+  .struct-row:last-child { border-bottom:none; }
+  .struct-row.header { background:var(--surface2); }
+  .struct-row.cols-4 { grid-template-columns:1fr 1fr 1fr 1fr; }
+  .struct-row.cols-3 { grid-template-columns:1fr 1fr 1fr; }
+  .struct-row.cols-2 { grid-template-columns:1fr 1fr; }
+  .struct-cell { padding:10px 12px;font-family:'DM Mono',monospace;font-size:0.68rem;color:#aaa;border-right:1px solid var(--border); }
+  .struct-cell:last-child { border-right:none; }
+  .struct-row.header .struct-cell { color:var(--muted);font-size:0.58rem;letter-spacing:0.08em;text-transform:uppercase; }
+  .struct-cell.accent { color:var(--accent); }
+  .struct-cell.cyan { color:var(--accent2); }
+  .struct-cell.orange { color:var(--accent4); }
+  .struct-cell.purple { color:var(--accent5); }
 </style>
 </head>
 <body>
@@ -922,16 +880,20 @@
       </div>
     </div>
 
-    <div class="phase-card f3 locked">
+    <div class="phase-card f3 unlocked" onclick="openPhase(3)">
       <div class="phase-card-header">
         <div class="phase-icon">🏗️</div>
         <div class="phase-meta">
           <div class="phase-num">fase 03</div>
           <div class="phase-name">Organiza la información como un pro</div>
         </div>
-        <div class="phase-arrow">🔒</div>
+        <div class="phase-arrow">›</div>
       </div>
       <div class="phase-desc">Listas, diccionarios, sets, comprehensions.</div>
+      <div class="phase-progress">
+        <div class="phase-dots" id="dots-3"></div>
+        <div class="phase-progress-text" id="progress-3">0 / 14 posts</div>
+      </div>
     </div>
 
     <div class="phase-card f4 locked">
@@ -986,11 +948,11 @@
 <div id="post" class="screen">
   <div class="post-header" style="display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:10;">
     <button class="back-btn" onclick="goBackToPhase()" style="flex-shrink:0">← fase</button>
-    <span class="post-phase-tag" id="post-phase-tag" style="flex:1;text-align:right"></span>
+    <span class="post-phase-tag" id="post-phase-tag" style="flex:1;text-align:right;font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);"></span>
   </div>
-  <div id="post-content-area"></div>
+  <div id="post-body"></div>
   <div style="padding:16px 20px;border-top:1px solid var(--border);display:flex;gap:10px;" id="post-footer">
-    <button class="complete-btn" id="complete-btn-current" onclick="toggleCurrentPost()" style="flex:1;margin:0"></button>
+    <button class="complete-btn" id="complete-btn-current" onclick="toggleCurrentPost()" style="flex:1;margin:0">marcar como completado</button>
   </div>
 </div>
 
@@ -1027,9 +989,7 @@
 </div>
 
 <script>
-// ─── DATA ───
-
-// ─── POSTS DATA (FASE 1) ───
+// ─── POSTS DATA ───
 const POSTS1 = {
   1: {
     emoji: '📦',
@@ -2183,7 +2143,7 @@ sí se ejecuta normalmente.</div>
       <span class="block-label">:.2f en f-strings — para mostrar</span>
       <div class="code-wrap">
         <div class="code-block"><span class="kw">precio</span> <span class="op">=</span> <span class="num">59.97000000000001</span>
-<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Total: ${precio:.2f}"</span><span class="op">)</span>   <span class="out"># Total: $59.97</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Total: \${precio:.2f}"</span><span class="op">)</span>   <span class="out"># Total: $59.97</span>
 
 <span class="cm"># :.2f → 2 decimales, número float</span>
 <span class="cm"># :,   → separador de miles</span>
@@ -2246,7 +2206,7 @@ sí se ejecuta normalmente.</div>
 <span class="kw">descuento</span> <span class="op">=</span> <span class="fn">round</span><span class="op">(</span><span class="kw">total</span> <span class="op">*</span> <span class="num">0.10</span><span class="op">,</span> <span class="num">2</span><span class="op">)</span>
 
 <span class="cm"># ✓ :.2f para mostrar</span>
-<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Total: ${total:.2f}"</span><span class="op">)</span></div>
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Total: \${total:.2f}"</span><span class="op">)</span></div>
         <button class="copy-btn" onclick="copyCode(this)">copiar</button>
       </div>
     </div>
@@ -2267,63 +2227,6 @@ sí se ejecuta normalmente.</div>
   }
 };
 
-// ─── NAVIGATION ───
-function showPost(id) {
-  const post = POSTS1[id];
-  if (!post) return;
-
-  document.getElementById('post-tag').textContent = post.tag;
-
-  document.getElementById('post-content').innerHTML = `
-    <div class="post-hero fade-in">
-      <span class="post-emoji">${post.emoji}</span>
-      <div class="post-title">${post.title}</div>
-      <div class="post-intro">${post.intro}</div>
-    </div>
-    <div class="fade-in">
-      ${post.content}
-      <div class="post-nav">
-        ${post.prev ? `<div class="nav-btn-post" onclick="showPost(${post.prev})">
-          <span class="nav-post-label">← anterior</span>
-          <span class="nav-post-title">${post.prevTitle}</span>
-        </div>` : '<div></div>'}
-        ${post.next ? `<div class="nav-btn-post next" onclick="showPost(${post.next})">
-          <span class="nav-post-label">siguiente →</span>
-          <span class="nav-post-title">${post.nextTitle}</span>
-        </div>` : '<div></div>'}
-      </div>
-    </div>
-  `;
-
-  document.getElementById('post-list').style.display = 'none';
-  document.getElementById('post-view').style.display = 'block';
-  window.scrollTo(0, 0);
-}
-
-function showList() {
-  document.getElementById('post-view').style.display = 'none';
-  document.getElementById('post-list').style.display = 'block';
-  window.scrollTo(0, 0);
-}
-
-function copyCode(btn) {
-  const code = btn.previousElementSibling.innerText;
-  navigator.clipboard.writeText(code).then(() => {
-    btn.textContent = '✓ copiado';
-    setTimeout(() => btn.textContent = 'copiar', 2000);
-  });
-}
-
-// Auto-load post from URL hash e.g. #post-3
-window.addEventListener('load', () => {
-  const hash = window.location.hash;
-  if (hash && hash.startsWith('#post-')) {
-    const num = parseInt(hash.replace('#post-', ''));
-    if (num && POSTS1[num]) showPost(num);
-  }
-});
-
-// ─── POSTS DATA (FASE 2) ───
 const POSTS2 = {
   1: {
     emoji: '🧩',
@@ -2741,7 +2644,7 @@ suma el valor real
     <span class="kw">precio</span> <span class="op">=</span> <span class="fn">float</span><span class="op">(</span><span class="fn">input</span><span class="op">(</span><span class="str">"Precio: "</span><span class="op">))</span>
     <span class="kw">total</span> <span class="op">+=</span> <span class="kw">precio</span>   <span class="cm"># ← crece DENTRO — suma el valor real</span>
 
-<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Total: ${total:.2f}"</span><span class="op">)</span>   <span class="cm"># ← se usa DESPUÉS</span></div>
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Total: \${total:.2f}"</span><span class="op">)</span>   <span class="cm"># ← se usa DESPUÉS</span></div>
         <button class="copy-btn" onclick="copyCode(this)">copiar</button>
       </div>
     </div>
@@ -2753,7 +2656,7 @@ suma el valor real
 <span class="bl">for</span> <span class="kw">i</span> <span class="bl">in</span> <span class="fn">range</span><span class="op">(</span><span class="num">3</span><span class="op">):</span>
     <span class="kw">nombre</span> <span class="op">=</span> <span class="fn">input</span><span class="op">(</span><span class="str">"Nombre del producto: "</span><span class="op">)</span>
     <span class="kw">precio</span> <span class="op">=</span> <span class="fn">float</span><span class="op">(</span><span class="fn">input</span><span class="op">(</span><span class="str">"Precio: "</span><span class="op">))</span>
-    <span class="kw">recibo</span> <span class="op">+=</span> <span class="fn">f</span><span class="str">"{nombre}: ${precio:.2f}\n"</span>
+    <span class="kw">recibo</span> <span class="op">+=</span> <span class="fn">f</span><span class="str">"{nombre}: \${precio:.2f}\n"</span>
 
 <span class="fn">print</span><span class="op">(</span><span class="str">"─── Tu recibo ───"</span><span class="op">)</span>
 <span class="fn">print</span><span class="op">(</span><span class="kw">recibo</span><span class="op">)</span></div>
@@ -2775,8 +2678,8 @@ suma el valor real
     <span class="bl">if</span> <span class="kw">precio_minimo</span> <span class="bl">is</span> <span class="bl">None</span> <span class="bl">or</span> <span class="kw">precio</span> <span class="op"><</span> <span class="kw">precio_minimo</span><span class="op">:</span>
         <span class="kw">precio_minimo</span> <span class="op">=</span> <span class="kw">precio</span>
 
-<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Más caro: ${precio_maximo:.2f}"</span><span class="op">)</span>
-<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Más barato: ${precio_minimo:.2f}"</span><span class="op">)</span></div>
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Más caro: \${precio_maximo:.2f}"</span><span class="op">)</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Más barato: \${precio_minimo:.2f}"</span><span class="op">)</span></div>
         <button class="copy-btn" onclick="copyCode(this)">copiar</button>
       </div>
       <div class="highlight cyan">¿Por qué <strong>precio_minimo = None</strong> y no 0? Porque si arrancara en 0, cualquier precio real sería mayor y nunca se actualizaría. None significa "todavía no tengo ningún valor".</div>
@@ -2913,7 +2816,7 @@ descuento_aplicado = True
     <span class="fn">print</span><span class="op">(</span><span class="str">"El precio tiene que ser mayor a cero."</span><span class="op">)</span>
     <span class="kw">precio</span> <span class="op">=</span> <span class="fn">float</span><span class="op">(</span><span class="fn">input</span><span class="op">(</span><span class="str">"Precio: "</span><span class="op">))</span>
 
-<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Precio registrado: ${precio:.2f}"</span><span class="op">)</span></div>
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Precio registrado: \${precio:.2f}"</span><span class="op">)</span></div>
         <button class="copy-btn" onclick="copyCode(this)">copiar</button>
       </div>
     </div>
@@ -3022,7 +2925,7 @@ descuento_aplicado = True
 <span class="bl">if</span> <span class="kw">productos</span> <span class="op">==</span> <span class="num">0</span><span class="op">:</span>
     <span class="fn">print</span><span class="op">(</span><span class="str">"No se registraron productos."</span><span class="op">)</span>
 <span class="bl">else</span><span class="op">:</span>
-    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Total: ${total:.2f}"</span><span class="op">)</span></div>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Total: \${total:.2f}"</span><span class="op">)</span></div>
         <button class="copy-btn" onclick="copyCode(this)">copiar</button>
       </div>
     </div>
@@ -3036,7 +2939,7 @@ descuento_aplicado = True
 <span class="bl">elif</span> <span class="kw">cambio</span> <span class="op">==</span> <span class="num">0</span><span class="op">:</span>
     <span class="fn">print</span><span class="op">(</span><span class="str">"Pago exacto. No hay cambio."</span><span class="op">)</span>
 <span class="bl">else</span><span class="op">:</span>
-    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Cambio: ${cambio:.2f}"</span><span class="op">)</span></div>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Cambio: \${cambio:.2f}"</span><span class="op">)</span></div>
         <button class="copy-btn" onclick="copyCode(this)">copiar</button>
       </div>
     </div>
@@ -3184,7 +3087,7 @@ descuento_aplicado = True
     <span class="kw">total</span> <span class="op">+=</span> <span class="kw">precio</span>
     <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"DEBUG — total acumulado: {total}"</span><span class="op">)</span>   <span class="cm"># ← eliminas al final</span>
 
-<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Total final: ${total:.2f}"</span><span class="op">)</span></div>
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Total final: \${total:.2f}"</span><span class="op">)</span></div>
         <button class="copy-btn" onclick="copyCode(this)">copiar</button>
       </div>
       <div class="text"><p>Los print() de DEBUG no son parte del programa final. Son tus ojos mientras construyes. Cuando todo funcione, los borras o comentas.</p></div>
@@ -3579,7 +3482,7 @@ for elemento in colección:
             <span class="kw">precio_max_con_desc</span> <span class="op">=</span> <span class="kw">producto</span><span class="op">[</span><span class="str">"precio"</span><span class="op">]</span>
 
 <span class="bl">if</span> <span class="kw">hay_con_descuento</span><span class="op">:</span>
-    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"El más caro con descuento: ${precio_max_con_desc:.2f}"</span><span class="op">)</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"El más caro con descuento: \${precio_max_con_desc:.2f}"</span><span class="op">)</span>
 <span class="bl">else</span><span class="op">:</span>
     <span class="fn">print</span><span class="op">(</span><span class="str">"No hay productos con descuento."</span><span class="op">)</span></div>
         <button class="copy-btn" onclick="copyCode(this)">copiar</button>
@@ -3640,7 +3543,7 @@ for elemento in colección:
     <span class="kw">precio</span> <span class="op">=</span> <span class="fn">float</span><span class="op">(</span><span class="fn">input</span><span class="op">(</span><span class="str">"Precio: "</span><span class="op">))</span>
     <span class="kw">total</span> <span class="op">+=</span> <span class="kw">precio</span>
     <span class="kw">productos</span> <span class="op">+=</span> <span class="num">1</span>
-    <span class="kw">recibo</span> <span class="op">+=</span> <span class="fn">f</span><span class="str">"{nombre}: ${precio:.2f}\n"</span>
+    <span class="kw">recibo</span> <span class="op">+=</span> <span class="fn">f</span><span class="str">"{nombre}: \${precio:.2f}\n"</span>
 
 <span class="cm"># 2. verificar que haya productos</span>
 <span class="bl">if</span> <span class="kw">productos</span> <span class="op">==</span> <span class="num">0</span><span class="op">:</span>
@@ -3673,8 +3576,8 @@ for elemento in colección:
         <span class="fn">print</span><span class="op">(</span><span class="kw">recibo</span><span class="op">)</span>
         <span class="bl">if</span> <span class="kw">descuento_aplicado</span><span class="op">:</span>
             <span class="fn">print</span><span class="op">(</span><span class="str">"Descuento 10% aplicado"</span><span class="op">)</span>
-        <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Total: ${total:.2f}"</span><span class="op">)</span>
-        <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Cambio: ${cambio:.2f}"</span> <span class="bl">if</span> <span class="kw">cambio</span> <span class="op">></span> <span class="num">0</span> <span class="bl">else</span> <span class="str">"Pago exacto."</span><span class="op">)</span></div>
+        <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Total: \${total:.2f}"</span><span class="op">)</span>
+        <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Cambio: \${cambio:.2f}"</span> <span class="bl">if</span> <span class="kw">cambio</span> <span class="op">></span> <span class="num">0</span> <span class="bl">else</span> <span class="str">"Pago exacto."</span><span class="op">)</span></div>
         <button class="copy-btn" onclick="copyCode(this)">copiar</button>
       </div>
     </div>
@@ -3779,53 +3682,860 @@ if promedio > 100:
   }
 };
 
-function showPost(id) {
-  const post = POSTS2[id];
-  if (!post) return;
-  document.getElementById('post-tag').textContent = post.tag;
-  document.getElementById('post-content').innerHTML = `
-    <div class="post-hero fade-in">
-      <span class="post-emoji">${post.emoji}</span>
-      <div class="post-title">${post.title}</div>
-      <div class="post-intro">${post.intro}</div>
+const POSTS3 = {
+  1:{
+    emoji:'📋',title:'Listas: crear, acceder, modificar',
+    intro:'La estructura de datos más usada en Python. Colecciones ordenadas que puedes modificar en cualquier momento.',
+    tag:'Fase 3 · Post 01 de 14',prev:null,next:2,nextTitle:'Métodos de listas',
+    content:`
+    <div class="block"><div class="text"><p>Una lista guarda elementos en orden. Ese orden importa — siempre sabes quién es el primero y quién es el último.</p></div>
+    <div class="code-wrap"><div class="code-block"><span class="kw">productos</span> <span class="op">=</span> <span class="op">[</span><span class="str">"Café"</span><span class="op">,</span> <span class="str">"Pan"</span><span class="op">,</span> <span class="str">"Jugo"</span><span class="op">]</span>
+<span class="kw">precios</span>   <span class="op">=</span> <span class="op">[</span><span class="num">29.99</span><span class="op">,</span> <span class="num">15.50</span><span class="op">,</span> <span class="num">22.99</span><span class="op">]</span>
+<span class="kw">mixta</span>     <span class="op">=</span> <span class="op">[</span><span class="str">"Ana"</span><span class="op">,</span> <span class="num">25</span><span class="op">,</span> <span class="bl">True</span><span class="op">,</span> <span class="num">9.99</span><span class="op">]</span>  <span class="cm"># tipos mezclados ✓</span>
+<span class="kw">vacia</span>     <span class="op">=</span> <span class="op">[]</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">acceder por índice — empieza en 0</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">productos</span> <span class="op">=</span> <span class="op">[</span><span class="str">"Café"</span><span class="op">,</span> <span class="str">"Pan"</span><span class="op">,</span> <span class="str">"Jugo"</span><span class="op">]</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="kw">productos</span><span class="op">[</span><span class="num">0</span><span class="op">])</span>    <span class="out"># "Café"  — primero</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">productos</span><span class="op">[</span><span class="num">2</span><span class="op">])</span>    <span class="out"># "Jugo"  — tercero</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">productos</span><span class="op">[-</span><span class="num">1</span><span class="op">])</span>   <span class="out"># "Jugo"  — último</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">productos</span><span class="op">[-</span><span class="num">2</span><span class="op">])</span>   <span class="out"># "Pan"   — penúltimo</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">modificar, agregar y eliminar</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">productos</span> <span class="op">=</span> <span class="op">[</span><span class="str">"Café"</span><span class="op">,</span> <span class="str">"Pan"</span><span class="op">,</span> <span class="str">"Jugo"</span><span class="op">]</span>
+
+<span class="cm"># modificar</span>
+<span class="kw">productos</span><span class="op">[</span><span class="num">1</span><span class="op">]</span> <span class="op">=</span> <span class="str">"Mantequilla"</span>
+
+<span class="cm"># agregar al final</span>
+<span class="kw">productos</span><span class="op">.</span><span class="fn">append</span><span class="op">(</span><span class="str">"Leche"</span><span class="op">)</span>
+
+<span class="cm"># eliminar por valor</span>
+<span class="kw">productos</span><span class="op">.</span><span class="fn">remove</span><span class="op">(</span><span class="str">"Café"</span><span class="op">)</span>
+
+<span class="cm"># eliminar por posición</span>
+<span class="kw">eliminado</span> <span class="op">=</span> <span class="kw">productos</span><span class="op">.</span><span class="fn">pop</span><span class="op">(</span><span class="num">0</span><span class="op">)</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">operaciones básicas</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">productos</span> <span class="op">=</span> <span class="op">[</span><span class="str">"Café"</span><span class="op">,</span> <span class="str">"Pan"</span><span class="op">,</span> <span class="str">"Jugo"</span><span class="op">]</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="fn">len</span><span class="op">(</span><span class="kw">productos</span><span class="op">))</span>         <span class="out"># 3</span>
+<span class="fn">print</span><span class="op">(</span><span class="str">"Café"</span> <span class="bl">in</span> <span class="kw">productos</span><span class="op">)</span>    <span class="out"># True</span>
+<span class="fn">print</span><span class="op">(</span><span class="str">"Leche"</span> <span class="bl">in</span> <span class="kw">productos</span><span class="op">)</span>   <span class="out"># False</span>
+
+<span class="cm"># unir dos listas</span>
+<span class="kw">todo</span> <span class="op">=</span> <span class="kw">productos</span> <span class="op">+</span> <span class="op">[</span><span class="str">"Agua"</span><span class="op">,</span> <span class="str">"Té"</span><span class="op">]</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="error-box"><div class="error-header">⚠️ error más común — IndexError</div>
+    <div class="error-text">Si accedes a una posición que no existe, Python lanza IndexError. Con 3 elementos los índices válidos son 0, 1 y 2.</div>
+    <div class="code-wrap" style="margin-top:10px"><div class="code-block"><span class="kw">productos</span> <span class="op">=</span> <span class="op">[</span><span class="str">"Café"</span><span class="op">,</span> <span class="str">"Pan"</span><span class="op">,</span> <span class="str">"Jugo"</span><span class="op">]</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">productos</span><span class="op">[</span><span class="num">3</span><span class="op">])</span>  <span class="out"># 💥 IndexError</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">productos</span><span class="op">[</span><span class="num">2</span><span class="op">])</span>  <span class="out"># ✓ "Jugo"</span></div></div></div>
+
+    <div class="challenge"><div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+    <div class="challenge-text">Crea una lista con 5 productos de una tienda. Accede al primero y último con índices positivos y negativos. Cambia el tercer producto. Agrega uno al final. Verifica con <strong>in</strong> si un producto está o no está en la lista.</div></div>
+    <div class="hashtags">#PythonHumano #Python #Fase3 #Listas #ProgramaciónDesde0</div>`
+  },
+  2:{
+    emoji:'🔧',title:'Métodos de listas: las herramientas que más vas a usar',
+    intro:'Python viene con métodos integrados que hacen el trabajo pesado. Estos son los que vas a usar todos los días.',
+    tag:'Fase 3 · Post 02 de 14',prev:1,prevTitle:'Listas',next:3,nextTitle:'Slicing',
+    content:`
+    <div class="block"><span class="block-label">los métodos esenciales</span>
+    <div class="methods-list">
+      <div class="method-row"><span class="method-name">.append(x)</span><span class="method-desc">agrega x al final</span></div>
+      <div class="method-row"><span class="method-name">.insert(i, x)</span><span class="method-desc">inserta x en la posición i</span></div>
+      <div class="method-row"><span class="method-name">.remove(x)</span><span class="method-desc">elimina la primera ocurrencia de x</span></div>
+      <div class="method-row"><span class="method-name">.pop(i)</span><span class="method-desc">elimina y devuelve el elemento en posición i</span></div>
+      <div class="method-row"><span class="method-name">.sort()</span><span class="method-desc">ordena la lista en su lugar (modifica la original)</span></div>
+      <div class="method-row"><span class="method-name">.reverse()</span><span class="method-desc">invierte el orden en su lugar</span></div>
+      <div class="method-row"><span class="method-name">.index(x)</span><span class="method-desc">devuelve la posición de x</span></div>
+      <div class="method-row"><span class="method-name">.count(x)</span><span class="method-desc">cuántas veces aparece x</span></div>
+      <div class="method-row"><span class="method-name">.extend(lista)</span><span class="method-desc">agrega todos los elementos de otra lista</span></div>
+      <div class="method-row"><span class="method-name">.clear()</span><span class="method-desc">elimina todos los elementos</span></div>
+    </div></div>
+
+    <div class="block"><span class="block-label">sort() vs sorted() — la diferencia importa</span>
+    <div class="comparison">
+      <div class="comp-item"><div class="comp-label bad">.sort() — modifica la original</div><div class="comp-code">precios = [30, 10, 50, 20]
+precios.sort()
+# precios cambió para siempre</div></div>
+      <div class="comp-item"><div class="comp-label good">sorted() — devuelve una nueva</div><div class="comp-code">precios = [30, 10, 50, 20]
+orden = sorted(precios)
+# precios sigue igual</div></div>
     </div>
-    <div class="fade-in">
-      ${post.content}
-      <div class="post-nav">
-        ${post.prev ? `<div class="nav-btn-post" onclick="showPost(${post.prev})"><span class="nav-post-label">← anterior</span><span class="nav-post-title">${post.prevTitle}</span></div>` : '<div></div>'}
-        ${post.next ? `<div class="nav-btn-post next" onclick="showPost(${post.next})"><span class="nav-post-label">siguiente →</span><span class="nav-post-title">${post.nextTitle}</span></div>` : '<div></div>'}
-      </div>
+    <div class="code-wrap"><div class="code-block"><span class="kw">precios</span> <span class="op">=</span> <span class="op">[</span><span class="num">30</span><span class="op">,</span> <span class="num">10</span><span class="op">,</span> <span class="num">50</span><span class="op">,</span> <span class="num">20</span><span class="op">]</span>
+
+<span class="cm"># de menor a mayor</span>
+<span class="kw">precios</span><span class="op">.</span><span class="fn">sort</span><span class="op">()</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">precios</span><span class="op">)</span>  <span class="out"># [10, 20, 30, 50]</span>
+
+<span class="cm"># de mayor a menor</span>
+<span class="kw">precios</span><span class="op">.</span><span class="fn">sort</span><span class="op">(</span><span class="kw">reverse</span><span class="op">=</span><span class="bl">True</span><span class="op">)</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">precios</span><span class="op">)</span>  <span class="out"># [50, 30, 20, 10]</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">append vs extend — no son lo mismo</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">a</span> <span class="op">=</span> <span class="op">[</span><span class="num">1</span><span class="op">,</span> <span class="num">2</span><span class="op">]</span>
+<span class="kw">a</span><span class="op">.</span><span class="fn">append</span><span class="op">([</span><span class="num">3</span><span class="op">,</span> <span class="num">4</span><span class="op">])</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">a</span><span class="op">)</span>  <span class="out"># [1, 2, [3, 4]]  ← lista dentro de lista</span>
+
+<span class="kw">b</span> <span class="op">=</span> <span class="op">[</span><span class="num">1</span><span class="op">,</span> <span class="num">2</span><span class="op">]</span>
+<span class="kw">b</span><span class="op">.</span><span class="fn">extend</span><span class="op">([</span><span class="num">3</span><span class="op">,</span> <span class="num">4</span><span class="op">])</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">b</span><span class="op">)</span>  <span class="out"># [1, 2, 3, 4]   ← elementos separados ✓</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">funciones útiles sobre listas</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">precios</span> <span class="op">=</span> <span class="op">[</span><span class="num">29.99</span><span class="op">,</span> <span class="num">15.50</span><span class="op">,</span> <span class="num">22.99</span><span class="op">,</span> <span class="num">9.99</span><span class="op">]</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="fn">len</span><span class="op">(</span><span class="kw">precios</span><span class="op">))</span>   <span class="out"># 4</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">sum</span><span class="op">(</span><span class="kw">precios</span><span class="op">))</span>   <span class="out"># 78.47</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">max</span><span class="op">(</span><span class="kw">precios</span><span class="op">))</span>   <span class="out"># 29.99</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">min</span><span class="op">(</span><span class="kw">precios</span><span class="op">))</span>   <span class="out"># 9.99</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="challenge"><div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+    <div class="challenge-text">Lista de precios: <strong>[45.99, 12.50, 89.99, 7.25, 34.00]</strong>. Ordénalos de menor a mayor sin modificar la original. Agrega un precio al inicio con insert(). Elimina el más alto. Muestra total, promedio, mínimo y máximo.</div></div>
+    <div class="hashtags">#PythonHumano #Python #Fase3 #MétodosDeListas #ProgramaciónDesde0</div>`
+  },
+  3:{
+    emoji:'✂️',title:'Slicing: corta y accede sin complicarte',
+    intro:'El slicing te permite acceder a partes de una lista con una sola línea. Una de las características más elegantes de Python.',
+    tag:'Fase 3 · Post 03 de 14',prev:2,prevTitle:'Métodos de listas',next:4,nextTitle:'Listas anidadas',
+    content:`
+    <div class="block"><div class="text"><p>La sintaxis es <strong>[inicio:fin:paso]</strong>. El fin no se incluye — igual que range().</p></div>
+    <div class="code-wrap"><div class="code-block"><span class="kw">p</span> <span class="op">=</span> <span class="op">[</span><span class="str">"Café"</span><span class="op">,</span> <span class="str">"Pan"</span><span class="op">,</span> <span class="str">"Jugo"</span><span class="op">,</span> <span class="str">"Leche"</span><span class="op">,</span> <span class="str">"Agua"</span><span class="op">]</span>
+<span class="cm">#     0        1       2        3         4</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="kw">p</span><span class="op">[</span><span class="num">1</span><span class="op">:</span><span class="num">3</span><span class="op">])</span>    <span class="out"># ["Pan", "Jugo"]</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">p</span><span class="op">[:</span><span class="num">2</span><span class="op">])</span>     <span class="out"># ["Café", "Pan"]        — desde el inicio</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">p</span><span class="op">[</span><span class="num">3</span><span class="op">:])</span>     <span class="out"># ["Leche", "Agua"]      — hasta el final</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">p</span><span class="op">[:])</span>      <span class="out"># copia completa</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">p</span><span class="op">[-</span><span class="num">2</span><span class="op">:])</span>    <span class="out"># ["Leche", "Agua"]      — últimos 2</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">p</span><span class="op">[:-</span><span class="num">1</span><span class="op">])</span>    <span class="out"># ["Café","Pan","Jugo","Leche"] — todos menos el último</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">slicing con paso</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">n</span> <span class="op">=</span> <span class="op">[</span><span class="num">0</span><span class="op">,</span><span class="num">1</span><span class="op">,</span><span class="num">2</span><span class="op">,</span><span class="num">3</span><span class="op">,</span><span class="num">4</span><span class="op">,</span><span class="num">5</span><span class="op">,</span><span class="num">6</span><span class="op">,</span><span class="num">7</span><span class="op">,</span><span class="num">8</span><span class="op">,</span><span class="num">9</span><span class="op">]</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="kw">n</span><span class="op">[::</span><span class="num">2</span><span class="op">])</span>    <span class="out"># [0, 2, 4, 6, 8]   — de 2 en 2</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">n</span><span class="op">[::</span><span class="num">3</span><span class="op">])</span>    <span class="out"># [0, 3, 6, 9]      — de 3 en 3</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">n</span><span class="op">[::-</span><span class="num">1</span><span class="op">])</span>   <span class="out"># [9,8,7,6,5,4,3,2,1,0] — invertida</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+    <div class="highlight cyan">El paso <strong>-1</strong> invierte la lista — la forma más limpia en Python.</div></div>
+
+    <div class="block"><span class="block-label">slicing en strings — funciona igual</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">email</span> <span class="op">=</span> <span class="str">"usuario@gmail.com"</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="kw">email</span><span class="op">[:</span><span class="num">7</span><span class="op">])</span>     <span class="out"># "usuario"</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">email</span><span class="op">[</span><span class="num">8</span><span class="op">:])</span>     <span class="out"># "gmail.com"</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">email</span><span class="op">[::-</span><span class="num">1</span><span class="op">])</span>   <span class="out"># "moc.liamg@oiranasu"</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">reemplazar con slicing</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">p</span> <span class="op">=</span> <span class="op">[</span><span class="str">"Café"</span><span class="op">,</span> <span class="str">"Pan"</span><span class="op">,</span> <span class="str">"Jugo"</span><span class="op">,</span> <span class="str">"Leche"</span><span class="op">,</span> <span class="str">"Agua"</span><span class="op">]</span>
+<span class="kw">p</span><span class="op">[</span><span class="num">1</span><span class="op">:</span><span class="num">3</span><span class="op">]</span> <span class="op">=</span> <span class="op">[</span><span class="str">"Mantequilla"</span><span class="op">,</span> <span class="str">"Mermelada"</span><span class="op">]</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">p</span><span class="op">)</span>
+<span class="out"># ["Café", "Mantequilla", "Mermelada", "Leche", "Agua"]</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="challenge"><div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+    <div class="challenge-text">Lista: <strong>[10, 20, 30, 40, 50, 60, 70, 80, 90, 100]</strong>. Obtén los primeros 3. Los últimos 4. Los de posición par. Inviértela con slicing. Obtén del 3ro al 7mo. Reemplaza los elementos del medio por [0, 0, 0].</div></div>
+    <div class="hashtags">#PythonHumano #Python #Fase3 #Slicing #ProgramaciónDesde0</div>`
+  },
+  4:{
+    emoji:'🪆',title:'Listas anidadas: listas dentro de listas',
+    intro:'En datos reales raramente tienes solo una dimensión. Las listas anidadas organizan información en filas y columnas.',
+    tag:'Fase 3 · Post 04 de 14',prev:3,prevTitle:'Slicing',next:5,nextTitle:'Tuplas',
+    content:`
+    <div class="block"><div class="text"><p>Una lista anidada es una lista que contiene otras listas. Piénsala como una tabla — filas y columnas.</p></div>
+    <div class="code-wrap"><div class="code-block"><span class="kw">inventario</span> <span class="op">=</span> <span class="op">[</span>
+    <span class="op">[</span><span class="str">"Café"</span><span class="op">,</span>  <span class="num">29.99</span><span class="op">,</span>  <span class="num">50</span><span class="op">]</span><span class="op">,</span>   <span class="cm"># fila 0</span>
+    <span class="op">[</span><span class="str">"Pan"</span><span class="op">,</span>   <span class="num">15.50</span><span class="op">,</span> <span class="num">100</span><span class="op">]</span><span class="op">,</span>   <span class="cm"># fila 1</span>
+    <span class="op">[</span><span class="str">"Jugo"</span><span class="op">,</span>  <span class="num">22.99</span><span class="op">,</span>  <span class="num">30</span><span class="op">]</span>    <span class="cm"># fila 2</span>
+<span class="op">]</span>
+<span class="cm"># col 0=nombre  col 1=precio  col 2=stock</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">acceder — [fila][columna]</span>
+    <div class="code-wrap"><div class="code-block"><span class="fn">print</span><span class="op">(</span><span class="kw">inventario</span><span class="op">[</span><span class="num">0</span><span class="op">])</span>        <span class="out"># ["Café", 29.99, 50]</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">inventario</span><span class="op">[</span><span class="num">0</span><span class="op">][</span><span class="num">0</span><span class="op">])</span>     <span class="out"># "Café"</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">inventario</span><span class="op">[</span><span class="num">1</span><span class="op">][</span><span class="num">2</span><span class="op">])</span>     <span class="out"># 100 — stock del Pan</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">inventario</span><span class="op">[-</span><span class="num">1</span><span class="op">][-</span><span class="num">1</span><span class="op">])</span>   <span class="out"># 30  — stock del último</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">recorrer — desempaquetar cada fila</span>
+    <div class="code-wrap"><div class="code-block"><span class="cm"># forma básica</span>
+<span class="bl">for</span> <span class="kw">fila</span> <span class="bl">in</span> <span class="kw">inventario</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"{fila[0]}: \${fila[1]:.2f} — stock: {fila[2]}"</span><span class="op">)</span>
+
+<span class="cm"># forma profesional — desempaquetar</span>
+<span class="bl">for</span> <span class="kw">nombre</span><span class="op">,</span> <span class="kw">precio</span><span class="op">,</span> <span class="kw">stock</span> <span class="bl">in</span> <span class="kw">inventario</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"{nombre}: \${precio:.2f} — stock: {stock}"</span><span class="op">)</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">operaciones sobre columnas</span>
+    <div class="code-wrap"><div class="code-block"><span class="cm"># suma de todos los precios</span>
+<span class="kw">total</span> <span class="op">=</span> <span class="fn">sum</span><span class="op">(</span><span class="kw">fila</span><span class="op">[</span><span class="num">1</span><span class="op">]</span> <span class="bl">for</span> <span class="kw">fila</span> <span class="bl">in</span> <span class="kw">inventario</span><span class="op">)</span>
+
+<span class="cm"># producto más caro</span>
+<span class="kw">mas_caro</span> <span class="op">=</span> <span class="fn">max</span><span class="op">(</span><span class="kw">inventario</span><span class="op">,</span> <span class="kw">key</span><span class="op">=</span><span class="bl">lambda</span> <span class="kw">x</span><span class="op">:</span> <span class="kw">x</span><span class="op">[</span><span class="num">1</span><span class="op">]</span><span class="op">)</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Más caro: {mas_caro[0]} — \${mas_caro[1]:.2f}"</span><span class="op">)</span>
+
+<span class="cm"># productos con poco stock</span>
+<span class="kw">poco_stock</span> <span class="op">=</span> <span class="op">[</span><span class="kw">f</span><span class="op">[</span><span class="num">0</span><span class="op">]</span> <span class="bl">for</span> <span class="kw">f</span> <span class="bl">in</span> <span class="kw">inventario</span> <span class="bl">if</span> <span class="kw">f</span><span class="op">[</span><span class="num">2</span><span class="op">]</span> <span class="op">&lt;</span> <span class="num">40</span><span class="op">]</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="error-box"><div class="error-header">⚠️ error más común</div>
+    <div class="error-text">El primer índice es la <strong>fila</strong>, el segundo es la <strong>columna</strong>. <strong>inventario[fila][columna]</strong> — nunca al revés.</div></div>
+
+    <div class="challenge"><div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+    <div class="challenge-text">Crea un inventario con 4 productos (nombre, precio, stock). Muestra todos con su precio formateado. Calcula el valor total del inventario (precio × stock de cada uno). Muestra los que tienen stock menor a 20.</div></div>
+    <div class="hashtags">#PythonHumano #Python #Fase3 #ListasAnidadas #ProgramaciónDesde0</div>`
+  },
+  5:{
+    emoji:'🔒',title:'Tuplas: listas que no cambian',
+    intro:'Las tuplas son inmutables — una vez creadas no se pueden modificar. Eso no es una limitación, es una garantía.',
+    tag:'Fase 3 · Post 05 de 14',prev:4,prevTitle:'Listas anidadas',next:6,nextTitle:'Sets',
+    content:`
+    <div class="block">
+    <div class="code-wrap"><div class="code-block"><span class="cm"># paréntesis en lugar de corchetes</span>
+<span class="kw">coordenadas</span> <span class="op">=</span> <span class="op">(</span><span class="num">19.4326</span><span class="op">,</span> <span class="op">-</span><span class="num">99.1332</span><span class="op">)</span>
+<span class="kw">color_rgb</span>   <span class="op">=</span> <span class="op">(</span><span class="num">200</span><span class="op">,</span> <span class="num">241</span><span class="op">,</span> <span class="num">53</span><span class="op">)</span>
+<span class="kw">config</span>      <span class="op">=</span> <span class="op">(</span><span class="str">"localhost"</span><span class="op">,</span> <span class="num">5432</span><span class="op">,</span> <span class="str">"mi_db"</span><span class="op">)</span>
+
+<span class="cm"># acceder igual que listas</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">coordenadas</span><span class="op">[</span><span class="num">0</span><span class="op">])</span>    <span class="out"># 19.4326</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">color_rgb</span><span class="op">[-</span><span class="num">1</span><span class="op">])</span>    <span class="out"># 53</span>
+
+<span class="cm"># intentar modificar</span>
+<span class="kw">coordenadas</span><span class="op">[</span><span class="num">0</span><span class="op">]</span> <span class="op">=</span> <span class="num">0</span>     <span class="out"># 💥 TypeError — no se puede</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">desempaquetar — una de sus mejores características</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">coordenadas</span> <span class="op">=</span> <span class="op">(</span><span class="num">19.4326</span><span class="op">,</span> <span class="op">-</span><span class="num">99.1332</span><span class="op">)</span>
+<span class="kw">lat</span><span class="op">,</span> <span class="kw">lon</span> <span class="op">=</span> <span class="kw">coordenadas</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Latitud: {lat}, Longitud: {lon}"</span><span class="op">)</span>
+
+<span class="cm"># desempaquetar en for — muy común</span>
+<span class="kw">puntos</span> <span class="op">=</span> <span class="op">[(</span><span class="num">1</span><span class="op">,</span><span class="num">2</span><span class="op">),</span> <span class="op">(</span><span class="num">3</span><span class="op">,</span><span class="num">4</span><span class="op">),</span> <span class="op">(</span><span class="num">5</span><span class="op">,</span><span class="num">6</span><span class="op">)]</span>
+<span class="bl">for</span> <span class="kw">x</span><span class="op">,</span> <span class="kw">y</span> <span class="bl">in</span> <span class="kw">puntos</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"x={x}, y={y}"</span><span class="op">)</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">tupla vs lista</span>
+    <div class="comparison">
+      <div class="comp-item"><div class="comp-label good">usa tupla cuando</div><div class="comp-code">Los datos no deben cambiar.
+Coordenadas, colores RGB,
+config, credenciales, fechas.
+También como clave de diccionario.</div></div>
+      <div class="comp-item"><div class="comp-label">usa lista cuando</div><div class="comp-code">Los datos van a cambiar.
+Colecciones que crecen,
+resultados que se acumulan,
+elementos que se agregan/eliminan.</div></div>
+    </div></div>
+
+    <div class="block"><span class="block-label">tuplas como claves de diccionario</span>
+    <div class="code-wrap"><div class="code-block"><span class="cm"># las listas NO pueden ser claves — las tuplas SÍ</span>
+<span class="kw">precios_zona</span> <span class="op">=</span> <span class="op">{</span>
+    <span class="op">(</span><span class="str">"CDMX"</span><span class="op">,</span> <span class="str">"Norte"</span><span class="op">)</span><span class="op">:</span> <span class="num">150.00</span><span class="op">,</span>
+    <span class="op">(</span><span class="str">"CDMX"</span><span class="op">,</span> <span class="str">"Sur"</span><span class="op">)</span><span class="op">:</span>   <span class="num">120.00</span>
+<span class="op">}</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">precios_zona</span><span class="op">[(</span><span class="str">"CDMX"</span><span class="op">,</span> <span class="str">"Norte"</span><span class="op">)])</span>  <span class="out"># 150.0</span>
+
+<span class="cm"># convertir entre tipos</span>
+<span class="kw">lista</span> <span class="op">=</span> <span class="fn">list</span><span class="op">((</span><span class="num">1</span><span class="op">,</span><span class="num">2</span><span class="op">,</span><span class="num">3</span><span class="op">))</span>    <span class="cm"># tupla → lista</span>
+<span class="kw">tupla</span> <span class="op">=</span> <span class="fn">tuple</span><span class="op">([</span><span class="num">1</span><span class="op">,</span><span class="num">2</span><span class="op">,</span><span class="num">3</span><span class="op">])</span>   <span class="cm"># lista → tupla</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="challenge"><div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+    <div class="challenge-text">Crea una tupla con los datos de una sucursal: nombre, ciudad, teléfono, hora de apertura y cierre. Desempácala en variables individuales. Crea un diccionario con tuplas de (ciudad, zona) como clave y precio de envío como valor.</div></div>
+    <div class="hashtags">#PythonHumano #Python #Fase3 #Tuplas #ProgramaciónDesde0</div>`
+  },
+  6:{
+    emoji:'🔵',title:'Sets: colecciones sin repetidos',
+    intro:'Los sets guardan elementos únicos sin orden. Perfectos para eliminar duplicados y para operaciones matemáticas entre conjuntos.',
+    tag:'Fase 3 · Post 06 de 14',prev:5,prevTitle:'Tuplas',next:7,nextTitle:'Diccionarios',
+    content:`
+    <div class="block">
+    <div class="code-wrap"><div class="code-block"><span class="cm"># crear un set — llaves como diccionario pero sin valores</span>
+<span class="kw">categorias</span> <span class="op">=</span> <span class="op">{</span><span class="str">"bebidas"</span><span class="op">,</span> <span class="str">"alimentos"</span><span class="op">,</span> <span class="str">"limpieza"</span><span class="op">}</span>
+
+<span class="cm"># los duplicados desaparecen automáticamente</span>
+<span class="kw">numeros</span> <span class="op">=</span> <span class="op">{</span><span class="num">1</span><span class="op">,</span> <span class="num">2</span><span class="op">,</span> <span class="num">3</span><span class="op">,</span> <span class="num">2</span><span class="op">,</span> <span class="num">1</span><span class="op">}</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">numeros</span><span class="op">)</span>  <span class="out"># {1, 2, 3}</span>
+
+<span class="cm"># set vacío — NO uses {} porque eso crea un diccionario</span>
+<span class="kw">vacio</span> <span class="op">=</span> <span class="fn">set</span><span class="op">()</span>
+
+<span class="cm"># eliminar duplicados de una lista</span>
+<span class="kw">lista</span> <span class="op">=</span> <span class="op">[</span><span class="num">1</span><span class="op">,</span><span class="num">2</span><span class="op">,</span><span class="num">2</span><span class="op">,</span><span class="num">3</span><span class="op">,</span><span class="num">3</span><span class="op">,</span><span class="num">3</span><span class="op">]</span>
+<span class="kw">unicos</span> <span class="op">=</span> <span class="fn">list</span><span class="op">(</span><span class="fn">set</span><span class="op">(</span><span class="kw">lista</span><span class="op">))</span>  <span class="out"># [1, 2, 3]</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">agregar y eliminar</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">s</span> <span class="op">=</span> <span class="op">{</span><span class="str">"bebidas"</span><span class="op">,</span> <span class="str">"alimentos"</span><span class="op">}</span>
+
+<span class="kw">s</span><span class="op">.</span><span class="fn">add</span><span class="op">(</span><span class="str">"limpieza"</span><span class="op">)</span>      <span class="cm"># agrega uno</span>
+<span class="kw">s</span><span class="op">.</span><span class="fn">remove</span><span class="op">(</span><span class="str">"alimentos"</span><span class="op">)</span>  <span class="cm"># elimina — KeyError si no existe</span>
+<span class="kw">s</span><span class="op">.</span><span class="fn">discard</span><span class="op">(</span><span class="str">"xyz"</span><span class="op">)</span>       <span class="cm"># elimina — sin error si no existe ✓</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">operaciones de conjuntos — el poder real</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">enero</span>   <span class="op">=</span> <span class="op">{</span><span class="str">"Ana"</span><span class="op">,</span> <span class="str">"Carlos"</span><span class="op">,</span> <span class="str">"María"</span><span class="op">,</span> <span class="str">"Luis"</span><span class="op">}</span>
+<span class="kw">febrero</span> <span class="op">=</span> <span class="op">{</span><span class="str">"María"</span><span class="op">,</span> <span class="str">"Luis"</span><span class="op">,</span> <span class="str">"Pedro"</span><span class="op">,</span> <span class="str">"Sofía"</span><span class="op">}</span>
+
+<span class="cm"># unión — todos</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">enero</span> <span class="op">|</span> <span class="kw">febrero</span><span class="op">)</span>
+<span class="out"># {"Ana", "Carlos", "María", "Luis", "Pedro", "Sofía"}</span>
+
+<span class="cm"># intersección — compraron en ambos</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">enero</span> <span class="op">&amp;</span> <span class="kw">febrero</span><span class="op">)</span>
+<span class="out"># {"María", "Luis"}</span>
+
+<span class="cm"># diferencia — solo en enero</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">enero</span> <span class="op">-</span> <span class="kw">febrero</span><span class="op">)</span>
+<span class="out"># {"Ana", "Carlos"}</span>
+
+<span class="cm"># diferencia simétrica — en uno pero no en ambos</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">enero</span> <span class="op">^</span> <span class="kw">febrero</span><span class="op">)</span>
+<span class="out"># {"Ana", "Carlos", "Pedro", "Sofía"}</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="error-box"><div class="error-header">⚠️ error más común</div>
+    <div class="error-text">Los sets <strong>no tienen orden</strong>. No puedes acceder por índice. <strong>set[0]</strong> da TypeError. Si necesitas orden, convierte a lista primero.</div>
+    <div class="code-wrap" style="margin-top:10px"><div class="code-block"><span class="kw">s</span> <span class="op">=</span> <span class="op">{</span><span class="num">1</span><span class="op">,</span> <span class="num">2</span><span class="op">,</span> <span class="num">3</span><span class="op">}</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">s</span><span class="op">[</span><span class="num">0</span><span class="op">])</span>            <span class="out"># 💥 TypeError</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">list</span><span class="op">(</span><span class="kw">s</span><span class="op">)[</span><span class="num">0</span><span class="op">])</span>      <span class="out"># ✓ convierte primero</span></div></div></div>
+
+    <div class="challenge"><div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+    <div class="challenge-text">Dos días de ventas: <strong>["Café","Pan","Café","Jugo"]</strong> y <strong>["Pan","Agua","Jugo","Leche"]</strong>. Encuentra los productos vendidos en ambos días. Los vendidos solo en el día 1. Todos los productos únicos en total. Elimina duplicados de cada lista.</div></div>
+    <div class="hashtags">#PythonHumano #Python #Fase3 #Sets #ProgramaciónDesde0</div>`
+  },
+  7:{
+    emoji:'📖',title:'Diccionarios: guarda datos con nombre',
+    intro:'Los diccionarios guardan pares clave-valor. En lugar de acceder por posición, accedes por nombre. Es la estructura más versátil de Python.',
+    tag:'Fase 3 · Post 07 de 14',prev:6,prevTitle:'Sets',next:8,nextTitle:'Métodos de diccionarios',
+    content:`
+    <div class="block">
+    <div class="code-wrap"><div class="code-block"><span class="kw">producto</span> <span class="op">=</span> <span class="op">{</span>
+    <span class="str">"nombre"</span><span class="op">:</span>     <span class="str">"Café"</span><span class="op">,</span>
+    <span class="str">"precio"</span><span class="op">:</span>     <span class="num">29.99</span><span class="op">,</span>
+    <span class="str">"stock"</span><span class="op">:</span>      <span class="num">50</span><span class="op">,</span>
+    <span class="str">"disponible"</span><span class="op">:</span> <span class="bl">True</span>
+<span class="op">}</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">acceder a valores</span>
+    <div class="code-wrap"><div class="code-block"><span class="cm"># por clave directa</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">producto</span><span class="op">[</span><span class="str">"nombre"</span><span class="op">])</span>   <span class="out"># "Café"</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">producto</span><span class="op">[</span><span class="str">"precio"</span><span class="op">])</span>   <span class="out"># 29.99</span>
+
+<span class="cm"># con .get() — más seguro</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">producto</span><span class="op">.</span><span class="fn">get</span><span class="op">(</span><span class="str">"precio"</span><span class="op">))</span>           <span class="out"># 29.99</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">producto</span><span class="op">.</span><span class="fn">get</span><span class="op">(</span><span class="str">"descuento"</span><span class="op">))</span>        <span class="out"># None — no existe</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">producto</span><span class="op">.</span><span class="fn">get</span><span class="op">(</span><span class="str">"descuento"</span><span class="op">,</span> <span class="num">0</span><span class="op">))</span>    <span class="out"># 0   — valor por defecto</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+    <div class="highlight red">Si usas <strong>dict["clave"]</strong> y la clave no existe → KeyError. Usa <strong>.get()</strong> cuando no estés seguro.</div></div>
+
+    <div class="block"><span class="block-label">agregar, modificar y eliminar</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">p</span> <span class="op">=</span> <span class="op">{</span><span class="str">"nombre"</span><span class="op">:</span> <span class="str">"Café"</span><span class="op">,</span> <span class="str">"precio"</span><span class="op">:</span> <span class="num">29.99</span><span class="op">}</span>
+
+<span class="kw">p</span><span class="op">[</span><span class="str">"stock"</span><span class="op">]</span> <span class="op">=</span> <span class="num">50</span>        <span class="cm"># agregar clave nueva</span>
+<span class="kw">p</span><span class="op">[</span><span class="str">"precio"</span><span class="op">]</span> <span class="op">=</span> <span class="num">32.99</span>    <span class="cm"># modificar existente</span>
+<span class="bl">del</span> <span class="kw">p</span><span class="op">[</span><span class="str">"stock"</span><span class="op">]</span>          <span class="cm"># eliminar</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="str">"precio"</span> <span class="bl">in</span> <span class="kw">p</span><span class="op">)</span>   <span class="out"># True</span>
+<span class="fn">print</span><span class="op">(</span><span class="str">"stock"</span> <span class="bl">in</span> <span class="kw">p</span><span class="op">)</span>    <span class="out"># False</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">lista de diccionarios — el patrón más común</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">inventario</span> <span class="op">=</span> <span class="op">[</span>
+    <span class="op">{</span><span class="str">"nombre"</span><span class="op">:</span> <span class="str">"Café"</span><span class="op">,</span>  <span class="str">"precio"</span><span class="op">:</span> <span class="num">29.99</span><span class="op">,</span> <span class="str">"stock"</span><span class="op">:</span> <span class="num">50</span><span class="op">}</span><span class="op">,</span>
+    <span class="op">{</span><span class="str">"nombre"</span><span class="op">:</span> <span class="str">"Pan"</span><span class="op">,</span>   <span class="str">"precio"</span><span class="op">:</span> <span class="num">15.50</span><span class="op">,</span> <span class="str">"stock"</span><span class="op">:</span> <span class="num">100</span><span class="op">}</span><span class="op">,</span>
+    <span class="op">{</span><span class="str">"nombre"</span><span class="op">:</span> <span class="str">"Jugo"</span><span class="op">,</span>  <span class="str">"precio"</span><span class="op">:</span> <span class="num">22.99</span><span class="op">,</span> <span class="str">"stock"</span><span class="op">:</span> <span class="num">30</span><span class="op">}</span>
+<span class="op">]</span>
+
+<span class="bl">for</span> <span class="kw">p</span> <span class="bl">in</span> <span class="kw">inventario</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"{p['nombre']}: \${p['precio']:.2f} — stock: {p['stock']}"</span><span class="op">)</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+    <div class="highlight cyan">Lista de diccionarios es el formato que recibes de APIs y bases de datos. Dominar esto es dominar el 80% del trabajo real con datos.</div></div>
+
+    <div class="challenge"><div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+    <div class="challenge-text">Crea un diccionario para un usuario con: nombre, email, plan, reproducciones y activo. Accede a cada valor. Actualiza el plan. Agrega una clave nueva. Usa <strong>.get()</strong> para acceder a una clave que no existe dando un valor por defecto.</div></div>
+    <div class="hashtags">#PythonHumano #Python #Fase3 #Diccionarios #ProgramaciónDesde0</div>`
+  },
+  8:{
+    emoji:'🔑',title:'Métodos de diccionarios: cómo moverse dentro',
+    intro:'Los diccionarios tienen métodos específicos para recorrer, modificar y combinar su contenido de forma eficiente.',
+    tag:'Fase 3 · Post 08 de 14',prev:7,prevTitle:'Diccionarios',next:9,nextTitle:'Diccionarios anidados',
+    content:`
+    <div class="block"><span class="block-label">los 3 métodos de recorrido esenciales</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">p</span> <span class="op">=</span> <span class="op">{</span><span class="str">"nombre"</span><span class="op">:</span> <span class="str">"Café"</span><span class="op">,</span> <span class="str">"precio"</span><span class="op">:</span> <span class="num">29.99</span><span class="op">,</span> <span class="str">"stock"</span><span class="op">:</span> <span class="num">50</span><span class="op">}</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="kw">p</span><span class="op">.</span><span class="fn">keys</span><span class="op">())</span>    <span class="out"># dict_keys(["nombre", "precio", "stock"])</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">p</span><span class="op">.</span><span class="fn">values</span><span class="op">())</span>  <span class="out"># dict_values(["Café", 29.99, 50])</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">p</span><span class="op">.</span><span class="fn">items</span><span class="op">())</span>   <span class="out"># dict_items([("nombre","Café"), ("precio",29.99), ("stock",50)])</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">recorrer con items() — la forma más usada</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">p</span> <span class="op">=</span> <span class="op">{</span><span class="str">"nombre"</span><span class="op">:</span> <span class="str">"Café"</span><span class="op">,</span> <span class="str">"precio"</span><span class="op">:</span> <span class="num">29.99</span><span class="op">,</span> <span class="str">"stock"</span><span class="op">:</span> <span class="num">50</span><span class="op">}</span>
+
+<span class="bl">for</span> <span class="kw">clave</span><span class="op">,</span> <span class="kw">valor</span> <span class="bl">in</span> <span class="kw">p</span><span class="op">.</span><span class="fn">items</span><span class="op">():</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"{clave}: {valor}"</span><span class="op">)</span>
+
+<span class="out"># nombre: Café</span>
+<span class="out"># precio: 29.99</span>
+<span class="out"># stock: 50</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">.update() — combinar diccionarios</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">base</span>   <span class="op">=</span> <span class="op">{</span><span class="str">"nombre"</span><span class="op">:</span> <span class="str">"Café"</span><span class="op">,</span> <span class="str">"precio"</span><span class="op">:</span> <span class="num">29.99</span><span class="op">}</span>
+<span class="kw">extras</span> <span class="op">=</span> <span class="op">{</span><span class="str">"stock"</span><span class="op">:</span> <span class="num">50</span><span class="op">,</span> <span class="str">"precio"</span><span class="op">:</span> <span class="num">32.99</span><span class="op">}</span>  <span class="cm"># precio se actualiza</span>
+
+<span class="kw">base</span><span class="op">.</span><span class="fn">update</span><span class="op">(</span><span class="kw">extras</span><span class="op">)</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">base</span><span class="op">)</span>
+<span class="out"># {"nombre": "Café", "precio": 32.99, "stock": 50}</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">.setdefault() — contar sin verificar si existe</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">ventas</span> <span class="op">=</span> <span class="op">[</span><span class="str">"Café"</span><span class="op">,</span> <span class="str">"Pan"</span><span class="op">,</span> <span class="str">"Café"</span><span class="op">,</span> <span class="str">"Jugo"</span><span class="op">,</span> <span class="str">"Café"</span><span class="op">,</span> <span class="str">"Pan"</span><span class="op">]</span>
+<span class="kw">conteo</span> <span class="op">=</span> <span class="op">{}</span>
+
+<span class="bl">for</span> <span class="kw">producto</span> <span class="bl">in</span> <span class="kw">ventas</span><span class="op">:</span>
+    <span class="kw">conteo</span><span class="op">.</span><span class="fn">setdefault</span><span class="op">(</span><span class="kw">producto</span><span class="op">,</span> <span class="num">0</span><span class="op">)</span>
+    <span class="kw">conteo</span><span class="op">[</span><span class="kw">producto</span><span class="op">]</span> <span class="op">+=</span> <span class="num">1</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="kw">conteo</span><span class="op">)</span>  <span class="out"># {"Café": 3, "Pan": 2, "Jugo": 1}</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">otros métodos</span>
+    <div class="methods-list">
+      <div class="method-row"><span class="method-name">.get(k, default)</span><span class="method-desc">devuelve el valor de k o default si no existe</span></div>
+      <div class="method-row"><span class="method-name">.pop(k, default)</span><span class="method-desc">elimina y devuelve el valor de k</span></div>
+      <div class="method-row"><span class="method-name">.setdefault(k,v)</span><span class="method-desc">si k no existe, la crea con valor v</span></div>
+      <div class="method-row"><span class="method-name">.clear()</span><span class="method-desc">elimina todos los pares</span></div>
+      <div class="method-row"><span class="method-name">.copy()</span><span class="method-desc">copia superficial del diccionario</span></div>
+    </div></div>
+
+    <div class="challenge"><div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+    <div class="challenge-text">Ventas: <strong>["Café","Pan","Café","Jugo","Pan","Café","Agua","Jugo"]</strong>. Crea un diccionario que cuente cuántas veces se vendió cada producto. Muestra el más vendido. Muestra solo los vendidos más de 2 veces.</div></div>
+    <div class="hashtags">#PythonHumano #Python #Fase3 #MétodosDiccionarios #ProgramaciónDesde0</div>`
+  },
+  9:{
+    emoji:'🗂️',title:'Diccionarios anidados: datos estructurados de verdad',
+    intro:'Diccionarios dentro de diccionarios. Es el formato de datos más común en APIs, JSON y bases de datos reales.',
+    tag:'Fase 3 · Post 09 de 14',prev:8,prevTitle:'Métodos de diccionarios',next:10,nextTitle:'Recorrer estructuras',
+    content:`
+    <div class="block">
+    <div class="code-wrap"><div class="code-block"><span class="kw">usuario</span> <span class="op">=</span> <span class="op">{</span>
+    <span class="str">"id"</span><span class="op">:</span>      <span class="num">1</span><span class="op">,</span>
+    <span class="str">"nombre"</span><span class="op">:</span>  <span class="str">"Ana García"</span><span class="op">,</span>
+    <span class="str">"plan"</span><span class="op">:</span> <span class="op">{</span>
+        <span class="str">"tipo"</span><span class="op">:</span>   <span class="str">"premium"</span><span class="op">,</span>
+        <span class="str">"precio"</span><span class="op">:</span> <span class="num">9.99</span><span class="op">,</span>
+        <span class="str">"activo"</span><span class="op">:</span> <span class="bl">True</span>
+    <span class="op">}</span><span class="op">,</span>
+    <span class="str">"stats"</span><span class="op">:</span> <span class="op">{</span>
+        <span class="str">"reproducciones"</span><span class="op">:</span> <span class="num">1500</span><span class="op">,</span>
+        <span class="str">"favoritos"</span><span class="op">:</span>       <span class="num">48</span>
+    <span class="op">}</span>
+<span class="op">}</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">acceder a datos anidados</span>
+    <div class="code-wrap"><div class="code-block"><span class="fn">print</span><span class="op">(</span><span class="kw">usuario</span><span class="op">[</span><span class="str">"nombre"</span><span class="op">])</span>                       <span class="out"># "Ana García"</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">usuario</span><span class="op">[</span><span class="str">"plan"</span><span class="op">][</span><span class="str">"tipo"</span><span class="op">])</span>                  <span class="out"># "premium"</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">usuario</span><span class="op">[</span><span class="str">"stats"</span><span class="op">][</span><span class="str">"reproducciones"</span><span class="op">])</span>       <span class="out"># 1500</span>
+
+<span class="cm"># acceso seguro con .get() encadenado</span>
+<span class="kw">precio</span> <span class="op">=</span> <span class="kw">usuario</span><span class="op">.</span><span class="fn">get</span><span class="op">(</span><span class="str">"plan"</span><span class="op">,</span> <span class="op">{}</span><span class="op">)</span><span class="op">.</span><span class="fn">get</span><span class="op">(</span><span class="str">"precio"</span><span class="op">,</span> <span class="num">0</span><span class="op">)</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">precio</span><span class="op">)</span>  <span class="out"># 9.99</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">modificar datos anidados</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">usuario</span><span class="op">[</span><span class="str">"plan"</span><span class="op">][</span><span class="str">"tipo"</span><span class="op">]</span> <span class="op">=</span> <span class="str">"familiar"</span>
+<span class="kw">usuario</span><span class="op">[</span><span class="str">"stats"</span><span class="op">][</span><span class="str">"reproducciones"</span><span class="op">]</span> <span class="op">+=</span> <span class="num">1</span>
+
+<span class="cm"># agregar una sección nueva</span>
+<span class="kw">usuario</span><span class="op">[</span><span class="str">"preferencias"</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span>
+    <span class="str">"idioma"</span><span class="op">:</span>        <span class="str">"es"</span><span class="op">,</span>
+    <span class="str">"notificaciones"</span><span class="op">:</span> <span class="bl">True</span>
+<span class="op">}</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">diccionario de diccionarios — base de datos simple</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">usuarios</span> <span class="op">=</span> <span class="op">{</span>
+    <span class="str">"u001"</span><span class="op">:</span> <span class="op">{</span><span class="str">"nombre"</span><span class="op">:</span> <span class="str">"Ana"</span><span class="op">,</span>    <span class="str">"plan"</span><span class="op">:</span> <span class="str">"premium"</span><span class="op">,</span> <span class="str">"activo"</span><span class="op">:</span> <span class="bl">True</span><span class="op">}</span><span class="op">,</span>
+    <span class="str">"u002"</span><span class="op">:</span> <span class="op">{</span><span class="str">"nombre"</span><span class="op">:</span> <span class="str">"Carlos"</span><span class="op">,</span> <span class="str">"plan"</span><span class="op">:</span> <span class="str">"free"</span><span class="op">,</span>    <span class="str">"activo"</span><span class="op">:</span> <span class="bl">True</span><span class="op">}</span><span class="op">,</span>
+    <span class="str">"u003"</span><span class="op">:</span> <span class="op">{</span><span class="str">"nombre"</span><span class="op">:</span> <span class="str">"María"</span><span class="op">,</span>  <span class="str">"plan"</span><span class="op">:</span> <span class="str">"premium"</span><span class="op">,</span> <span class="str">"activo"</span><span class="op">:</span> <span class="bl">False</span><span class="op">}</span>
+<span class="op">}</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="kw">usuarios</span><span class="op">[</span><span class="str">"u001"</span><span class="op">][</span><span class="str">"nombre"</span><span class="op">])</span>  <span class="out"># "Ana"</span>
+
+<span class="cm"># premium activos</span>
+<span class="kw">activos</span> <span class="op">=</span> <span class="op">[</span>
+    <span class="kw">d</span><span class="op">[</span><span class="str">"nombre"</span><span class="op">]</span>
+    <span class="bl">for</span> <span class="kw">d</span> <span class="bl">in</span> <span class="kw">usuarios</span><span class="op">.</span><span class="fn">values</span><span class="op">()</span>
+    <span class="bl">if</span> <span class="kw">d</span><span class="op">[</span><span class="str">"plan"</span><span class="op">]</span> <span class="op">==</span> <span class="str">"premium"</span> <span class="bl">and</span> <span class="kw">d</span><span class="op">[</span><span class="str">"activo"</span><span class="op">]</span>
+<span class="op">]</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">activos</span><span class="op">)</span>  <span class="out"># ["Ana"]</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="error-box"><div class="error-header">⚠️ error más común</div>
+    <div class="error-text">Acceder a una clave anidada cuando el padre no existe. Usa <strong>.get({}).get()</strong> en cadena para acceso seguro.</div>
+    <div class="code-wrap" style="margin-top:10px"><div class="code-block"><span class="cm"># ✗ peligroso si "plan" no existe</span>
+<span class="kw">tipo</span> <span class="op">=</span> <span class="kw">usuario</span><span class="op">[</span><span class="str">"plan"</span><span class="op">][</span><span class="str">"tipo"</span><span class="op">]</span>
+
+<span class="cm"># ✓ seguro siempre</span>
+<span class="kw">tipo</span> <span class="op">=</span> <span class="kw">usuario</span><span class="op">.</span><span class="fn">get</span><span class="op">(</span><span class="str">"plan"</span><span class="op">,</span> <span class="op">{}</span><span class="op">)</span><span class="op">.</span><span class="fn">get</span><span class="op">(</span><span class="str">"tipo"</span><span class="op">,</span> <span class="str">"free"</span><span class="op">)</span></div></div></div>
+
+    <div class="challenge"><div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+    <div class="challenge-text">Crea un diccionario para una tienda con: nombre, dirección (calle, ciudad, cp), horario (lunes-viernes, sábado, domingo) e inventario (lista de productos). Accede al código postal. Agrega el horario del domingo. Muestra todos los productos del inventario.</div></div>
+    <div class="hashtags">#PythonHumano #Python #Fase3 #DiccionariosAnidados #ProgramaciónDesde0</div>`
+  },
+  10:{
+    emoji:'🔄',title:'Recorrer listas y diccionarios: técnicas profesionales',
+    intro:'Más allá del for básico. Las técnicas que usan los programadores reales para recorrer y transformar datos.',
+    tag:'Fase 3 · Post 10 de 14',prev:9,prevTitle:'Diccionarios anidados',next:11,nextTitle:'zip() y enumerate()',
+    content:`
+    <div class="block"><span class="block-label">recorrer listas — más allá del for básico</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">productos</span> <span class="op">=</span> <span class="op">[</span><span class="str">"Café"</span><span class="op">,</span> <span class="str">"Pan"</span><span class="op">,</span> <span class="str">"Jugo"</span><span class="op">]</span>
+
+<span class="cm"># con índice — enumerate()</span>
+<span class="bl">for</span> <span class="kw">i</span><span class="op">,</span> <span class="kw">p</span> <span class="bl">in</span> <span class="fn">enumerate</span><span class="op">(</span><span class="kw">productos</span><span class="op">,</span> <span class="num">1</span><span class="op">):</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"{i}. {p}"</span><span class="op">)</span>
+
+<span class="cm"># en reversa</span>
+<span class="bl">for</span> <span class="kw">p</span> <span class="bl">in</span> <span class="fn">reversed</span><span class="op">(</span><span class="kw">productos</span><span class="op">):</span>
+    <span class="fn">print</span><span class="op">(</span><span class="kw">p</span><span class="op">)</span>
+
+<span class="cm"># ordenada sin modificar la original</span>
+<span class="bl">for</span> <span class="kw">p</span> <span class="bl">in</span> <span class="fn">sorted</span><span class="op">(</span><span class="kw">productos</span><span class="op">):</span>
+    <span class="fn">print</span><span class="op">(</span><span class="kw">p</span><span class="op">)</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">recorrer diccionarios — 3 formas</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">p</span> <span class="op">=</span> <span class="op">{</span><span class="str">"nombre"</span><span class="op">:</span> <span class="str">"Café"</span><span class="op">,</span> <span class="str">"precio"</span><span class="op">:</span> <span class="num">29.99</span><span class="op">,</span> <span class="str">"stock"</span><span class="op">:</span> <span class="num">50</span><span class="op">}</span>
+
+<span class="bl">for</span> <span class="kw">clave</span> <span class="bl">in</span> <span class="kw">p</span><span class="op">:</span>                  <span class="cm"># solo claves</span>
+    <span class="fn">print</span><span class="op">(</span><span class="kw">clave</span><span class="op">)</span>
+
+<span class="bl">for</span> <span class="kw">valor</span> <span class="bl">in</span> <span class="kw">p</span><span class="op">.</span><span class="fn">values</span><span class="op">():</span>          <span class="cm"># solo valores</span>
+    <span class="fn">print</span><span class="op">(</span><span class="kw">valor</span><span class="op">)</span>
+
+<span class="bl">for</span> <span class="kw">clave</span><span class="op">,</span> <span class="kw">valor</span> <span class="bl">in</span> <span class="kw">p</span><span class="op">.</span><span class="fn">items</span><span class="op">():</span>   <span class="cm"># clave y valor — la más usada</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"{clave}: {valor}"</span><span class="op">)</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">recorrer lista de diccionarios — filtrar y ordenar</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">inv</span> <span class="op">=</span> <span class="op">[</span>
+    <span class="op">{</span><span class="str">"nombre"</span><span class="op">:</span> <span class="str">"Café"</span><span class="op">,</span>  <span class="str">"precio"</span><span class="op">:</span> <span class="num">29.99</span><span class="op">,</span> <span class="str">"stock"</span><span class="op">:</span> <span class="num">50</span><span class="op">}</span><span class="op">,</span>
+    <span class="op">{</span><span class="str">"nombre"</span><span class="op">:</span> <span class="str">"Pan"</span><span class="op">,</span>   <span class="str">"precio"</span><span class="op">:</span> <span class="num">15.50</span><span class="op">,</span> <span class="str">"stock"</span><span class="op">:</span> <span class="num">100</span><span class="op">}</span><span class="op">,</span>
+    <span class="op">{</span><span class="str">"nombre"</span><span class="op">:</span> <span class="str">"Jugo"</span><span class="op">,</span>  <span class="str">"precio"</span><span class="op">:</span> <span class="num">22.99</span><span class="op">,</span> <span class="str">"stock"</span><span class="op">:</span> <span class="num">30</span><span class="op">}</span>
+<span class="op">]</span>
+
+<span class="cm"># filtrar — poco stock</span>
+<span class="bl">for</span> <span class="kw">p</span> <span class="bl">in</span> <span class="kw">inv</span><span class="op">:</span>
+    <span class="bl">if</span> <span class="kw">p</span><span class="op">[</span><span class="str">"stock"</span><span class="op">]</span> <span class="op">&lt;</span> <span class="num">40</span><span class="op">:</span>
+        <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"⚠️ {p['nombre']}: quedan {p['stock']}"</span><span class="op">)</span>
+
+<span class="cm"># ordenar por precio</span>
+<span class="bl">for</span> <span class="kw">p</span> <span class="bl">in</span> <span class="fn">sorted</span><span class="op">(</span><span class="kw">inv</span><span class="op">,</span> <span class="kw">key</span><span class="op">=</span><span class="bl">lambda</span> <span class="kw">x</span><span class="op">:</span> <span class="kw">x</span><span class="op">[</span><span class="str">"precio"</span><span class="op">]</span><span class="op">):</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"{p['nombre']}: \${p['precio']:.2f}"</span><span class="op">)</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">transformar mientras recorres</span>
+    <div class="code-wrap"><div class="code-block"><span class="cm"># aplicar 10% de descuento a todos los precios</span>
+<span class="bl">for</span> <span class="kw">p</span> <span class="bl">in</span> <span class="kw">inv</span><span class="op">:</span>
+    <span class="kw">p</span><span class="op">[</span><span class="str">"precio"</span><span class="op">]</span> <span class="op">=</span> <span class="fn">round</span><span class="op">(</span><span class="kw">p</span><span class="op">[</span><span class="str">"precio"</span><span class="op">]</span> <span class="op">*</span> <span class="num">0.9</span><span class="op">,</span> <span class="num">2</span><span class="op">)</span>
+
+<span class="cm"># ⚠️ nunca modifiques una lista mientras la recorres con índice</span>
+<span class="cm"># usa una comprehension o trabaja sobre una copia</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="challenge"><div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+    <div class="challenge-text">Inventario de 5 productos (nombre, precio, stock, categoría). Muéstralos ordenados por precio de mayor a menor. Muestra solo los de categoría "bebidas". Calcula el valor total (precio × stock). Muestra los de stock menor a 20 en orden alfabético.</div></div>
+    <div class="hashtags">#PythonHumano #Python #Fase3 #RecorrerEstructuras #ProgramaciónDesde0</div>`
+  },
+  11:{
+    emoji:'🤝',title:'zip() y enumerate() avanzado: combinar en paralelo',
+    intro:'zip() combina múltiples colecciones en paralelo. Junto con enumerate() forman las herramientas que el código profesional usa constantemente.',
+    tag:'Fase 3 · Post 11 de 14',prev:10,prevTitle:'Recorrer estructuras',next:12,nextTitle:'Comprehensions',
+    content:`
+    <div class="block"><span class="block-label">zip() — combinar listas en paralelo</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">nombres</span> <span class="op">=</span> <span class="op">[</span><span class="str">"Café"</span><span class="op">,</span>  <span class="str">"Pan"</span><span class="op">,</span>   <span class="str">"Jugo"</span><span class="op">]</span>
+<span class="kw">precios</span> <span class="op">=</span> <span class="op">[</span><span class="num">29.99</span><span class="op">,</span> <span class="num">15.50</span><span class="op">,</span> <span class="num">22.99</span><span class="op">]</span>
+<span class="kw">stocks</span>  <span class="op">=</span> <span class="op">[</span><span class="num">50</span><span class="op">,</span>    <span class="num">100</span><span class="op">,</span>   <span class="num">30</span><span class="op">]</span>
+
+<span class="bl">for</span> <span class="kw">nombre</span><span class="op">,</span> <span class="kw">precio</span><span class="op">,</span> <span class="kw">stock</span> <span class="bl">in</span> <span class="fn">zip</span><span class="op">(</span><span class="kw">nombres</span><span class="op">,</span> <span class="kw">precios</span><span class="op">,</span> <span class="kw">stocks</span><span class="op">):</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"{nombre}: \${precio:.2f} — stock: {stock}"</span><span class="op">)</span>
+
+<span class="out"># Café: $29.99 — stock: 50</span>
+<span class="out"># Pan: $15.50 — stock: 100</span>
+<span class="out"># Jugo: $22.99 — stock: 30</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">zip() para crear diccionarios</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">claves</span>  <span class="op">=</span> <span class="op">[</span><span class="str">"nombre"</span><span class="op">,</span> <span class="str">"precio"</span><span class="op">,</span> <span class="str">"stock"</span><span class="op">]</span>
+<span class="kw">valores</span> <span class="op">=</span> <span class="op">[</span><span class="str">"Café"</span><span class="op">,</span>   <span class="num">29.99</span><span class="op">,</span>    <span class="num">50</span><span class="op">]</span>
+
+<span class="kw">producto</span> <span class="op">=</span> <span class="fn">dict</span><span class="op">(</span><span class="fn">zip</span><span class="op">(</span><span class="kw">claves</span><span class="op">,</span> <span class="kw">valores</span><span class="op">))</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">producto</span><span class="op">)</span>
+<span class="out"># {"nombre": "Café", "precio": 29.99, "stock": 50}</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">zip() con listas de distinto tamaño</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">a</span> <span class="op">=</span> <span class="op">[</span><span class="num">1</span><span class="op">,</span> <span class="num">2</span><span class="op">,</span> <span class="num">3</span><span class="op">]</span>
+<span class="kw">b</span> <span class="op">=</span> <span class="op">[</span><span class="str">"x"</span><span class="op">,</span> <span class="str">"y"</span><span class="op">]</span>   <span class="cm"># más corta</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="fn">list</span><span class="op">(</span><span class="fn">zip</span><span class="op">(</span><span class="kw">a</span><span class="op">,</span> <span class="kw">b</span><span class="op">)))</span>
+<span class="out"># [(1, "x"), (2, "y")]  — se detiene en la más corta</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+    <div class="highlight orange">zip() para cuando la lista más corta termina. Si quieres incluir todos los elementos usa <strong>itertools.zip_longest()</strong>.</div></div>
+
+    <div class="block"><span class="block-label">enumerate() — índice y elemento juntos</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">productos</span> <span class="op">=</span> <span class="op">[</span><span class="str">"Café"</span><span class="op">,</span> <span class="str">"Pan"</span><span class="op">,</span> <span class="str">"Jugo"</span><span class="op">]</span>
+
+<span class="cm"># empieza en 0 por defecto</span>
+<span class="bl">for</span> <span class="kw">i</span><span class="op">,</span> <span class="kw">p</span> <span class="bl">in</span> <span class="fn">enumerate</span><span class="op">(</span><span class="kw">productos</span><span class="op">):</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"{i}: {p}"</span><span class="op">)</span>    <span class="out"># 0: Café, 1: Pan, 2: Jugo</span>
+
+<span class="cm"># empieza en 1</span>
+<span class="bl">for</span> <span class="kw">i</span><span class="op">,</span> <span class="kw">p</span> <span class="bl">in</span> <span class="fn">enumerate</span><span class="op">(</span><span class="kw">productos</span><span class="op">,</span> <span class="num">1</span><span class="op">):</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"{i}. {p}"</span><span class="op">)</span>   <span class="out"># 1. Café, 2. Pan, 3. Jugo</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">zip() + enumerate() juntos</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">nombres</span> <span class="op">=</span> <span class="op">[</span><span class="str">"Café"</span><span class="op">,</span> <span class="str">"Pan"</span><span class="op">,</span> <span class="str">"Jugo"</span><span class="op">]</span>
+<span class="kw">precios</span> <span class="op">=</span> <span class="op">[</span><span class="num">29.99</span><span class="op">,</span> <span class="num">15.50</span><span class="op">,</span> <span class="num">22.99</span><span class="op">]</span>
+
+<span class="bl">for</span> <span class="kw">i</span><span class="op">,</span> <span class="op">(</span><span class="kw">nombre</span><span class="op">,</span> <span class="kw">precio</span><span class="op">)</span> <span class="bl">in</span> <span class="fn">enumerate</span><span class="op">(</span><span class="fn">zip</span><span class="op">(</span><span class="kw">nombres</span><span class="op">,</span> <span class="kw">precios</span><span class="op">),</span> <span class="num">1</span><span class="op">):</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"{i}. {nombre}: \${precio:.2f}"</span><span class="op">)</span>
+
+<span class="out"># 1. Café: $29.99</span>
+<span class="out"># 2. Pan: $15.50</span>
+<span class="out"># 3. Jugo: $22.99</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="challenge"><div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+    <div class="challenge-text">Tienes: <strong>nombres = ["Ana","Carlos","María"]</strong>, <strong>ventas = [1500, 890, 2200]</strong>, <strong>metas = [1000, 1000, 2000]</strong>. Usando zip(), muestra para cada vendedor si superó o no su meta. Usando zip() y dict(), crea un diccionario {nombre: ventas}. Muestra la lista numerada con enumerate().</div></div>
+    <div class="hashtags">#PythonHumano #Python #Fase3 #Zip #Enumerate #ProgramaciónDesde0</div>`
+  },
+  12:{
+    emoji:'⚡',title:'List y dict comprehensions: escribe menos, haz más',
+    intro:'Las comprehensions son la forma más Pythónica de crear listas y diccionarios. Una línea que reemplaza un bucle completo.',
+    tag:'Fase 3 · Post 12 de 14',prev:11,prevTitle:'zip() y enumerate()',next:13,nextTitle:'Cuándo usar cada estructura',
+    content:`
+    <div class="block"><span class="block-label">list comprehension — la comparación</span>
+    <div class="comparison">
+      <div class="comp-item"><div class="comp-label bad">sin comprehension</div><div class="comp-code">precios = [29.99, 15.50, 22.99]
+con_desc = []
+for p in precios:
+    con_desc.append(p * 0.9)
+# 4 líneas</div></div>
+      <div class="comp-item"><div class="comp-label good">con comprehension</div><div class="comp-code">precios = [29.99, 15.50, 22.99]
+con_desc = [p * 0.9 for p in precios]
+# 1 línea — mismo resultado ✓</div></div>
     </div>
-  `;
-  document.getElementById('post-list').style.display = 'none';
-  document.getElementById('post-view').style.display = 'block';
-  window.scrollTo(0, 0);
-}
+    <div class="rule-box">[expresión for elemento in iterable if condición]</div></div>
 
-function showList() {
-  document.getElementById('post-view').style.display = 'none';
-  document.getElementById('post-list').style.display = 'block';
-  window.scrollTo(0, 0);
-}
+    <div class="block"><span class="block-label">ejemplos progresivos</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">precios</span> <span class="op">=</span> <span class="op">[</span><span class="num">29.99</span><span class="op">,</span> <span class="num">15.50</span><span class="op">,</span> <span class="num">22.99</span><span class="op">,</span> <span class="num">9.99</span><span class="op">,</span> <span class="num">45.00</span><span class="op">]</span>
 
-function copyCode(btn) {
-  const code = btn.previousElementSibling.innerText;
-  navigator.clipboard.writeText(code).then(() => {
-    btn.textContent = '✓ copiado';
-    setTimeout(() => btn.textContent = 'copiar', 2000);
-  });
-}
+<span class="cm"># transformar — aplicar descuento a todos</span>
+<span class="kw">desc</span> <span class="op">=</span> <span class="op">[</span><span class="fn">round</span><span class="op">(</span><span class="kw">p</span> <span class="op">*</span> <span class="num">0.9</span><span class="op">,</span> <span class="num">2</span><span class="op">)</span> <span class="bl">for</span> <span class="kw">p</span> <span class="bl">in</span> <span class="kw">precios</span><span class="op">]</span>
 
-// Auto-load post from URL hash e.g. #post-5
-window.addEventListener('load', () => {
-  const hash = window.location.hash;
-  if (hash && hash.startsWith('#post-')) {
-    const num = parseInt(hash.replace('#post-', ''));
-    if (num && POSTS2[num]) showPost(num);
+<span class="cm"># filtrar — solo los mayores a 20</span>
+<span class="kw">caros</span> <span class="op">=</span> <span class="op">[</span><span class="kw">p</span> <span class="bl">for</span> <span class="kw">p</span> <span class="bl">in</span> <span class="kw">precios</span> <span class="bl">if</span> <span class="kw">p</span> <span class="op">&gt;</span> <span class="num">20</span><span class="op">]</span>
+
+<span class="cm"># filtrar y transformar — descuento solo a los caros</span>
+<span class="kw">desc_caros</span> <span class="op">=</span> <span class="op">[</span><span class="fn">round</span><span class="op">(</span><span class="kw">p</span> <span class="op">*</span> <span class="num">0.9</span><span class="op">,</span> <span class="num">2</span><span class="op">)</span> <span class="bl">for</span> <span class="kw">p</span> <span class="bl">in</span> <span class="kw">precios</span> <span class="bl">if</span> <span class="kw">p</span> <span class="op">&gt;</span> <span class="num">20</span><span class="op">]</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="kw">desc</span><span class="op">)</span>        <span class="out"># [26.99, 13.95, 20.69, 8.99, 40.5]</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">caros</span><span class="op">)</span>       <span class="out"># [29.99, 22.99, 45.0]</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">desc_caros</span><span class="op">)</span>  <span class="out"># [26.99, 20.69, 40.5]</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">con lista de diccionarios</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">inv</span> <span class="op">=</span> <span class="op">[</span>
+    <span class="op">{</span><span class="str">"nombre"</span><span class="op">:</span> <span class="str">"Café"</span><span class="op">,</span>  <span class="str">"precio"</span><span class="op">:</span> <span class="num">29.99</span><span class="op">,</span> <span class="str">"stock"</span><span class="op">:</span> <span class="num">50</span><span class="op">}</span><span class="op">,</span>
+    <span class="op">{</span><span class="str">"nombre"</span><span class="op">:</span> <span class="str">"Pan"</span><span class="op">,</span>   <span class="str">"precio"</span><span class="op">:</span> <span class="num">15.50</span><span class="op">,</span> <span class="str">"stock"</span><span class="op">:</span> <span class="num">5</span><span class="op">}</span><span class="op">,</span>
+    <span class="op">{</span><span class="str">"nombre"</span><span class="op">:</span> <span class="str">"Jugo"</span><span class="op">,</span>  <span class="str">"precio"</span><span class="op">:</span> <span class="num">22.99</span><span class="op">,</span> <span class="str">"stock"</span><span class="op">:</span> <span class="num">30</span><span class="op">}</span>
+<span class="op">]</span>
+
+<span class="cm"># extraer solo los nombres</span>
+<span class="kw">nombres</span> <span class="op">=</span> <span class="op">[</span><span class="kw">p</span><span class="op">[</span><span class="str">"nombre"</span><span class="op">]</span> <span class="bl">for</span> <span class="kw">p</span> <span class="bl">in</span> <span class="kw">inv</span><span class="op">]</span>
+
+<span class="cm"># filtrar los de poco stock</span>
+<span class="kw">poco</span> <span class="op">=</span> <span class="op">[</span><span class="kw">p</span><span class="op">[</span><span class="str">"nombre"</span><span class="op">]</span> <span class="bl">for</span> <span class="kw">p</span> <span class="bl">in</span> <span class="kw">inv</span> <span class="bl">if</span> <span class="kw">p</span><span class="op">[</span><span class="str">"stock"</span><span class="op">]</span> <span class="op">&lt;</span> <span class="num">10</span><span class="op">]</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">poco</span><span class="op">)</span>  <span class="out"># ["Pan"]</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">dict comprehension</span>
+    <div class="code-wrap"><div class="code-block"><span class="cm"># sintaxis: {clave: valor for elemento in iterable}</span>
+
+<span class="kw">nombres</span> <span class="op">=</span> <span class="op">[</span><span class="str">"Café"</span><span class="op">,</span> <span class="str">"Pan"</span><span class="op">,</span> <span class="str">"Jugo"</span><span class="op">]</span>
+<span class="kw">precios</span> <span class="op">=</span> <span class="op">[</span><span class="num">29.99</span><span class="op">,</span> <span class="num">15.50</span><span class="op">,</span> <span class="num">22.99</span><span class="op">]</span>
+
+<span class="cm"># crear diccionario desde dos listas</span>
+<span class="kw">catalogo</span> <span class="op">=</span> <span class="op">{</span><span class="kw">n</span><span class="op">:</span> <span class="kw">p</span> <span class="bl">for</span> <span class="kw">n</span><span class="op">,</span> <span class="kw">p</span> <span class="bl">in</span> <span class="fn">zip</span><span class="op">(</span><span class="kw">nombres</span><span class="op">,</span> <span class="kw">precios</span><span class="op">)</span><span class="op">}</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">catalogo</span><span class="op">)</span>
+<span class="out"># {"Café": 29.99, "Pan": 15.5, "Jugo": 22.99}</span>
+
+<span class="cm"># aplicar descuento a todo el catálogo</span>
+<span class="kw">con_desc</span> <span class="op">=</span> <span class="op">{</span><span class="kw">k</span><span class="op">:</span> <span class="fn">round</span><span class="op">(</span><span class="kw">v</span> <span class="op">*</span> <span class="num">0.9</span><span class="op">,</span> <span class="num">2</span><span class="op">)</span> <span class="bl">for</span> <span class="kw">k</span><span class="op">,</span> <span class="kw">v</span> <span class="bl">in</span> <span class="kw">catalogo</span><span class="op">.</span><span class="fn">items</span><span class="op">()}</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">con_desc</span><span class="op">)</span>
+<span class="out"># {"Café": 26.99, "Pan": 13.95, "Jugo": 20.69}</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="error-box"><div class="error-header">⚠️ cuándo NO usar comprehensions</div>
+    <div class="error-text">Si necesitas más de una condición compleja, lógica anidada o efectos secundarios — usa un for normal. La legibilidad importa más que la brevedad.</div>
+    <div class="code-wrap" style="margin-top:10px"><div class="code-block"><span class="cm"># ✗ demasiado compleja — difícil de leer</span>
+<span class="kw">r</span> <span class="op">=</span> <span class="op">[</span><span class="kw">x</span><span class="op">*</span><span class="num">2</span> <span class="bl">if</span> <span class="kw">x</span><span class="op">%</span><span class="num">2</span><span class="op">==</span><span class="num">0</span> <span class="bl">else</span> <span class="kw">x</span><span class="op">*</span><span class="num">3</span> <span class="bl">for</span> <span class="kw">x</span> <span class="bl">in</span> <span class="fn">range</span><span class="op">(</span><span class="num">10</span><span class="op">)</span> <span class="bl">if</span> <span class="kw">x</span> <span class="op">&gt;</span> <span class="num">2</span> <span class="bl">if</span> <span class="kw">x</span> <span class="op">&lt;</span> <span class="num">8</span><span class="op">]</span>
+
+<span class="cm"># ✓ for normal — más legible</span>
+<span class="kw">r</span> <span class="op">=</span> <span class="op">[]</span>
+<span class="bl">for</span> <span class="kw">x</span> <span class="bl">in</span> <span class="fn">range</span><span class="op">(</span><span class="num">10</span><span class="op">):</span>
+    <span class="bl">if</span> <span class="num">2</span> <span class="op">&lt;</span> <span class="kw">x</span> <span class="op">&lt;</span> <span class="num">8</span><span class="op">:</span>
+        <span class="kw">r</span><span class="op">.</span><span class="fn">append</span><span class="op">(</span><span class="kw">x</span><span class="op">*</span><span class="num">2</span> <span class="bl">if</span> <span class="kw">x</span><span class="op">%</span><span class="num">2</span><span class="op">==</span><span class="num">0</span> <span class="bl">else</span> <span class="kw">x</span><span class="op">*</span><span class="num">3</span><span class="op">)</span></div></div></div>
+
+    <div class="challenge"><div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+    <div class="challenge-text">Con el inventario del reto anterior: crea una lista de nombres de productos con precio mayor a $20. Crea un diccionario {nombre: precio_con_descuento} solo para los de stock mayor a 10. Convierte todos los nombres a mayúsculas en una sola línea.</div></div>
+    <div class="hashtags">#PythonHumano #Python #Fase3 #Comprehensions #ProgramaciónDesde0</div>`
+  },
+  13:{
+    emoji:'🗺️',title:'Cuándo usar cada estructura: la decisión que más importa',
+    intro:'Saber usar cada estructura es fácil. Saber cuál elegir ante un problema real es lo que marca la diferencia.',
+    tag:'Fase 3 · Post 13 de 14',prev:12,prevTitle:'Comprehensions',next:14,nextTitle:'Copiar estructuras',
+    content:`
+    <div class="block"><div class="text"><p>Tienes 4 estructuras. Cada una existe por una razón. Elegir la incorrecta no rompe el programa — lo hace más difícil de escribir, leer y mantener.</p></div></div>
+
+    <div class="block">
+    <div class="struct-card"><div class="struct-name">📋 Lista []</div>
+    <div class="struct-when">Úsala cuando el orden importa y los datos pueden cambiar.</div>
+    <div class="struct-ex">→ Colecciones que crecen o se reducen
+→ Secuencias con posición específica
+→ Cuando necesitas duplicados
+→ Cuando vas a ordenar o filtrar
+
+playlist = ["Café", "Pan", "Jugo"]
+historial = []
+historial.append("nueva_venta")</div></div>
+
+    <div class="struct-card cyan"><div class="struct-name">🔒 Tupla ()</div>
+    <div class="struct-when">Úsala cuando los datos NO deben cambiar.</div>
+    <div class="struct-ex">→ Coordenadas, colores RGB, configuración
+→ Datos que son constantes por naturaleza
+→ Como clave de diccionario
+→ Cuando quieres proteger los datos
+
+COLORES = {"verde": (200, 241, 53), "rojo": (255, 107, 107)}
+coordenadas = (19.4326, -99.1332)</div></div>
+
+    <div class="struct-card purple"><div class="struct-name">🔵 Set {}</div>
+    <div class="struct-when">Úsala cuando el orden no importa y no quieres repetidos.</div>
+    <div class="struct-ex">→ Eliminar duplicados de una lista
+→ Verificar membresía rápidamente
+→ Operaciones entre conjuntos (unión, intersección)
+→ Cuando no necesitas acceder por posición
+
+clientes_unicos = set(lista_con_repetidos)
+categorias_activas = {"bebidas", "alimentos"}</div></div>
+
+    <div class="struct-card green"><div class="struct-name">📖 Diccionario {}</div>
+    <div class="struct-when">Úsalo cuando necesitas acceder a datos por nombre.</div>
+    <div class="struct-ex">→ Representar un objeto con propiedades
+→ Mapear una clave a un valor
+→ Contar ocurrencias
+→ Cuando "buscar por nombre" es más natural que "buscar por posición"
+
+producto = {"nombre": "Café", "precio": 29.99}
+conteo = {"Café": 3, "Pan": 2}</div></div>
+    </div>
+
+    <div class="block"><span class="block-label">la pregunta clave para decidir</span>
+    <div class="rule-box orange">¿Qué necesito hacer con estos datos?
+→ Acceder en orden → Lista
+→ Que nunca cambien → Tupla
+→ Saber si algo existe / no repetir → Set
+→ Acceder por nombre → Diccionario</div></div>
+
+    <div class="block"><span class="block-label">casos reales</span>
+    <div class="code-wrap"><div class="code-block"><span class="cm"># ✓ lista — playlist que el usuario modifica</span>
+<span class="kw">playlist</span> <span class="op">=</span> <span class="op">[</span><span class="str">"Café"</span><span class="op">,</span> <span class="str">"Pan"</span><span class="op">,</span> <span class="str">"Jugo"</span><span class="op">]</span>
+
+<span class="cm"># ✓ tupla — coordenadas de la sucursal que no cambian</span>
+<span class="kw">SUCURSAL_CDMX</span> <span class="op">=</span> <span class="op">(</span><span class="num">19.4326</span><span class="op">,</span> <span class="op">-</span><span class="num">99.1332</span><span class="op">)</span>
+
+<span class="cm"># ✓ set — categorías únicas de productos</span>
+<span class="kw">categorias</span> <span class="op">=</span> <span class="op">{</span><span class="kw">p</span><span class="op">[</span><span class="str">"categoria"</span><span class="op">]</span> <span class="bl">for</span> <span class="kw">p</span> <span class="bl">in</span> <span class="kw">inventario</span><span class="op">}</span>
+
+<span class="cm"># ✓ diccionario — datos de un producto</span>
+<span class="kw">producto</span> <span class="op">=</span> <span class="op">{</span><span class="str">"nombre"</span><span class="op">:</span> <span class="str">"Café"</span><span class="op">,</span> <span class="str">"precio"</span><span class="op">:</span> <span class="num">29.99</span><span class="op">,</span> <span class="str">"stock"</span><span class="op">:</span> <span class="num">50</span><span class="op">}</span>
+
+<span class="cm"># ✓ lista de diccionarios — inventario completo</span>
+<span class="kw">inventario</span> <span class="op">=</span> <span class="op">[</span>
+    <span class="op">{</span><span class="str">"nombre"</span><span class="op">:</span> <span class="str">"Café"</span><span class="op">,</span>  <span class="str">"precio"</span><span class="op">:</span> <span class="num">29.99</span><span class="op">}</span><span class="op">,</span>
+    <span class="op">{</span><span class="str">"nombre"</span><span class="op">:</span> <span class="str">"Pan"</span><span class="op">,</span>   <span class="str">"precio"</span><span class="op">:</span> <span class="num">15.50</span><span class="op">}</span>
+<span class="op">]</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">cuándo combinarlas</span>
+    <div class="code-wrap"><div class="code-block"><span class="cm"># lista de tuplas — tabla de datos inmutables</span>
+<span class="kw">sucursales</span> <span class="op">=</span> <span class="op">[(</span><span class="str">"CDMX"</span><span class="op">,</span> <span class="num">19.43</span><span class="op">,</span> <span class="op">-</span><span class="num">99.13</span><span class="op">),</span> <span class="op">(</span><span class="str">"GDL"</span><span class="op">,</span> <span class="num">20.67</span><span class="op">,</span> <span class="op">-</span><span class="num">103.34</span><span class="op">)]</span>
+
+<span class="cm"># diccionario con sets — clientes por categoría</span>
+<span class="kw">por_plan</span> <span class="op">=</span> <span class="op">{</span>
+    <span class="str">"premium"</span><span class="op">:</span> <span class="op">{</span><span class="str">"Ana"</span><span class="op">,</span> <span class="str">"Carlos"</span><span class="op">}</span><span class="op">,</span>
+    <span class="str">"free"</span><span class="op">:</span>    <span class="op">{</span><span class="str">"María"</span><span class="op">,</span> <span class="str">"Luis"</span><span class="op">}</span>
+<span class="op">}</span>
+
+<span class="cm"># diccionario con listas — historial por usuario</span>
+<span class="kw">historial</span> <span class="op">=</span> <span class="op">{</span>
+    <span class="str">"Ana"</span><span class="op">:</span>    <span class="op">[</span><span class="str">"Café"</span><span class="op">,</span> <span class="str">"Pan"</span><span class="op">]</span><span class="op">,</span>
+    <span class="str">"Carlos"</span><span class="op">:</span> <span class="op">[</span><span class="str">"Jugo"</span><span class="op">]</span>
+<span class="op">}</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="challenge"><div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto</span></div>
+    <div class="challenge-text">Para cada caso decide qué estructura usarías y por qué:<br><br>1. Los días de la semana en que abre una tienda.<br>2. El historial de compras de un cliente.<br>3. Los datos de un cliente (nombre, email, plan).<br>4. Los productos únicos vendidos este mes.<br>5. La posición GPS de cada sucursal que no debe cambiar.<br>6. Un catálogo completo con nombre y precio de cada producto.</div></div>
+    <div class="hashtags">#PythonHumano #Python #Fase3 #CuándoUsarCadaEstructura #ProgramaciónDesde0</div>`
+  },
+  14:{
+    emoji:'📋',title:'Copiar estructuras correctamente: el error que todos cometen',
+    intro:'En Python las listas y diccionarios no se copian como las variables normales. Si no lo sabes, modificas cosas que no querías modificar.',
+    tag:'Fase 3 · Post 14 de 14',prev:13,prevTitle:'Cuándo usar cada estructura',next:null,
+    content:`
+    <div class="block"><span class="block-label">el problema — asignación no es copia</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">original</span> <span class="op">=</span> <span class="op">[</span><span class="num">1</span><span class="op">,</span> <span class="num">2</span><span class="op">,</span> <span class="num">3</span><span class="op">]</span>
+<span class="kw">copia</span>    <span class="op">=</span> <span class="kw">original</span>   <span class="cm"># ← esto NO es una copia</span>
+
+<span class="kw">copia</span><span class="op">.</span><span class="fn">append</span><span class="op">(</span><span class="num">4</span><span class="op">)</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="kw">original</span><span class="op">)</span>  <span class="out"># [1, 2, 3, 4]  😱 ¡también cambió!</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">copia</span><span class="op">)</span>     <span class="out"># [1, 2, 3, 4]</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+    <div class="highlight red"><strong>¿Por qué?</strong> Cuando haces <strong>copia = original</strong>, ambas variables apuntan al mismo objeto en memoria. No hay dos listas — hay una sola con dos nombres.</div></div>
+
+    <div class="block"><span class="block-label">copia superficial — para listas simples</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">original</span> <span class="op">=</span> <span class="op">[</span><span class="num">1</span><span class="op">,</span> <span class="num">2</span><span class="op">,</span> <span class="num">3</span><span class="op">]</span>
+
+<span class="cm"># 3 formas equivalentes de copia superficial</span>
+<span class="kw">copia1</span> <span class="op">=</span> <span class="kw">original</span><span class="op">.</span><span class="fn">copy</span><span class="op">()</span>
+<span class="kw">copia2</span> <span class="op">=</span> <span class="kw">original</span><span class="op">[:]</span>
+<span class="kw">copia3</span> <span class="op">=</span> <span class="fn">list</span><span class="op">(</span><span class="kw">original</span><span class="op">)</span>
+
+<span class="kw">copia1</span><span class="op">.</span><span class="fn">append</span><span class="op">(</span><span class="num">4</span><span class="op">)</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">original</span><span class="op">)</span>  <span class="out"># [1, 2, 3]  ✓ no cambió</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">copia1</span><span class="op">)</span>    <span class="out"># [1, 2, 3, 4]</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">el problema con la copia superficial — listas anidadas</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">original</span> <span class="op">=</span> <span class="op">[[</span><span class="num">1</span><span class="op">,</span> <span class="num">2</span><span class="op">],</span> <span class="op">[</span><span class="num">3</span><span class="op">,</span> <span class="num">4</span><span class="op">]]</span>
+<span class="kw">copia</span>    <span class="op">=</span> <span class="kw">original</span><span class="op">.</span><span class="fn">copy</span><span class="op">()</span>   <span class="cm"># copia superficial</span>
+
+<span class="kw">copia</span><span class="op">[</span><span class="num">0</span><span class="op">].</span><span class="fn">append</span><span class="op">(</span><span class="num">99</span><span class="op">)</span>   <span class="cm"># modifico la lista interior</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="kw">original</span><span class="op">)</span>  <span class="out"># [[1, 2, 99], [3, 4]]  😱 también cambió</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">copia</span><span class="op">)</span>     <span class="out"># [[1, 2, 99], [3, 4]]</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+    <div class="highlight red">La copia superficial copia la lista exterior pero las listas interiores siguen siendo las mismas. Modifica una — modificas ambas.</div></div>
+
+    <div class="block"><span class="block-label">copia profunda — para listas anidadas y diccionarios complejos</span>
+    <div class="code-wrap"><div class="code-block"><span class="bl">import</span> <span class="kw">copy</span>
+
+<span class="kw">original</span> <span class="op">=</span> <span class="op">[[</span><span class="num">1</span><span class="op">,</span> <span class="num">2</span><span class="op">],</span> <span class="op">[</span><span class="num">3</span><span class="op">,</span> <span class="num">4</span><span class="op">]]</span>
+<span class="kw">profunda</span> <span class="op">=</span> <span class="kw">copy</span><span class="op">.</span><span class="fn">deepcopy</span><span class="op">(</span><span class="kw">original</span><span class="op">)</span>
+
+<span class="kw">profunda</span><span class="op">[</span><span class="num">0</span><span class="op">].</span><span class="fn">append</span><span class="op">(</span><span class="num">99</span><span class="op">)</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="kw">original</span><span class="op">)</span>  <span class="out"># [[1, 2], [3, 4]]      ✓ sin cambios</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">profunda</span><span class="op">)</span>  <span class="out"># [[1, 2, 99], [3, 4]]  solo cambia la copia</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">copiar diccionarios</span>
+    <div class="code-wrap"><div class="code-block"><span class="kw">original</span> <span class="op">=</span> <span class="op">{</span><span class="str">"nombre"</span><span class="op">:</span> <span class="str">"Café"</span><span class="op">,</span> <span class="str">"precio"</span><span class="op">:</span> <span class="num">29.99</span><span class="op">}</span>
+
+<span class="cm"># copia superficial — para diccionarios simples</span>
+<span class="kw">copia</span> <span class="op">=</span> <span class="kw">original</span><span class="op">.</span><span class="fn">copy</span><span class="op">()</span>
+<span class="kw">copia</span> <span class="op">=</span> <span class="fn">dict</span><span class="op">(</span><span class="kw">original</span><span class="op">)</span>
+
+<span class="cm"># copia profunda — para diccionarios anidados</span>
+<span class="bl">import</span> <span class="kw">copy</span>
+<span class="kw">usuario</span> <span class="op">=</span> <span class="op">{</span><span class="str">"nombre"</span><span class="op">:</span> <span class="str">"Ana"</span><span class="op">,</span> <span class="str">"plan"</span><span class="op">:</span> <span class="op">{</span><span class="str">"tipo"</span><span class="op">:</span> <span class="str">"premium"</span><span class="op">}</span><span class="op">}</span>
+<span class="kw">copia_prof</span> <span class="op">=</span> <span class="kw">copy</span><span class="op">.</span><span class="fn">deepcopy</span><span class="op">(</span><span class="kw">usuario</span><span class="op">)</span>
+
+<span class="kw">copia_prof</span><span class="op">[</span><span class="str">"plan"</span><span class="op">][</span><span class="str">"tipo"</span><span class="op">]</span> <span class="op">=</span> <span class="str">"free"</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">usuario</span><span class="op">[</span><span class="str">"plan"</span><span class="op">][</span><span class="str">"tipo"</span><span class="op">])</span>      <span class="out"># "premium" ✓ sin cambios</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">copia_prof</span><span class="op">[</span><span class="str">"plan"</span><span class="op">][</span><span class="str">"tipo"</span><span class="op">])</span>  <span class="out"># "free"</span></div><button class="copy-btn" onclick="copyCode(this)">copiar</button></div></div>
+
+    <div class="block"><span class="block-label">la regla simple para decidir</span>
+    <div class="rule-box orange">¿Tu lista o diccionario tiene listas o diccionarios adentro?
+→ SÍ → usa copy.deepcopy()
+→ NO → usa .copy() o [:]</div></div>
+
+    <div class="challenge"><div class="challenge-header"><span class="challenge-icon">🎯</span><span class="challenge-label">reto final de la fase</span></div>
+    <div class="challenge-text">Dado este inventario:<br><br><code style="background:var(--code-bg);padding:4px 8px;border-radius:4px;font-size:.72rem;color:var(--accent2)">inv = [{"nombre":"Café","precio":29.99,"tags":["bebida","caliente"]},{"nombre":"Pan","precio":15.50,"tags":["alimento"]}]</code><br><br>Haz una copia superficial y una copia profunda. Modifica el precio en la copia superficial — ¿cambia el original? Agrega un tag en la copia superficial — ¿cambia el original? Repite con la copia profunda. Explica la diferencia.</div></div>
+    <div class="hashtags">#PythonHumano #Python #Fase3 #CopiarEstructuras #DeepCopy #ProgramaciónDesde0</div>`
   }
-});
+};
 
-
+// ─── DATA ───
 const PHASES = [
   {
     id: 1,
@@ -4016,6 +4726,33 @@ Hazle estas 6 preguntas al usuario:
 
 Nunca termines sin decirle al usuario
 si está listo para la Fase 3 o no — y por qué.`
+  }  ,{
+    id: 3,
+    icon: '🏗️',
+    name: 'Organiza la información como un pro',
+    sub: 'Listas, diccionarios, sets, comprehensions.',
+    color: '#ffb347',
+    posts: [
+      { id: 'p3_01', num: '01', title: 'Listas: crear, acceder, modificar', sub: 'la estructura más usada en Python' },
+      { id: 'p3_02', num: '02', title: 'Métodos de listas', sub: 'las herramientas que más vas a usar' },
+      { id: 'p3_03', num: '03', title: 'Slicing', sub: 'corta y accede sin complicarte' },
+      { id: 'p3_04', num: '04', title: 'Listas anidadas', sub: 'listas dentro de listas' },
+      { id: 'p3_05', num: '05', title: 'Tuplas', sub: 'listas que no cambian' },
+      { id: 'p3_06', num: '06', title: 'Sets', sub: 'colecciones sin repetidos' },
+      { id: 'p3_07', num: '07', title: 'Diccionarios', sub: 'guarda datos con nombre' },
+      { id: 'p3_08', num: '08', title: 'Métodos de diccionarios', sub: 'cómo moverse dentro' },
+      { id: 'p3_09', num: '09', title: 'Diccionarios anidados', sub: 'datos estructurados de verdad' },
+      { id: 'p3_10', num: '10', title: 'Recorrer listas y diccionarios', sub: 'técnicas profesionales' },
+      { id: 'p3_11', num: '11', title: 'zip() y enumerate() avanzado', sub: 'combinar en paralelo' },
+      { id: 'p3_12', num: '12', title: 'List y dict comprehensions', sub: 'escribe menos, haz más' },
+      { id: 'p3_13', num: '13', title: 'Cuándo usar cada estructura', sub: 'la decisión que más importa' },
+      { id: 'p3_14', num: '14', title: 'Copiar estructuras correctamente', sub: 'el error que todos cometen' },
+    ],
+    prompt: \`Eres Py, tutor experto en Python del canal Python Humano.
+El usuario completó la Fase 3: listas, tuplas, sets, diccionarios y comprehensions.
+Verifica dominio con ejercicios prácticos. Nunca avances si no entendió.
+Pregunta: ¿cómo se siente con las estructuras de datos? ¿cuál le costó más?
+Evalúa con código real. Termina diciendo si está listo para Fase 4.\`
   }
 ];
 
@@ -4092,22 +4829,9 @@ function openPhase(phaseId) {
   document.getElementById('nav-ruta').classList.add('active');
 }
 
-// Map phase ID to HTML file
-const PHASE_FILES = {
-  1: 'fase1_posts.html',
-  2: 'fase2_posts.html'
-};
-
-// ─── POST LOADER (no fetch — data embedded) ───
-let _activeFasePosts = null;
-
-const FASE_POSTS = { 1: POSTS1, 2: POSTS2 };
-
-function showPost(num) {
-  if (!_activeFasePosts || !_activeFasePosts[num]) return;
-  renderPostInDiv(_activeFasePosts[num]);
-  window.scrollTo(0, 0);
-}
+// ─── POSTS LOOKUP ───
+const FASE_POSTS = { 1: POSTS1, 2: POSTS2, 3: POSTS3 };
+let _currentPosts = null;
 
 function copyCode(btn) {
   const code = btn.previousElementSibling.innerText;
@@ -4117,66 +4841,59 @@ function copyCode(btn) {
   }).catch(() => {});
 }
 
-function renderPostInDiv(postData) {
-  const area = document.getElementById('post-content-area');
-  area.innerHTML = `
-    <div class="post-body-wrap fade-in">
-      <div class="post-hero">
-        <span class="post-emoji">${postData.emoji}</span>
-        <div style="font-size:1.4rem;font-weight:700;letter-spacing:-0.02em;line-height:1.2;color:var(--text);margin-bottom:8px;">${postData.title}</div>
-        <div class="post-intro">${postData.intro}</div>
-      </div>
-      <div style="padding:0 20px 20px;">
-        ${postData.content}
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px;padding-bottom:8px;">
-          ${postData.prev
-            ? `<div class="nav-btn-post" onclick="showPost(${postData.prev})">
-                 <span class="nav-post-label">← anterior</span>
-                 <span class="nav-post-title">${postData.prevTitle || ''}</span>
-               </div>`
-            : '<div></div>'}
-          ${postData.next
-            ? `<div class="nav-btn-post next" onclick="showPost(${postData.next})">
-                 <span class="nav-post-label">siguiente →</span>
-                 <span class="nav-post-title">${postData.nextTitle || ''}</span>
-               </div>`
-            : '<div></div>'}
-        </div>
-      </div>
-    </div>
-  `;
+function showPost(num) {
+  if (!_currentPosts || !_currentPosts[num]) return;
+  _renderPost(_currentPosts[num]);
+  window.scrollTo(0, 0);
 }
 
-async function openPost(postId) {
+function _renderPost(postData) {
+  const prev = postData.prev;
+  const next = postData.next;
+  document.getElementById('post-body').innerHTML =
+    `<div style="padding:0 0 20px;">
+      <div style="padding:24px 20px 20px;border-bottom:1px solid var(--border);margin-bottom:4px;">
+        <span style="font-size:2rem;display:block;margin-bottom:12px;">${postData.emoji || ''}</span>
+        <div style="font-size:1.3rem;font-weight:700;letter-spacing:-0.02em;line-height:1.2;color:var(--text);margin-bottom:8px;">${postData.title || ''}</div>
+        <div style="font-size:0.88rem;font-weight:300;font-style:italic;color:var(--muted2);line-height:1.6;">${postData.intro || ''}</div>
+      </div>
+      <div style="padding:16px 20px 0;">
+        ${postData.content || ''}
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:24px 20px 0;">
+        ${prev ? `<div class="post-nav-btn" onclick="showPost(${prev})"><span class="post-nav-label">← anterior</span><span class="post-nav-title">${postData.prevTitle || ''}</span></div>` : '<div></div>'}
+        ${next ? `<div class="post-nav-btn next" onclick="showPost(${next})"><span class="post-nav-label">siguiente →</span><span class="post-nav-title">${postData.nextTitle || ''}</span></div>` : '<div></div>'}
+      </div>
+    </div>`;
+}
+
+function openPost(postId) {
   const phase = PHASES.find(p => p.posts.some(post => post.id === postId));
   const post = phase.posts.find(p => p.id === postId);
   currentPostId = postId;
   screenHistory.push('post');
 
-  document.getElementById('post-phase-tag').textContent = `Fase ${phase.id} · Post ${post.num} de ${phase.posts.length}`;
+  document.getElementById('post-phase-tag').textContent =
+    `Fase ${phase.id} · Post ${post.num} de ${phase.posts.length}`;
 
   const isDone = completed.includes(postId);
   const completeBtn = document.getElementById('complete-btn-current');
   completeBtn.textContent = isDone ? '✓ completado' : 'marcar como completado';
   completeBtn.className = `complete-btn ${isDone ? 'done' : ''}`;
-  completeBtn.style.flex = '1';
-  completeBtn.style.margin = '0';
-
-  const area = document.getElementById('post-content-area');
-  showScreen('post');
-  window.scrollTo(0, 0);
 
   const posts = FASE_POSTS[phase.id];
-  if (posts) {
-    _activeFasePosts = posts;
-    const postNum = parseInt(post.num);
-    const postData = posts[postNum];
-    if (postData) {
-      renderPostInDiv(postData);
-    } else {
-      area.innerHTML = `<div style="padding:40px 20px;text-align:center;color:var(--muted2);font-style:italic;">Post no encontrado.</div>`;
-    }
+  _currentPosts = posts;
+  const postNum = parseInt(post.num);
+
+  if (posts && posts[postNum]) {
+    _renderPost(posts[postNum]);
+  } else {
+    document.getElementById('post-body').innerHTML =
+      `<div style="padding:40px 20px;text-align:center;color:var(--muted2);font-style:italic;">Post no encontrado.</div>`;
   }
+
+  showScreen('post');
+  window.scrollTo(0, 0);
 }
 
 function toggleCurrentPost() {
@@ -4186,8 +4903,6 @@ function toggleCurrentPost() {
   const btn = document.getElementById('complete-btn-current');
   btn.textContent = isDone ? '✓ completado' : 'marcar como completado';
   btn.className = `complete-btn ${isDone ? 'done' : ''}`;
-  btn.style.flex = '1';
-  btn.style.margin = '0';
 }
 
 function toggleComplete(postId) {
@@ -4260,68 +4975,13 @@ function showProgress() {
   window.scrollTo(0, 0);
 }
 
-// ─── TELEGRAM PROTECTION ───
-function checkTelegramAccess() {
-  const isTelegram = window.Telegram &&
-    window.Telegram.WebApp &&
-    window.Telegram.WebApp.initData &&
-    window.Telegram.WebApp.initData.length > 0;
-
-  if (!isTelegram) {
-    document.body.innerHTML = `
-      <div style="
-        min-height:100vh;background:#0a0a0a;
-        display:flex;flex-direction:column;
-        align-items:center;justify-content:center;
-        padding:40px 24px;
-        font-family:'Fraunces',Georgia,serif;
-        text-align:center;
-      ">
-        <div style="font-size:3rem;margin-bottom:24px">🐍</div>
-        <div style="
-          font-family:'DM Mono',monospace;
-          font-size:0.62rem;letter-spacing:0.16em;
-          text-transform:uppercase;color:#c8f135;
-          background:rgba(200,241,53,0.08);
-          border:1px solid rgba(200,241,53,0.2);
-          padding:4px 12px;border-radius:20px;
-          margin-bottom:20px;display:inline-block;
-        ">acceso restringido</div>
-        <div style="
-          font-size:1.6rem;font-weight:700;
-          color:#ebebeb;letter-spacing:-0.02em;
-          line-height:1.2;margin-bottom:12px;
-        ">Python Humano</div>
-        <p style="
-          font-size:0.88rem;font-weight:300;
-          font-style:italic;color:#666;
-          line-height:1.7;margin-bottom:28px;
-          max-width:280px;
-        ">Esta app solo está disponible dentro de Telegram.</p>
-        <a href="https://t.me/PythonHumanoBot" style="
-          display:inline-block;padding:14px 24px;
-          background:rgba(200,241,53,0.1);color:#c8f135;
-          font-family:'DM Mono',monospace;
-          font-size:0.72rem;font-weight:500;
-          letter-spacing:0.1em;text-transform:uppercase;
-          border:1px solid rgba(200,241,53,0.2);
-          border-radius:12px;text-decoration:none;
-        ">Abrir en Telegram →</a>
-      </div>
-    `;
-    return false;
-  }
-  return true;
-}
-
 // ─── INIT ───
-if (checkTelegramAccess()) {
-  if (window.Telegram?.WebApp) {
-    window.Telegram.WebApp.ready();
-    window.Telegram.WebApp.expand();
-  }
-  updateProgress();
+if (window.Telegram?.WebApp) {
+  window.Telegram.WebApp.ready();
+  window.Telegram.WebApp.expand();
 }
+
+updateProgress();
 </script>
 </body>
 </html>
