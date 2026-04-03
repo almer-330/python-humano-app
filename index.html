@@ -1304,19 +1304,36 @@ const PHASE_FILES = {
 const FASE_CACHE = {};
 let _activeFasePosts = null;
 
-async function loadFaseData(phaseFile) {
-  if (FASE_CACHE[phaseFile]) return FASE_CACHE[phaseFile];
+async function loadFaseData(phaseFile, phaseId) {
+  if (FASE_CACHE[phaseId]) return FASE_CACHE[phaseId];
+
   const res = await fetch(phaseFile);
-  if (!res.ok) throw new Error(`No se pudo cargar ${phaseFile} (${res.status})`);
+  if (!res.ok) throw new Error('Archivo no encontrado (HTTP ' + res.status + '): ' + phaseFile);
+
   const html = await res.text();
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, 'text/html');
-  const scripts = [...doc.querySelectorAll('script')].map(s => s.textContent).join('\n');
-  // Evaluate script to extract POSTS object
-  const fn = new Function(scripts + '\nreturn typeof POSTS !== "undefined" ? POSTS : null;');
-  const posts = fn();
+
+  const allScripts = [...doc.querySelectorAll('script')]
+    .map(s => s.textContent)
+    .join('\n');
+
+  const tempKey = '__faseTemp' + phaseId + '__';
+  const wrapper = allScripts + '\nif(typeof POSTS!=="undefined")window["' + tempKey + '"]=POSTS;';
+
+  const old2 = document.getElementById('fase-script-' + phaseId);
+  if (old2) old2.remove();
+
+  const scriptEl = document.createElement('script');
+  scriptEl.id = 'fase-script-' + phaseId;
+  scriptEl.textContent = wrapper;
+  document.head.appendChild(scriptEl);
+
+  const posts = window[tempKey];
+  delete window[tempKey];
+
   if (!posts) throw new Error('No se encontró el objeto POSTS en ' + phaseFile);
-  FASE_CACHE[phaseFile] = posts;
+  FASE_CACHE[phaseId] = posts;
   return posts;
 }
 
@@ -1387,7 +1404,7 @@ async function openPost(postId) {
   const phaseFile = PHASE_FILES[phase.id];
   if (phaseFile) {
     try {
-      const posts = await loadFaseData(phaseFile);
+      const posts = await loadFaseData(phaseFile, phase.id);
       _activeFasePosts = posts;
       const postNum = parseInt(post.num);
       const postData = posts[postNum];
@@ -1401,9 +1418,8 @@ async function openPost(postId) {
         <div style="padding:40px 20px;text-align:center;">
           <div style="font-size:1.5rem;margin-bottom:12px">⚠️</div>
           <div style="color:var(--muted2);font-size:0.85rem;font-style:italic;line-height:1.7;">
-            No se pudo cargar el contenido.<br>
-            Asegúrate de que <code style="color:var(--accent);font-size:0.75rem">${phaseFile}</code><br>
-            está subido a tu repositorio de GitHub.
+            Error al cargar el contenido.<br>
+            <code style="color:var(--accent);font-size:0.72rem;word-break:break-all;">${e.message}</code>
           </div>
         </div>`;
     }
