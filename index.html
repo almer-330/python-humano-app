@@ -731,6 +731,140 @@
     margin-top: 20px;
     line-height: 1.8;
   }
+
+  /* ─── FASE CONTENT STYLES ─── */
+  #post-content-area { min-height: calc(100vh - 110px); background: var(--bg); }
+
+  .post-hero {
+    padding: 24px 20px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+  .post-emoji { font-size: 2rem; display: block; margin-bottom: 12px; line-height: 1; }
+  .post-intro { font-size: 0.9rem; font-weight: 300; font-style: italic; color: var(--muted2); line-height: 1.6; }
+
+  .post-body-wrap { padding: 0 20px 20px; }
+
+  .block { margin-bottom: 24px; }
+  .block-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 10px; display: block;
+  }
+  .text { font-size: 0.9rem; font-weight: 300; line-height: 1.85; color: #c0c0c0; }
+  .text p { margin-bottom: 10px; }
+  .text strong { color: var(--text); font-weight: 600; }
+  .text em { font-style: italic; color: var(--muted2); }
+
+  .copy-btn {
+    position: absolute; top: 8px; right: 8px;
+    font-family: 'DM Mono', monospace; font-size: 0.55rem;
+    color: var(--muted); background: var(--surface2);
+    border: 1px solid var(--border2); padding: 3px 8px;
+    border-radius: 4px; cursor: pointer; letter-spacing: 0.06em;
+    transition: all 0.2s;
+  }
+  .copy-btn:active { color: var(--accent); border-color: var(--accent); }
+  .out { color: #5a8a3a; }
+
+  .highlight {
+    background: rgba(200,241,53,0.05);
+    border-left: 2px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 14px; margin: 12px 0;
+    font-size: 0.87rem; line-height: 1.7; color: #aaa;
+  }
+  .highlight.red { background: rgba(255,107,107,0.05); border-left-color: var(--accent3); }
+  .highlight.cyan { background: rgba(91,255,216,0.05); border-left-color: var(--accent2); }
+  .highlight strong { color: var(--text); font-weight: 600; }
+
+  .rule-box {
+    background: var(--surface2); border-radius: 10px;
+    padding: 14px 16px; margin: 12px 0;
+    font-family: 'DM Mono', monospace; font-size: 0.78rem;
+    color: var(--accent); line-height: 1.7;
+  }
+
+  .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
+  .comp-item { background: var(--surface2); border-radius: 8px; padding: 12px; }
+  .comp-label {
+    font-family: 'DM Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px;
+  }
+  .comp-label.bad { color: var(--accent3); }
+  .comp-label.good { color: var(--accent); }
+  .comp-code { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: #aaa; line-height: 1.6; }
+
+  .types-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
+  .type-card { background: var(--surface2); border-radius: 10px; padding: 12px; border: 1px solid var(--border2); }
+  .type-name { font-family: 'DM Mono', monospace; font-size: 0.7rem; font-weight: 500; margin-bottom: 4px; }
+  .type-name.int { color: var(--accent4); }
+  .type-name.flt { color: var(--accent); }
+  .type-name.str { color: var(--accent2); }
+  .type-name.bool { color: #ff79c6; }
+  .type-name.none { color: var(--muted2); }
+  .type-desc { font-size: 0.72rem; color: var(--muted2); font-style: italic; margin-bottom: 6px; }
+  .type-example { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: #aaa; line-height: 1.6; }
+
+  .ops-list { margin: 12px 0; }
+  .op-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .op-row:last-child { border-bottom: none; }
+  .op-sym { font-family: 'DM Mono', monospace; font-size: 0.9rem; color: var(--accent); width: 36px; flex-shrink: 0; font-weight: 500; }
+  .op-name { font-size: 0.8rem; color: var(--muted2); flex: 1; }
+  .op-ex { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: #777; }
+
+  .flow-diagram { margin: 16px 0; background: var(--surface2); border-radius: 12px; padding: 16px; }
+  .flow-node { text-align: center; margin-bottom: 4px; }
+  .flow-box { display: inline-block; padding: 8px 16px; border-radius: 8px; font-family: 'DM Mono', monospace; font-size: 0.72rem; line-height: 1.4; }
+  .flow-box.start { background: rgba(200,241,53,0.1); color: var(--accent); border: 1px solid rgba(200,241,53,0.2); }
+  .flow-box.condition { background: rgba(255,179,71,0.1); color: var(--accent4); border: 1px solid rgba(255,179,71,0.2); border-radius: 20px; }
+  .flow-box.action { background: rgba(91,255,216,0.08); color: var(--accent2); border: 1px solid rgba(91,255,216,0.15); }
+  .flow-box.end { background: rgba(179,136,255,0.1); color: var(--accent5); border: 1px solid rgba(179,136,255,0.2); }
+  .flow-arrow { text-align: center; color: var(--muted); font-size: 1rem; margin: 2px 0; }
+  .flow-branches { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 4px 0; }
+  .flow-branch-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted); text-align: center; margin-bottom: 4px; }
+
+  .challenge {
+    background: rgba(91,255,216,0.04); border: 1px solid rgba(91,255,216,0.15);
+    border-radius: 12px; padding: 16px; margin-top: 20px;
+  }
+  .challenge-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .challenge-icon { font-size: 1rem; }
+  .challenge-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent2); }
+  .challenge-text { font-size: 0.87rem; line-height: 1.75; color: #aaa; font-weight: 300; }
+  .challenge-text strong { color: #ccc; font-weight: 600; }
+
+  .error-box { background: rgba(255,107,107,0.05); border: 1px solid rgba(255,107,107,0.15); border-radius: 10px; padding: 14px; margin: 12px 0; }
+  .error-header { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent3); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .error-text { font-size: 0.85rem; line-height: 1.7; color: #aaa; font-weight: 300; }
+
+  .nav-btn-post {
+    padding: 12px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; cursor: pointer; transition: border-color 0.2s; text-align: left;
+  }
+  .nav-btn-post:active { border-color: var(--border2); }
+  .nav-btn-post.next { text-align: right; }
+  .nav-post-label { font-family: 'DM Mono', monospace; font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 4px; }
+  .nav-post-title { font-size: 0.8rem; font-weight: 600; color: var(--text); line-height: 1.3; }
+
+  .methods-list { margin: 12px 0; }
+  .method-row { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .method-row:last-child { border-bottom: none; }
+  .method-name { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--accent5); flex-shrink: 0; min-width: 100px; }
+  .method-desc { font-size: 0.78rem; color: var(--muted2); font-style: italic; line-height: 1.5; }
+
+  .format-table { margin: 12px 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .format-row { display: grid; grid-template-columns: 1fr 1fr 1fr; border-bottom: 1px solid var(--border); }
+  .format-row:last-child { border-bottom: none; }
+  .format-row.header { background: var(--surface2); }
+  .format-cell { padding: 10px 12px; font-family: 'DM Mono', monospace; font-size: 0.7rem; color: #aaa; border-right: 1px solid var(--border); }
+  .format-cell:last-child { border-right: none; }
+  .format-row.header .format-cell { color: var(--muted); font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .format-cell.accent { color: var(--accent); }
+
+  @keyframes fadeIn2 { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+  .fade-in { animation: fadeIn2 0.2s ease; }
 </style>
 </head>
 <body>
@@ -854,10 +988,7 @@
     <button class="back-btn" onclick="goBackToPhase()" style="flex-shrink:0">← fase</button>
     <span class="post-phase-tag" id="post-phase-tag" style="flex:1;text-align:right"></span>
   </div>
-  <iframe id="post-iframe"
-    style="width:100%;border:none;min-height:calc(100vh - 110px);background:var(--bg);"
-    src="about:blank">
-  </iframe>
+  <div id="post-content-area"></div>
   <div style="padding:16px 20px;border-top:1px solid var(--border);display:flex;gap:10px;" id="post-footer">
     <button class="complete-btn" id="complete-btn-current" onclick="toggleCurrentPost()" style="flex:1;margin:0"></button>
   </div>
@@ -1169,10 +1300,72 @@ const PHASE_FILES = {
   2: 'fase2_posts.html'
 };
 
-function openPost(postId) {
+// ─── FETCH-BASED POST LOADER ───
+const FASE_CACHE = {};
+let _activeFasePosts = null;
+
+async function loadFaseData(phaseFile) {
+  if (FASE_CACHE[phaseFile]) return FASE_CACHE[phaseFile];
+  const res = await fetch(phaseFile);
+  if (!res.ok) throw new Error(`No se pudo cargar ${phaseFile} (${res.status})`);
+  const html = await res.text();
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+  const scripts = [...doc.querySelectorAll('script')].map(s => s.textContent).join('\n');
+  // Evaluate script to extract POSTS object
+  const fn = new Function(scripts + '\nreturn typeof POSTS !== "undefined" ? POSTS : null;');
+  const posts = fn();
+  if (!posts) throw new Error('No se encontró el objeto POSTS en ' + phaseFile);
+  FASE_CACHE[phaseFile] = posts;
+  return posts;
+}
+
+// Global showPost for in-content next/prev navigation
+function showPost(num) {
+  if (!_activeFasePosts || !_activeFasePosts[num]) return;
+  renderPostInDiv(_activeFasePosts[num]);
+  window.scrollTo(0, 0);
+}
+
+function copyCode(btn) {
+  const code = btn.previousElementSibling.innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = '✓ copiado';
+    setTimeout(() => btn.textContent = 'copiar', 2000);
+  }).catch(() => {});
+}
+
+function renderPostInDiv(postData) {
+  const area = document.getElementById('post-content-area');
+  area.innerHTML = `
+    <div class="post-body-wrap fade-in">
+      <div class="post-hero">
+        <span class="post-emoji">${postData.emoji}</span>
+        <div class="post-text" style="font-size:1.4rem;font-weight:700;letter-spacing:-0.02em;line-height:1.2;color:var(--text);margin-bottom:8px;">${postData.title}</div>
+        <div class="post-intro">${postData.intro}</div>
+      </div>
+      ${postData.content}
+      <div class="post-nav" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px;padding-bottom:8px;">
+        ${postData.prev
+          ? `<div class="nav-btn-post" onclick="showPost(${postData.prev})">
+               <span class="nav-post-label">← anterior</span>
+               <span class="nav-post-title">${postData.prevTitle}</span>
+             </div>`
+          : '<div></div>'}
+        ${postData.next
+          ? `<div class="nav-btn-post next" onclick="showPost(${postData.next})">
+               <span class="nav-post-label">siguiente →</span>
+               <span class="nav-post-title">${postData.nextTitle}</span>
+             </div>`
+          : '<div></div>'}
+      </div>
+    </div>
+  `;
+}
+
+async function openPost(postId) {
   const phase = PHASES.find(p => p.posts.some(post => post.id === postId));
   const post = phase.posts.find(p => p.id === postId);
-  const postIndex = phase.posts.findIndex(p => p.id === postId);
   currentPostId = postId;
   screenHistory.push('post');
 
@@ -1185,24 +1378,36 @@ function openPost(postId) {
   completeBtn.style.flex = '1';
   completeBtn.style.margin = '0';
 
-  // Load the phase file and navigate to the specific post
-  const phaseFile = PHASE_FILES[phase.id];
-  if (phaseFile) {
-    const iframe = document.getElementById('post-iframe');
-    const postNum = parseInt(post.num);
-    // Use hash to pass post number to the iframe
-    iframe.src = `${phaseFile}#post-${postNum}`;
-    // After load, call showPost in the iframe
-    iframe.onload = () => {
-      try {
-        iframe.contentWindow.showPost(postNum);
-      } catch(e) {
-        // cross-origin fallback — shouldn't happen on same domain
-      }
-    };
-  }
+  const area = document.getElementById('post-content-area');
+  area.innerHTML = `<div style="padding:60px 0;text-align:center;color:var(--muted);font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.12em;">cargando...</div>`;
 
   showScreen('post');
+  window.scrollTo(0, 0);
+
+  const phaseFile = PHASE_FILES[phase.id];
+  if (phaseFile) {
+    try {
+      const posts = await loadFaseData(phaseFile);
+      _activeFasePosts = posts;
+      const postNum = parseInt(post.num);
+      const postData = posts[postNum];
+      if (postData) {
+        renderPostInDiv(postData);
+      } else {
+        area.innerHTML = `<div style="padding:40px 20px;text-align:center;color:var(--muted2);font-style:italic;">Post no encontrado.</div>`;
+      }
+    } catch(e) {
+      area.innerHTML = `
+        <div style="padding:40px 20px;text-align:center;">
+          <div style="font-size:1.5rem;margin-bottom:12px">⚠️</div>
+          <div style="color:var(--muted2);font-size:0.85rem;font-style:italic;line-height:1.7;">
+            No se pudo cargar el contenido.<br>
+            Asegúrate de que <code style="color:var(--accent);font-size:0.75rem">${phaseFile}</code><br>
+            está subido a tu repositorio de GitHub.
+          </div>
+        </div>`;
+    }
+  }
 }
 
 function toggleCurrentPost() {
