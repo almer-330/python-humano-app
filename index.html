@@ -1319,7 +1319,9 @@ async function loadFaseData(phaseFile, phaseId) {
     .join('\n');
 
   const tempKey = '__faseTemp' + phaseId + '__';
-  const wrapper = allScripts + '\nif(typeof POSTS!=="undefined")window["' + tempKey + '"]=POSTS;';
+  // 'const' no se adjunta a window — hay que convertirlo a 'var' antes de inyectar
+  const fixedScripts = allScripts.replace(/const\s+POSTS\s*=/, 'var POSTS =');
+  const wrapper = fixedScripts + '\nif(typeof POSTS!=="undefined")window["' + tempKey + '"]=POSTS;';
 
   const old2 = document.getElementById('fase-script-' + phaseId);
   if (old2) old2.remove();
