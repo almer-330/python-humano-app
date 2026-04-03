@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Python Humano</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #181818;
+    --surface3: #202020;
+    --border: #222222;
+    --border2: #2a2a2a;
+    --accent: #c8f135;
+    --accent2: #5bffd8;
+    --accent3: #ff6b6b;
+    --accent4: #ffb347;
+    --accent5: #b388ff;
+    --text: #ebebeb;
+    --muted: #666;
+    --muted2: #888;
+    --code-bg: #0d0d0d;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Fraunces', Georgia, serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── SCREENS ─── */
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: block; }
+
+  /* ─── HOME SCREEN ─── */
+  #home {
+    padding: 0 0 100px;
+  }
+
+  .home-header {
+    padding: 32px 20px 24px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .home-header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(200,241,53,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(200,241,53,0.08);
+    border: 1px solid rgba(200,241,53,0.2);
+    padding: 3px 10px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+
+  .home-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .home-sub {
+    font-size: 0.88rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--muted2);
+  }
+
+  /* progress bar */
+  .progress-section {
+    padding: 20px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .progress-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .progress-count {
+    color: var(--accent);
+  }
+
+  .progress-bar-bg {
+    width: 100%;
+    height: 3px;
+    background: var(--border2);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(to right, var(--accent), rgba(200,241,53,0.5));
+    border-radius: 3px;
+    transition: width 0.5s ease;
+  }
+
+  /* phases list */
+  .phases-section {
+    padding: 20px;
+  }
+
+  .section-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .phase-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .phase-card:active { background: var(--surface2); }
+
+  .phase-card.unlocked:hover { border-color: var(--border2); }
+
+  .phase-card.locked {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .phase-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .phase-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+    border: 1px solid;
+  }
+
+  .phase-card.f1 .phase-icon { background: rgba(200,241,53,0.08); border-color: rgba(200,241,53,0.2); }
+  .phase-card.f2 .phase-icon { background: rgba(91,255,216,0.08); border-color: rgba(91,255,216,0.2); }
+  .phase-card.f3 .phase-icon { background: rgba(255,179,71,0.08); border-color: rgba(255,179,71,0.2); }
+  .phase-card.f4 .phase-icon { background: rgba(179,136,255,0.08); border-color: rgba(179,136,255,0.2); }
+  .phase-card.f5 .phase-icon { background: rgba(255,107,107,0.08); border-color: rgba(255,107,107,0.2); }
+  .phase-card.f6 .phase-icon { background: rgba(91,255,216,0.08); border-color: rgba(91,255,216,0.2); }
+
+  .phase-meta { flex: 1; }
+
+  .phase-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+
+  .phase-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .phase-card.f1 .phase-name { color: var(--accent); }
+  .phase-card.f2 .phase-name { color: var(--accent2); }
+  .phase-card.f3 .phase-name { color: var(--accent4); }
+  .phase-card.f4 .phase-name { color: var(--accent5); }
+  .phase-card.f5 .phase-name { color: var(--accent3); }
+  .phase-card.f6 .phase-name { color: var(--accent2); }
+
+  .phase-arrow {
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+
+  .phase-desc {
+    font-size: 0.8rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--muted2);
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+
+  .phase-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .phase-dots {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+  }
+
+  .phase-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--border2);
+  }
+
+  .phase-dot.done { background: var(--accent); }
+  .phase-dot.f2-done { background: var(--accent2); }
+
+  .phase-progress-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--muted);
+  }
+
+  /* ─── PHASE SCREEN ─── */
+  #phase {
+    padding-bottom: 100px;
+  }
+
+  .phase-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .back-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .back-btn:active { color: var(--text); }
+
+  .phase-header-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .phase-header-sub {
+    font-size: 0.82rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--muted2);
+  }
+
+  .posts-list {
+    padding: 16px 20px;
+  }
+
+  .post-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .post-item:active { background: var(--surface2); }
+
+  .post-item.completed {
+    border-color: rgba(200,241,53,0.2);
+  }
+
+  .post-check {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.7rem;
+    transition: all 0.2s;
+  }
+
+  .post-item.completed .post-check {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+  }
+
+  .post-info { flex: 1; }
+
+  .post-item-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+
+  .post-item-title {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .post-item-sub {
+    font-size: 0.75rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--muted2);
+    margin-top: 2px;
+  }
+
+  .post-arrow {
+    color: var(--muted);
+    font-size: 0.75rem;
+  }
+
+  .prompt-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    background: rgba(200,241,53,0.05);
+    border: 1px solid rgba(200,241,53,0.15);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .prompt-item:active { background: rgba(200,241,53,0.1); }
+
+  .prompt-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(200,241,53,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  .prompt-info { flex: 1; }
+
+  .prompt-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--accent);
+    margin-bottom: 2px;
+    letter-spacing: 0.08em;
+  }
+
+  .prompt-title {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  /* ─── POST SCREEN ─── */
+  #post {
+    padding-bottom: 100px;
+  }
+
+  .post-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .post-phase-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .post-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--text);
+  }
+
+  .post-body {
+    padding: 20px;
+  }
+
+  .post-section {
+    margin-bottom: 24px;
+  }
+
+  .post-text {
+    font-size: 0.92rem;
+    font-weight: 300;
+    line-height: 1.85;
+    color: #c0c0c0;
+  }
+
+  .post-text p { margin-bottom: 10px; }
+  .post-text strong { color: var(--text); font-weight: 600; }
+  .post-text em { font-style: italic; color: var(--muted2); }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    margin-top: 20px;
+    display: block;
+  }
+
+  /* code block */
+  .code-wrap {
+    position: relative;
+    margin: 12px 0;
+  }
+
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 1.75;
+    overflow-x: auto;
+    color: #c0c0c0;
+  }
+
+  .copy-code-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--muted);
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .copy-code-btn:active { color: var(--accent); border-color: var(--accent); }
+
+  .kw { color: var(--accent); }
+  .str { color: var(--accent2); }
+  .num { color: var(--accent4); }
+  .fn { color: var(--accent5); }
+  .cm { color: #444; font-style: italic; }
+  .bl { color: #ff79c6; }
+  .op { color: #777; }
+
+  /* highlight boxes */
+  .highlight-box {
+    background: rgba(200,241,53,0.05);
+    border-left: 2px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 14px;
+    margin: 12px 0;
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: #aaa;
+  }
+
+  .highlight-box.red {
+    background: rgba(255,107,107,0.05);
+    border-left-color: var(--accent3);
+  }
+
+  .highlight-box.cyan {
+    background: rgba(91,255,216,0.05);
+    border-left-color: var(--accent2);
+  }
+
+  /* challenge box */
+  .challenge-box {
+    background: rgba(91,255,216,0.04);
+    border: 1px solid rgba(91,255,216,0.15);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 20px;
+  }
+
+  .challenge-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 10px;
+  }
+
+  .challenge-text {
+    font-size: 0.88rem;
+    line-height: 1.75;
+    color: #aaa;
+    font-weight: 300;
+  }
+
+  /* complete button */
+  .complete-btn {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    background: var(--accent);
+    color: #000;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    margin-top: 24px;
+    transition: opacity 0.2s;
+  }
+
+  .complete-btn:active { opacity: 0.8; }
+
+  .complete-btn.done {
+    background: var(--surface2);
+    color: var(--accent);
+    border: 1px solid rgba(200,241,53,0.2);
+  }
+
+  /* nav between posts */
+  .post-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .post-nav-btn {
+    padding: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    text-align: left;
+  }
+
+  .post-nav-btn:active { border-color: var(--border2); }
+
+  .post-nav-btn.next { text-align: right; }
+
+  .post-nav-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .post-nav-title {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  /* ─── PROMPT SCREEN ─── */
+  #prompt-screen {
+    padding-bottom: 100px;
+  }
+
+  .prompt-body {
+    padding: 20px;
+  }
+
+  .prompt-content {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    line-height: 1.8;
+    color: #888;
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin-bottom: 16px;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .copy-prompt-btn {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    background: rgba(200,241,53,0.1);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid rgba(200,241,53,0.2);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .copy-prompt-btn:active { background: rgba(200,241,53,0.15); }
+
+  /* ─── BOTTOM NAV ─── */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(10,10,10,0.95);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+    z-index: 100;
+  }
+
+  .nav-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: opacity 0.2s;
+  }
+
+  .nav-btn:active { opacity: 0.6; }
+
+  .nav-icon { font-size: 1.2rem; }
+
+  .nav-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .nav-btn.active .nav-label { color: var(--accent); }
+  .nav-btn.active .nav-icon { filter: none; }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .screen.active { animation: fadeIn 0.2s ease; }
+
+  /* hashtags */
+  .hashtags {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-top: 20px;
+    line-height: 1.8;
+  }
+
+  /* ─── FASE CONTENT STYLES ─── */
+  #post-content-area { min-height: calc(100vh - 110px); background: var(--bg); }
+
+  .post-hero {
+    padding: 24px 20px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+  .post-emoji { font-size: 2rem; display: block; margin-bottom: 12px; line-height: 1; }
+  .post-intro { font-size: 0.9rem; font-weight: 300; font-style: italic; color: var(--muted2); line-height: 1.6; }
+
+  .post-body-wrap { padding: 0 20px 20px; }
+
+  .block { margin-bottom: 24px; }
+  .block-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 10px; display: block;
+  }
+  .text { font-size: 0.9rem; font-weight: 300; line-height: 1.85; color: #c0c0c0; }
+  .text p { margin-bottom: 10px; }
+  .text strong { color: var(--text); font-weight: 600; }
+  .text em { font-style: italic; color: var(--muted2); }
+
+  .copy-btn {
+    position: absolute; top: 8px; right: 8px;
+    font-family: 'DM Mono', monospace; font-size: 0.55rem;
+    color: var(--muted); background: var(--surface2);
+    border: 1px solid var(--border2); padding: 3px 8px;
+    border-radius: 4px; cursor: pointer; letter-spacing: 0.06em;
+    transition: all 0.2s;
+  }
+  .copy-btn:active { color: var(--accent); border-color: var(--accent); }
+  .out { color: #5a8a3a; }
+
+  .highlight {
+    background: rgba(200,241,53,0.05);
+    border-left: 2px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 14px; margin: 12px 0;
+    font-size: 0.87rem; line-height: 1.7; color: #aaa;
+  }
+  .highlight.red { background: rgba(255,107,107,0.05); border-left-color: var(--accent3); }
+  .highlight.cyan { background: rgba(91,255,216,0.05); border-left-color: var(--accent2); }
+  .highlight strong { color: var(--text); font-weight: 600; }
+
+  .rule-box {
+    background: var(--surface2); border-radius: 10px;
+    padding: 14px 16px; margin: 12px 0;
+    font-family: 'DM Mono', monospace; font-size: 0.78rem;
+    color: var(--accent); line-height: 1.7;
+  }
+
+  .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
+  .comp-item { background: var(--surface2); border-radius: 8px; padding: 12px; }
+  .comp-label {
+    font-family: 'DM Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px;
+  }
+  .comp-label.bad { color: var(--accent3); }
+  .comp-label.good { color: var(--accent); }
+  .comp-code { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: #aaa; line-height: 1.6; }
+
+  .types-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
+  .type-card { background: var(--surface2); border-radius: 10px; padding: 12px; border: 1px solid var(--border2); }
+  .type-name { font-family: 'DM Mono', monospace; font-size: 0.7rem; font-weight: 500; margin-bottom: 4px; }
+  .type-name.int { color: var(--accent4); }
+  .type-name.flt { color: var(--accent); }
+  .type-name.str { color: var(--accent2); }
+  .type-name.bool { color: #ff79c6; }
+  .type-name.none { color: var(--muted2); }
+  .type-desc { font-size: 0.72rem; color: var(--muted2); font-style: italic; margin-bottom: 6px; }
+  .type-example { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: #aaa; line-height: 1.6; }
+
+  .ops-list { margin: 12px 0; }
+  .op-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .op-row:last-child { border-bottom: none; }
+  .op-sym { font-family: 'DM Mono', monospace; font-size: 0.9rem; color: var(--accent); width: 36px; flex-shrink: 0; font-weight: 500; }
+  .op-name { font-size: 0.8rem; color: var(--muted2); flex: 1; }
+  .op-ex { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: #777; }
+
+  .flow-diagram { margin: 16px 0; background: var(--surface2); border-radius: 12px; padding: 16px; }
+  .flow-node { text-align: center; margin-bottom: 4px; }
+  .flow-box { display: inline-block; padding: 8px 16px; border-radius: 8px; font-family: 'DM Mono', monospace; font-size: 0.72rem; line-height: 1.4; }
+  .flow-box.start { background: rgba(200,241,53,0.1); color: var(--accent); border: 1px solid rgba(200,241,53,0.2); }
+  .flow-box.condition { background: rgba(255,179,71,0.1); color: var(--accent4); border: 1px solid rgba(255,179,71,0.2); border-radius: 20px; }
+  .flow-box.action { background: rgba(91,255,216,0.08); color: var(--accent2); border: 1px solid rgba(91,255,216,0.15); }
+  .flow-box.end { background: rgba(179,136,255,0.1); color: var(--accent5); border: 1px solid rgba(179,136,255,0.2); }
+  .flow-arrow { text-align: center; color: var(--muted); font-size: 1rem; margin: 2px 0; }
+  .flow-branches { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 4px 0; }
+  .flow-branch-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted); text-align: center; margin-bottom: 4px; }
+
+  .challenge {
+    background: rgba(91,255,216,0.04); border: 1px solid rgba(91,255,216,0.15);
+    border-radius: 12px; padding: 16px; margin-top: 20px;
+  }
+  .challenge-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .challenge-icon { font-size: 1rem; }
+  .challenge-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent2); }
+  .challenge-text { font-size: 0.87rem; line-height: 1.75; color: #aaa; font-weight: 300; }
+  .challenge-text strong { color: #ccc; font-weight: 600; }
+
+  .error-box { background: rgba(255,107,107,0.05); border: 1px solid rgba(255,107,107,0.15); border-radius: 10px; padding: 14px; margin: 12px 0; }
+  .error-header { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent3); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .error-text { font-size: 0.85rem; line-height: 1.7; color: #aaa; font-weight: 300; }
+
+  .nav-btn-post {
+    padding: 12px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; cursor: pointer; transition: border-color 0.2s; text-align: left;
+  }
+  .nav-btn-post:active { border-color: var(--border2); }
+  .nav-btn-post.next { text-align: right; }
+  .nav-post-label { font-family: 'DM Mono', monospace; font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 4px; }
+  .nav-post-title { font-size: 0.8rem; font-weight: 600; color: var(--text); line-height: 1.3; }
+
+  .methods-list { margin: 12px 0; }
+  .method-row { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .method-row:last-child { border-bottom: none; }
+  .method-name { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--accent5); flex-shrink: 0; min-width: 100px; }
+  .method-desc { font-size: 0.78rem; color: var(--muted2); font-style: italic; line-height: 1.5; }
+
+  .format-table { margin: 12px 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .format-row { display: grid; grid-template-columns: 1fr 1fr 1fr; border-bottom: 1px solid var(--border); }
+  .format-row:last-child { border-bottom: none; }
+  .format-row.header { background: var(--surface2); }
+  .format-cell { padding: 10px 12px; font-family: 'DM Mono', monospace; font-size: 0.7rem; color: #aaa; border-right: 1px solid var(--border); }
+  .format-cell:last-child { border-right: none; }
+  .format-row.header .format-cell { color: var(--muted); font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .format-cell.accent { color: var(--accent); }
+
+  @keyframes fadeIn2 { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+  .fade-in { animation: fadeIn2 0.2s ease; }
+</style>
+</head>
+<body>
+
+<!-- HOME SCREEN -->
+<div id="home" class="screen active">
+  <div class="home-header">
+    <div class="header-tag">🐍 canal oficial</div>
+    <div class="home-title">Python Humano</div>
+    <div class="home-sub">aprende Python como nadie te lo ha enseñado</div>
+  </div>
+
+  <div class="progress-section">
+    <div class="progress-label">
+      <span>tu progreso total</span>
+      <span class="progress-count" id="progress-count">0 / 80 posts</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progress-bar" style="width: 0%"></div>
+    </div>
+  </div>
+
+  <div class="phases-section">
+    <div class="section-title">la ruta completa</div>
+
+    <div class="phase-card f1 unlocked" onclick="openPhase(1)">
+      <div class="phase-card-header">
+        <div class="phase-icon">🧠</div>
+        <div class="phase-meta">
+          <div class="phase-num">fase 01</div>
+          <div class="phase-name">Aprende a pensar como Python</div>
+        </div>
+        <div class="phase-arrow">›</div>
+      </div>
+      <div class="phase-desc">Variables, tipos, operadores, condicionales, bucles. La base de todo.</div>
+      <div class="phase-progress">
+        <div class="phase-dots" id="dots-1"></div>
+        <div class="phase-progress-text" id="progress-1">0 / 12 posts</div>
+      </div>
+    </div>
+
+    <div class="phase-card f2 unlocked" onclick="openPhase(2)">
+      <div class="phase-card-header">
+        <div class="phase-icon">⚙️</div>
+        <div class="phase-meta">
+          <div class="phase-num">fase 02</div>
+          <div class="phase-name">Aprende a pensar como programador</div>
+        </div>
+        <div class="phase-arrow">›</div>
+      </div>
+      <div class="phase-desc">Algoritmos, patrones, flujo, lógica. Lo que ningún curso enseña.</div>
+      <div class="phase-progress">
+        <div class="phase-dots" id="dots-2"></div>
+        <div class="phase-progress-text" id="progress-2">0 / 18 posts</div>
+      </div>
+    </div>
+
+    <div class="phase-card f3 locked">
+      <div class="phase-card-header">
+        <div class="phase-icon">🏗️</div>
+        <div class="phase-meta">
+          <div class="phase-num">fase 03</div>
+          <div class="phase-name">Organiza la información como un pro</div>
+        </div>
+        <div class="phase-arrow">🔒</div>
+      </div>
+      <div class="phase-desc">Listas, diccionarios, sets, comprehensions.</div>
+    </div>
+
+    <div class="phase-card f4 locked">
+      <div class="phase-card-header">
+        <div class="phase-icon">⚡</div>
+        <div class="phase-meta">
+          <div class="phase-num">fase 04</div>
+          <div class="phase-name">Escribe código que no se repite</div>
+        </div>
+        <div class="phase-arrow">🔒</div>
+      </div>
+      <div class="phase-desc">Funciones, errores, módulos + primer proyecto real.</div>
+    </div>
+
+    <div class="phase-card f5 locked">
+      <div class="phase-card-header">
+        <div class="phase-icon">🧩</div>
+        <div class="phase-meta">
+          <div class="phase-num">fase 05</div>
+          <div class="phase-name">Piensa en objetos, no en instrucciones</div>
+        </div>
+        <div class="phase-arrow">🔒</div>
+      </div>
+      <div class="phase-desc">POO, archivos, JSON. El salto que cambia todo.</div>
+    </div>
+
+    <div class="phase-card f6 locked">
+      <div class="phase-card-header">
+        <div class="phase-icon">🚀</div>
+        <div class="phase-meta">
+          <div class="phase-num">fase 06</div>
+          <div class="phase-name">Construye cosas que funcionan en el mundo real</div>
+        </div>
+        <div class="phase-arrow">🔒</div>
+      </div>
+      <div class="phase-desc">APIs, scraping, bases de datos, automatización.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE SCREEN -->
+<div id="phase" class="screen">
+  <div class="phase-header" id="phase-header">
+    <button class="back-btn" onclick="goBack()">← volver</button>
+    <div class="phase-header-title" id="phase-title"></div>
+    <div class="phase-header-sub" id="phase-sub"></div>
+  </div>
+  <div class="posts-list" id="posts-list"></div>
+</div>
+
+<!-- POST SCREEN -->
+<div id="post" class="screen">
+  <div class="post-header" style="display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:10;">
+    <button class="back-btn" onclick="goBackToPhase()" style="flex-shrink:0">← fase</button>
+    <span class="post-phase-tag" id="post-phase-tag" style="flex:1;text-align:right"></span>
+  </div>
+  <div id="post-content-area"></div>
+  <div style="padding:16px 20px;border-top:1px solid var(--border);display:flex;gap:10px;" id="post-footer">
+    <button class="complete-btn" id="complete-btn-current" onclick="toggleCurrentPost()" style="flex:1;margin:0"></button>
+  </div>
+</div>
+
+<!-- PROMPT SCREEN -->
+<div id="prompt-screen" class="screen">
+  <div class="post-header">
+    <button class="back-btn" onclick="goBackToPhase()">← volver a la fase</button>
+    <span class="post-phase-tag">🤖 tutor con IA</span>
+    <div class="post-title" id="prompt-title"></div>
+  </div>
+  <div class="prompt-body">
+    <p style="font-size:0.85rem;color:var(--muted2);font-style:italic;margin-bottom:16px;font-weight:300;">
+      Copia este prompt y pégalo en ChatGPT, Claude o cualquier IA que uses. Py se adaptará a ti desde la primera respuesta.
+    </p>
+    <div class="prompt-content" id="prompt-content"></div>
+    <button class="copy-prompt-btn" onclick="copyPrompt()">📋 copiar prompt completo</button>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="nav-btn active" onclick="showScreen('home')" id="nav-home">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-label">inicio</span>
+  </button>
+  <button class="nav-btn" onclick="showScreen('phase')" id="nav-ruta">
+    <span class="nav-icon">🗺️</span>
+    <span class="nav-label">ruta</span>
+  </button>
+  <button class="nav-btn" onclick="showProgress()" id="nav-progreso">
+    <span class="nav-icon">📊</span>
+    <span class="nav-label">progreso</span>
+  </button>
+</div>
+
+<script>
+// ─── DATA ───
+const PHASES = [
+  {
+    id: 1,
+    icon: '🧠',
+    name: 'Aprende a pensar como Python',
+    sub: 'Variables, tipos, operadores, condicionales, bucles.',
+    color: '#c8f135',
+    posts: [
+      { id: 'p1_01', num: '01', title: 'Variables', sub: 'guarda información para usarla después' },
+      { id: 'p1_02', num: '02', title: 'Tipos de datos', sub: 'no toda la información es igual' },
+      { id: 'p1_03', num: '03', title: 'Operadores', sub: 'y el error que todos cometen' },
+      { id: 'p1_04', num: '04', title: 'Input', sub: 'cómo hacer que tu programa escuche' },
+      { id: 'p1_05', num: '05', title: 'Condicionales', sub: 'tú das las rutas, Python decide la dirección' },
+      { id: 'p1_06', num: '06', title: 'Operadores lógicos', sub: 'cuando la decisión tiene matices' },
+      { id: 'p1_07', num: '07', title: 'Bucle while', sub: 'repite hasta que algo cambie' },
+      { id: 'p1_08', num: '08', title: 'Bucle for', sub: 'recorre cosas una a una' },
+      { id: 'p1_09', num: '09', title: 'break, continue y pass', sub: 'controla tus bucles desde adentro' },
+      { id: 'p1_10', num: '10', title: 'F-strings, None y múltiple asignación', sub: 'tres cosas que verás en código real' },
+      { id: 'p1_11', num: '11', title: 'Métodos de strings', sub: 'las herramientas que ya usabas sin saberlo' },
+      { id: 'p1_12', num: '12', title: 'Formateo de números', sub: 'muestra los números como deben verse' },
+    ],
+    prompt: `Eres un tutor experto en Python llamado Py.
+Fuiste creado específicamente para ayudar a cualquier
+persona a dominar los fundamentos de Python
+de la Fase 1 del canal Python Humano.
+
+Tu personalidad es la de un amigo que sabe programar.
+Cercano, paciente, directo y sin tecnicismos innecesarios.
+Nunca haces sentir mal al usuario por no saber algo.
+Nunca avanzas si el usuario no entendió.
+Nunca das todo resuelto — guías hasta que el usuario
+llegue a la respuesta por sí mismo.
+
+LO QUE EL USUARIO ACABA DE APRENDER
+
+El usuario completó la Fase 1 de Python Humano.
+Estos son los temas que estudió:
+
+→ Variables y cómo nombrarlas correctamente
+→ Tipos de datos: int, float, str, bool, None
+→ Type casting: int(), float(), str(), bool()
+→ Operadores aritméticos y de comparación
+→ F-strings y formateo de números
+→ Múltiple asignación
+→ Input() y cómo funciona
+→ Condicionales: if, elif, else y operador ternario
+→ Control de flujo
+→ Operadores lógicos: and, or, not
+→ Bucle while
+→ Bucle for, range(), enumerate()
+→ break, continue y pass
+→ Métodos de strings
+→ Formateo de números con round() y :.2f
+
+TU OBJETIVO
+
+No es repasar los temas.
+Es asegurarte de que el usuario los domina.
+
+Dominar significa tres cosas:
+1. Puede leer código y decir qué hace sin ejecutarlo.
+2. Puede escribir código desde cero ante un problema.
+3. Cuando algo falla, entiende por qué y cómo arreglarlo.
+
+CÓMO ARRANCA LA SESIÓN
+
+Saluda al usuario y hazle estas 6 preguntas:
+
+1. ¿Cómo te sientes con los temas de la Fase 1?
+   a) Perdido en varios temas
+   b) Entiendo pero me cuesta aplicarlo
+   c) Bastante bien, quiero ponerlo a prueba
+
+2. ¿Cómo aprendes mejor?
+   a) Con ejemplos de la vida real y analogías
+   b) Directo al código y que me expliques si fallo
+   c) Primero entender el por qué y luego el cómo
+
+3. ¿Hay algún tema donde quedaste más flojo?
+
+4. ¿Tienes Python instalado y un IDE para practicar?
+   a) Sí, tengo todo y sé usarlo
+   b) Sí pero no sé bien cómo usarlo
+   c) No tengo nada instalado
+   d) Practico en el navegador
+
+5. ¿Cuánto tiempo tienes para esta sesión?
+   a) 20 minutos
+   b) 1 hora
+   c) Todo el tiempo que necesite
+
+6. ¿Es tu primera sesión conmigo?
+   a) Sí
+   b) No, ya tuvimos una sesión antes
+
+Adapta la sesión según las respuestas.
+Nunca termines sin decirle al usuario
+exactamente qué dominó y qué necesita practicar.`
+  },
+  {
+    id: 2,
+    icon: '⚙️',
+    name: 'Aprende a pensar como programador',
+    sub: 'Algoritmos, patrones, flujo, lógica.',
+    color: '#5bffd8',
+    posts: [
+      { id: 'p2_01', num: '01', title: 'Qué es un algoritmo', sub: 'el orden importa' },
+      { id: 'p2_02', num: '02', title: 'Pseudocódigo', sub: 'piensa en español antes de escribir Python' },
+      { id: 'p2_03', num: '03', title: 'Cómo leer un problema de verdad', sub: 'diseccionar antes de codificar' },
+      { id: 'p2_04', num: '04', title: 'Cómo descomponer un problema grande', sub: 'divide y vencerás' },
+      { id: 'p2_05', num: '05', title: 'Contadores', sub: 'llevar la cuenta de algo' },
+      { id: 'p2_06', num: '06', title: 'Acumuladores', sub: 'sumar, juntar, construir' },
+      { id: 'p2_07', num: '07', title: 'Banderas', sub: 'variables que toman decisiones' },
+      { id: 'p2_08', num: '08', title: 'Validaciones', sub: 'no confíes en el usuario' },
+      { id: 'p2_09', num: '09', title: 'Casos extremos', sub: 'qué pasa cuando algo sale diferente' },
+      { id: 'p2_10', num: '10', title: 'Cómo diseñar el flujo', sub: 'antes de escribir una línea de código' },
+      { id: 'p2_11', num: '11', title: 'Construye de adentro hacia afuera', sub: 'capa por capa' },
+      { id: 'p2_12', num: '12', title: 'Qué hacer cuando te bloqueas', sub: '4 tipos de bloqueo y cómo salir' },
+      { id: 'p2_13', num: '13', title: 'Trazabilidad', sub: 'sigue el código línea por línea' },
+      { id: 'p2_14', num: '14', title: 'Avanzar con información incompleta', sub: 'cómo tomar decisiones conscientes' },
+      { id: 'p2_15', num: '15', title: 'Refactorización', sub: 'mejora código que ya funciona' },
+      { id: 'p2_16', num: '16', title: 'Reconocer patrones', sub: 'ver la solución antes de construirla' },
+      { id: 'p2_17', num: '17', title: 'El ciclo completo', sub: 'de problema a código terminado' },
+      { id: 'p2_18', num: '18', title: 'Pruebas mentales', sub: 'verifica la lógica antes de ejecutar' },
+    ],
+    prompt: `Eres un tutor experto en pensamiento lógico
+y programación llamado Py.
+
+Fuiste creado para ayudar a dominar la Fase 2
+del canal Python Humano —
+"Aprende a pensar como programador."
+
+No evalúas solo el código — evalúas el proceso.
+No avanzas si el proceso no está claro,
+aunque el código funcione.
+
+LO QUE EL USUARIO YA DOMINA
+
+El usuario completó la Fase 1 completa.
+Asume que puede escribir variables, condicionales,
+bucles, funciones básicas, métodos de strings
+y formateo de números sin problema.
+
+LO QUE APRENDIÓ EN FASE 2
+
+→ Algoritmos y pseudocódigo
+→ Cómo leer y descomponer problemas
+→ Contadores, acumuladores, banderas
+→ Validaciones y casos extremos
+→ Diseño del flujo y construcción por capas
+→ Qué hacer cuando se bloquea
+→ Trazabilidad y pruebas mentales
+→ Refactorización y reconocimiento de patrones
+→ El ciclo completo de 7 pasos
+
+TU OBJETIVO
+
+Verificar que el proceso es correcto,
+no solo que el código funciona.
+
+Dominar la Fase 2 significa ejecutar
+los 7 pasos del ciclo de forma natural,
+sin que nadie se los recuerde.
+
+CÓMO ARRANCA LA SESIÓN
+
+Hazle estas 6 preguntas al usuario:
+
+1. ¿Cómo te sientes con la Fase 2?
+   a) Perdido en varios temas
+   b) Entiendo pero no sé aplicarlo
+   c) Bastante bien, quiero ponerlo a prueba
+
+2. ¿Qué parte del proceso te cuesta más?
+   a) Entender el problema antes de codificar
+   b) Descomponer y ordenar las partes
+   c) Identificar qué patrón usar
+   d) Construir sin bloquearme
+
+3. ¿Cómo aprendes mejor?
+   a) Con ejemplos de la vida real
+   b) Directo al problema
+   c) Primero el por qué
+
+4. ¿Tienes Python instalado?
+5. ¿Cuánto tiempo tienes?
+6. ¿Es tu primera sesión de Fase 2?
+
+Nunca termines sin decirle al usuario
+si está listo para la Fase 3 o no — y por qué.`
+  }
+];
+
+// ─── STATE ───
+let currentPhase = null;
+let currentPostId = null;
+let screenHistory = ['home'];
+let completed = JSON.parse(localStorage.getItem('ph_completed') || '[]');
+
+// ─── PROGRESS ───
+function updateProgress() {
+  const total = 80;
+  const done = completed.length;
+  const pct = Math.round((done / total) * 100);
+  document.getElementById('progress-count').textContent = `${done} / ${total} posts`;
+  document.getElementById('progress-bar').style.width = `${pct}%`;
+
+  PHASES.forEach(phase => {
+    const phDone = phase.posts.filter(p => completed.includes(p.id)).length;
+    const total = phase.posts.length;
+    const dotsEl = document.getElementById(`dots-${phase.id}`);
+    const progressEl = document.getElementById(`progress-${phase.id}`);
+    if (dotsEl) {
+      dotsEl.innerHTML = phase.posts.map(p =>
+        `<div class="phase-dot ${completed.includes(p.id) ? 'done' : ''}"></div>`
+      ).join('');
+    }
+    if (progressEl) progressEl.textContent = `${phDone} / ${total} posts`;
+  });
+}
+
+// ─── SCREENS ───
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  if (id === 'home') document.getElementById('nav-home').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function openPhase(phaseId) {
+  const phase = PHASES.find(p => p.id === phaseId);
+  if (!phase) return;
+  currentPhase = phase;
+  screenHistory.push('phase');
+
+  document.getElementById('phase-title').textContent = phase.name;
+  document.getElementById('phase-sub').textContent = phase.sub;
+  document.getElementById('phase-header').style.borderColor = 'var(--border)';
+
+  const list = document.getElementById('posts-list');
+  list.innerHTML = phase.posts.map((post, i) => `
+    <div class="post-item ${completed.includes(post.id) ? 'completed' : ''}" onclick="openPost('${post.id}')">
+      <div class="post-check">${completed.includes(post.id) ? '✓' : ''}</div>
+      <div class="post-info">
+        <div class="post-item-num">post ${post.num}</div>
+        <div class="post-item-title">${post.title}</div>
+        <div class="post-item-sub">${post.sub}</div>
+      </div>
+      <div class="post-arrow">›</div>
+    </div>
+  `).join('') + `
+    <div class="prompt-item" onclick="openPrompt(${phase.id})">
+      <div class="prompt-icon">🤖</div>
+      <div class="prompt-info">
+        <div class="prompt-label">tutor con IA</div>
+        <div class="prompt-title">Domina la Fase ${phase.id} con IA</div>
+      </div>
+      <div class="post-arrow" style="color:var(--accent)">›</div>
+    </div>
+  `;
+
+  showScreen('phase');
+  document.getElementById('nav-ruta').classList.add('active');
+}
+
+// Map phase ID to HTML file
+const PHASE_FILES = {
+  1: 'fase1_posts.html',
+  2: 'fase2_posts.html'
+};
+
+// ─── FETCH-BASED POST LOADER ───
+const FASE_CACHE = {};
+let _activeFasePosts = null;
+
+async function loadFaseData(phaseFile) {
+  if (FASE_CACHE[phaseFile]) return FASE_CACHE[phaseFile];
+  const res = await fetch(phaseFile);
+  if (!res.ok) throw new Error(`No se pudo cargar ${phaseFile} (${res.status})`);
+  const html = await res.text();
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+  const scripts = [...doc.querySelectorAll('script')].map(s => s.textContent).join('\n');
+  // Evaluate script to extract POSTS object
+  const fn = new Function(scripts + '\nreturn typeof POSTS !== "undefined" ? POSTS : null;');
+  const posts = fn();
+  if (!posts) throw new Error('No se encontró el objeto POSTS en ' + phaseFile);
+  FASE_CACHE[phaseFile] = posts;
+  return posts;
+}
+
+// Global showPost for in-content next/prev navigation
+function showPost(num) {
+  if (!_activeFasePosts || !_activeFasePosts[num]) return;
+  renderPostInDiv(_activeFasePosts[num]);
+  window.scrollTo(0, 0);
+}
+
+function copyCode(btn) {
+  const code = btn.previousElementSibling.innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = '✓ copiado';
+    setTimeout(() => btn.textContent = 'copiar', 2000);
+  }).catch(() => {});
+}
+
+function renderPostInDiv(postData) {
+  const area = document.getElementById('post-content-area');
+  area.innerHTML = `
+    <div class="post-body-wrap fade-in">
+      <div class="post-hero">
+        <span class="post-emoji">${postData.emoji}</span>
+        <div class="post-text" style="font-size:1.4rem;font-weight:700;letter-spacing:-0.02em;line-height:1.2;color:var(--text);margin-bottom:8px;">${postData.title}</div>
+        <div class="post-intro">${postData.intro}</div>
+      </div>
+      ${postData.content}
+      <div class="post-nav" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px;padding-bottom:8px;">
+        ${postData.prev
+          ? `<div class="nav-btn-post" onclick="showPost(${postData.prev})">
+               <span class="nav-post-label">← anterior</span>
+               <span class="nav-post-title">${postData.prevTitle}</span>
+             </div>`
+          : '<div></div>'}
+        ${postData.next
+          ? `<div class="nav-btn-post next" onclick="showPost(${postData.next})">
+               <span class="nav-post-label">siguiente →</span>
+               <span class="nav-post-title">${postData.nextTitle}</span>
+             </div>`
+          : '<div></div>'}
+      </div>
+    </div>
+  `;
+}
+
+async function openPost(postId) {
+  const phase = PHASES.find(p => p.posts.some(post => post.id === postId));
+  const post = phase.posts.find(p => p.id === postId);
+  currentPostId = postId;
+  screenHistory.push('post');
+
+  document.getElementById('post-phase-tag').textContent = `Fase ${phase.id} · Post ${post.num} de ${phase.posts.length}`;
+
+  const isDone = completed.includes(postId);
+  const completeBtn = document.getElementById('complete-btn-current');
+  completeBtn.textContent = isDone ? '✓ completado' : 'marcar como completado';
+  completeBtn.className = `complete-btn ${isDone ? 'done' : ''}`;
+  completeBtn.style.flex = '1';
+  completeBtn.style.margin = '0';
+
+  const area = document.getElementById('post-content-area');
+  area.innerHTML = `<div style="padding:60px 0;text-align:center;color:var(--muted);font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.12em;">cargando...</div>`;
+
+  showScreen('post');
+  window.scrollTo(0, 0);
+
+  const phaseFile = PHASE_FILES[phase.id];
+  if (phaseFile) {
+    try {
+      const posts = await loadFaseData(phaseFile);
+      _activeFasePosts = posts;
+      const postNum = parseInt(post.num);
+      const postData = posts[postNum];
+      if (postData) {
+        renderPostInDiv(postData);
+      } else {
+        area.innerHTML = `<div style="padding:40px 20px;text-align:center;color:var(--muted2);font-style:italic;">Post no encontrado.</div>`;
+      }
+    } catch(e) {
+      area.innerHTML = `
+        <div style="padding:40px 20px;text-align:center;">
+          <div style="font-size:1.5rem;margin-bottom:12px">⚠️</div>
+          <div style="color:var(--muted2);font-size:0.85rem;font-style:italic;line-height:1.7;">
+            No se pudo cargar el contenido.<br>
+            Asegúrate de que <code style="color:var(--accent);font-size:0.75rem">${phaseFile}</code><br>
+            está subido a tu repositorio de GitHub.
+          </div>
+        </div>`;
+    }
+  }
+}
+
+function toggleCurrentPost() {
+  if (!currentPostId) return;
+  toggleComplete(currentPostId);
+  const isDone = completed.includes(currentPostId);
+  const btn = document.getElementById('complete-btn-current');
+  btn.textContent = isDone ? '✓ completado' : 'marcar como completado';
+  btn.className = `complete-btn ${isDone ? 'done' : ''}`;
+  btn.style.flex = '1';
+  btn.style.margin = '0';
+}
+
+function toggleComplete(postId) {
+  if (completed.includes(postId)) {
+    completed = completed.filter(id => id !== postId);
+  } else {
+    completed.push(postId);
+  }
+  localStorage.setItem('ph_completed', JSON.stringify(completed));
+  updateProgress();
+
+  const btn = document.getElementById(`complete-btn-${postId}`);
+  if (btn) {
+    const isDone = completed.includes(postId);
+    btn.textContent = isDone ? '✓ completado' : 'marcar como completado';
+    btn.className = `complete-btn ${isDone ? 'done' : ''}`;
+  }
+
+  if (currentPhase) {
+    const items = document.querySelectorAll('.post-item');
+    items.forEach(item => {
+      const onclick = item.getAttribute('onclick');
+      if (onclick && onclick.includes(postId)) {
+        item.classList.toggle('completed', completed.includes(postId));
+        const check = item.querySelector('.post-check');
+        if (check) check.textContent = completed.includes(postId) ? '✓' : '';
+      }
+    });
+  }
+
+  if (window.Telegram?.WebApp) {
+    window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+  }
+}
+
+function openPrompt(phaseId) {
+  const phase = PHASES.find(p => p.id === phaseId);
+  if (!phase) return;
+  screenHistory.push('prompt-screen');
+  document.getElementById('prompt-title').textContent = `Domina la Fase ${phase.id} con IA`;
+  document.getElementById('prompt-content').textContent = phase.prompt;
+  showScreen('prompt-screen');
+}
+
+function copyPrompt() {
+  const content = document.getElementById('prompt-content').textContent;
+  navigator.clipboard.writeText(content).then(() => {
+    const btn = document.querySelector('.copy-prompt-btn');
+    btn.textContent = '✓ prompt copiado';
+    setTimeout(() => btn.textContent = '📋 copiar prompt completo', 2000);
+  });
+}
+
+function goBack() {
+  screenHistory.pop();
+  const prev = screenHistory[screenHistory.length - 1] || 'home';
+  showScreen(prev);
+}
+
+function goBackToPhase() {
+  screenHistory.pop();
+  showScreen('phase');
+  document.getElementById('nav-ruta').classList.add('active');
+}
+
+function showProgress() {
+  document.getElementById('nav-progreso').classList.add('active');
+  showScreen('home');
+  document.getElementById('nav-home').classList.remove('active');
+  window.scrollTo(0, 0);
+}
+
+// ─── TELEGRAM PROTECTION ───
+function checkTelegramAccess() {
+  const isTelegram = window.Telegram &&
+    window.Telegram.WebApp &&
+    window.Telegram.WebApp.initData &&
+    window.Telegram.WebApp.initData.length > 0;
+
+  if (!isTelegram) {
+    document.body.innerHTML = `
+      <div style="
+        min-height:100vh;background:#0a0a0a;
+        display:flex;flex-direction:column;
+        align-items:center;justify-content:center;
+        padding:40px 24px;
+        font-family:'Fraunces',Georgia,serif;
+        text-align:center;
+      ">
+        <div style="font-size:3rem;margin-bottom:24px">🐍</div>
+        <div style="
+          font-family:'DM Mono',monospace;
+          font-size:0.62rem;letter-spacing:0.16em;
+          text-transform:uppercase;color:#c8f135;
+          background:rgba(200,241,53,0.08);
+          border:1px solid rgba(200,241,53,0.2);
+          padding:4px 12px;border-radius:20px;
+          margin-bottom:20px;display:inline-block;
+        ">acceso restringido</div>
+        <div style="
+          font-size:1.6rem;font-weight:700;
+          color:#ebebeb;letter-spacing:-0.02em;
+          line-height:1.2;margin-bottom:12px;
+        ">Python Humano</div>
+        <p style="
+          font-size:0.88rem;font-weight:300;
+          font-style:italic;color:#666;
+          line-height:1.7;margin-bottom:28px;
+          max-width:280px;
+        ">Esta app solo está disponible dentro de Telegram.</p>
+        <a href="https://t.me/PythonHumanoBot" style="
+          display:inline-block;padding:14px 24px;
+          background:rgba(200,241,53,0.1);color:#c8f135;
+          font-family:'DM Mono',monospace;
+          font-size:0.72rem;font-weight:500;
+          letter-spacing:0.1em;text-transform:uppercase;
+          border:1px solid rgba(200,241,53,0.2);
+          border-radius:12px;text-decoration:none;
+        ">Abrir en Telegram →</a>
+      </div>
+    `;
+    return false;
+  }
+  return true;
+}
+
+// ─── INIT ───
+if (checkTelegramAccess()) {
+  if (window.Telegram?.WebApp) {
+    window.Telegram.WebApp.ready();
+    window.Telegram.WebApp.expand();
+  }
+  updateProgress();
+}
+</script>
+</body>
+</html>
