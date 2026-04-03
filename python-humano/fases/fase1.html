@@ -1,0 +1,2087 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Fase 1 — Python Humano</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111;
+    --surface2: #181818;
+    --border: #222;
+    --border2: #2a2a2a;
+    --accent: #c8f135;
+    --accent2: #5bffd8;
+    --accent3: #ff6b6b;
+    --accent4: #ffb347;
+    --accent5: #b388ff;
+    --text: #ebebeb;
+    --muted: #666;
+    --muted2: #888;
+    --code-bg: #0d0d0d;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Fraunces', Georgia, serif;
+    min-height: 100vh;
+  }
+
+  /* ─── POST LIST ─── */
+  #post-list {
+    padding: 0 0 80px;
+  }
+
+  /* ─── POST VIEW ─── */
+  #post-view {
+    display: none;
+    padding-bottom: 100px;
+  }
+
+  /* ─── HEADER ─── */
+  .list-header {
+    padding: 28px 20px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .phase-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(200,241,53,0.08);
+    border: 1px solid rgba(200,241,53,0.15);
+    padding: 3px 10px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+
+  .list-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .list-sub {
+    font-size: 0.8rem;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--muted2);
+  }
+
+  /* ─── POST ITEMS ─── */
+  .posts-container {
+    padding: 16px 20px;
+  }
+
+  .post-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .post-item:active { background: var(--surface2); }
+
+  .post-num-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  .post-item-info { flex: 1; }
+
+  .post-item-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+    margin-bottom: 2px;
+  }
+
+  .post-item-sub {
+    font-size: 0.75rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--muted2);
+  }
+
+  .post-item-arrow {
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+
+  /* ─── POST VIEW ─── */
+  .post-view-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .back-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .back-btn:active { color: var(--text); }
+
+  .post-view-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    flex: 1;
+    text-align: right;
+  }
+
+  /* ─── POST CONTENT ─── */
+  .post-content-wrap {
+    padding: 0 20px 20px;
+  }
+
+  .post-hero {
+    padding: 24px 0 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+
+  .post-emoji {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 12px;
+    line-height: 1;
+  }
+
+  .post-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .post-intro {
+    font-size: 0.9rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--muted2);
+    line-height: 1.6;
+  }
+
+  /* ─── CONTENT BLOCKS ─── */
+  .block {
+    margin-bottom: 24px;
+  }
+
+  .block-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .text {
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.85;
+    color: #c0c0c0;
+  }
+
+  .text p { margin-bottom: 10px; }
+  .text strong { color: var(--text); font-weight: 600; }
+  .text em { font-style: italic; color: var(--muted2); }
+
+  /* ─── CODE BLOCK ─── */
+  .code-wrap {
+    position: relative;
+    margin: 12px 0;
+  }
+
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 1.8;
+    overflow-x: auto;
+    color: #c0c0c0;
+    white-space: pre;
+  }
+
+  .copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    color: var(--muted);
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    transition: all 0.2s;
+  }
+
+  .copy-btn:active { color: var(--accent); border-color: var(--accent); }
+
+  /* syntax */
+  .kw { color: var(--accent); }
+  .str { color: var(--accent2); }
+  .num { color: var(--accent4); }
+  .fn { color: var(--accent5); }
+  .cm { color: #444; font-style: italic; }
+  .bl { color: #ff79c6; }
+  .op { color: #666; }
+  .out { color: #5a8a3a; }
+
+  /* ─── HIGHLIGHT BOXES ─── */
+  .highlight {
+    background: rgba(200,241,53,0.05);
+    border-left: 2px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 14px;
+    margin: 12px 0;
+    font-size: 0.87rem;
+    line-height: 1.7;
+    color: #aaa;
+  }
+
+  .highlight.red {
+    background: rgba(255,107,107,0.05);
+    border-left-color: var(--accent3);
+  }
+
+  .highlight.cyan {
+    background: rgba(91,255,216,0.05);
+    border-left-color: var(--accent2);
+  }
+
+  .highlight strong { color: var(--text); font-weight: 600; }
+
+  /* ─── RULE BOX ─── */
+  .rule-box {
+    background: var(--surface2);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 12px 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--accent);
+    line-height: 1.7;
+  }
+
+  /* ─── COMPARISON ─── */
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 12px 0;
+  }
+
+  .comp-item {
+    background: var(--surface2);
+    border-radius: 8px;
+    padding: 12px;
+  }
+
+  .comp-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .comp-label.bad { color: var(--accent3); }
+  .comp-label.good { color: var(--accent); }
+
+  .comp-code {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: #aaa;
+    line-height: 1.6;
+  }
+
+  /* ─── TYPES GRID ─── */
+  .types-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 12px 0;
+  }
+
+  .type-card {
+    background: var(--surface2);
+    border-radius: 10px;
+    padding: 12px;
+    border: 1px solid var(--border2);
+  }
+
+  .type-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .type-name.int { color: var(--accent4); }
+  .type-name.flt { color: var(--accent); }
+  .type-name.str { color: var(--accent2); }
+  .type-name.bool { color: #ff79c6; }
+  .type-name.none { color: var(--muted2); }
+
+  .type-desc {
+    font-size: 0.72rem;
+    color: var(--muted2);
+    font-style: italic;
+    margin-bottom: 6px;
+  }
+
+  .type-example {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: #aaa;
+    line-height: 1.6;
+  }
+
+  /* ─── OPERATORS TABLE ─── */
+  .ops-list {
+    margin: 12px 0;
+  }
+
+  .op-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .op-row:last-child { border-bottom: none; }
+
+  .op-sym {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--accent);
+    width: 36px;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+
+  .op-name {
+    font-size: 0.8rem;
+    color: var(--muted2);
+    flex: 1;
+  }
+
+  .op-ex {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: #777;
+  }
+
+  /* ─── FLOW DIAGRAM ─── */
+  .flow-diagram {
+    margin: 16px 0;
+    background: var(--surface2);
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .flow-node {
+    text-align: center;
+    margin-bottom: 4px;
+  }
+
+  .flow-box {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    line-height: 1.4;
+  }
+
+  .flow-box.start { background: rgba(200,241,53,0.1); color: var(--accent); border: 1px solid rgba(200,241,53,0.2); }
+  .flow-box.condition { background: rgba(255,179,71,0.1); color: var(--accent4); border: 1px solid rgba(255,179,71,0.2); border-radius: 20px; }
+  .flow-box.action { background: rgba(91,255,216,0.08); color: var(--accent2); border: 1px solid rgba(91,255,216,0.15); }
+  .flow-box.end { background: rgba(179,136,255,0.1); color: var(--accent5); border: 1px solid rgba(179,136,255,0.2); }
+
+  .flow-arrow {
+    text-align: center;
+    color: var(--muted);
+    font-size: 1rem;
+    margin: 2px 0;
+  }
+
+  .flow-branches {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 4px 0;
+  }
+
+  .flow-branch-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 4px;
+  }
+
+  /* ─── CHALLENGE BOX ─── */
+  .challenge {
+    background: rgba(91,255,216,0.04);
+    border: 1px solid rgba(91,255,216,0.15);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 20px;
+  }
+
+  .challenge-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .challenge-icon { font-size: 1rem; }
+
+  .challenge-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent2);
+  }
+
+  .challenge-text {
+    font-size: 0.87rem;
+    line-height: 1.75;
+    color: #aaa;
+    font-weight: 300;
+  }
+
+  .challenge-text strong { color: #ccc; font-weight: 600; }
+
+  /* ─── ERROR BOX ─── */
+  .error-box {
+    background: rgba(255,107,107,0.05);
+    border: 1px solid rgba(255,107,107,0.15);
+    border-radius: 10px;
+    padding: 14px;
+    margin: 12px 0;
+  }
+
+  .error-header {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent3);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .error-text {
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: #aaa;
+    font-weight: 300;
+  }
+
+  /* ─── POST NAV ─── */
+  .post-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .nav-btn-post {
+    padding: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    text-align: left;
+  }
+
+  .nav-btn-post:active { border-color: var(--border2); }
+  .nav-btn-post.next { text-align: right; }
+
+  .nav-post-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .nav-post-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .hashtags {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--muted);
+    margin-top: 20px;
+    line-height: 1.8;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ─── METHODS LIST ─── */
+  .methods-list {
+    margin: 12px 0;
+  }
+
+  .method-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .method-row:last-child { border-bottom: none; }
+
+  .method-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent5);
+    flex-shrink: 0;
+    min-width: 100px;
+  }
+
+  .method-desc {
+    font-size: 0.78rem;
+    color: var(--muted2);
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  /* ─── FORMAT TABLE ─── */
+  .format-table {
+    margin: 12px 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .format-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .format-row:last-child { border-bottom: none; }
+
+  .format-row.header {
+    background: var(--surface2);
+  }
+
+  .format-cell {
+    padding: 10px 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: #aaa;
+    border-right: 1px solid var(--border);
+  }
+
+  .format-cell:last-child { border-right: none; }
+
+  .format-row.header .format-cell {
+    color: var(--muted);
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .format-cell.accent { color: var(--accent); }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in { animation: fadeIn 0.2s ease; }
+</style>
+</head>
+<body>
+
+<!-- POST LIST -->
+<div id="post-list">
+  <div class="list-header">
+    <div class="phase-badge">🧠 fase 1 de 6</div>
+    <div class="list-title">Aprende a pensar como Python</div>
+    <div class="list-sub">12 posts · fundamentos completos</div>
+  </div>
+
+  <div class="posts-container">
+    <div class="post-item" onclick="showPost(1)">
+      <div class="post-num-badge">01</div>
+      <div class="post-item-info">
+        <div class="post-item-title">Variables</div>
+        <div class="post-item-sub">guarda información para usarla después</div>
+      </div>
+      <div class="post-item-arrow">›</div>
+    </div>
+    <div class="post-item" onclick="showPost(2)">
+      <div class="post-num-badge">02</div>
+      <div class="post-item-info">
+        <div class="post-item-title">Tipos de datos</div>
+        <div class="post-item-sub">no toda la información es igual</div>
+      </div>
+      <div class="post-item-arrow">›</div>
+    </div>
+    <div class="post-item" onclick="showPost(3)">
+      <div class="post-num-badge">03</div>
+      <div class="post-item-info">
+        <div class="post-item-title">Operadores</div>
+        <div class="post-item-sub">y el error que todos cometen</div>
+      </div>
+      <div class="post-item-arrow">›</div>
+    </div>
+    <div class="post-item" onclick="showPost(4)">
+      <div class="post-num-badge">04</div>
+      <div class="post-item-info">
+        <div class="post-item-title">Input</div>
+        <div class="post-item-sub">cómo hacer que tu programa escuche</div>
+      </div>
+      <div class="post-item-arrow">›</div>
+    </div>
+    <div class="post-item" onclick="showPost(5)">
+      <div class="post-num-badge">05</div>
+      <div class="post-item-info">
+        <div class="post-item-title">Condicionales</div>
+        <div class="post-item-sub">tú das las rutas, Python decide la dirección</div>
+      </div>
+      <div class="post-item-arrow">›</div>
+    </div>
+    <div class="post-item" onclick="showPost(6)">
+      <div class="post-num-badge">06</div>
+      <div class="post-item-info">
+        <div class="post-item-title">Operadores lógicos</div>
+        <div class="post-item-sub">cuando la decisión tiene matices</div>
+      </div>
+      <div class="post-item-arrow">›</div>
+    </div>
+    <div class="post-item" onclick="showPost(7)">
+      <div class="post-num-badge">07</div>
+      <div class="post-item-info">
+        <div class="post-item-title">Bucle while</div>
+        <div class="post-item-sub">repite hasta que algo cambie</div>
+      </div>
+      <div class="post-item-arrow">›</div>
+    </div>
+    <div class="post-item" onclick="showPost(8)">
+      <div class="post-num-badge">08</div>
+      <div class="post-item-info">
+        <div class="post-item-title">Bucle for</div>
+        <div class="post-item-sub">recorre cosas una a una</div>
+      </div>
+      <div class="post-item-arrow">›</div>
+    </div>
+    <div class="post-item" onclick="showPost(9)">
+      <div class="post-num-badge">09</div>
+      <div class="post-item-info">
+        <div class="post-item-title">break, continue y pass</div>
+        <div class="post-item-sub">controla tus bucles desde adentro</div>
+      </div>
+      <div class="post-item-arrow">›</div>
+    </div>
+    <div class="post-item" onclick="showPost(10)">
+      <div class="post-num-badge">10</div>
+      <div class="post-item-info">
+        <div class="post-item-title">F-strings, None y múltiple asignación</div>
+        <div class="post-item-sub">tres cosas que verás en código real</div>
+      </div>
+      <div class="post-item-arrow">›</div>
+    </div>
+    <div class="post-item" onclick="showPost(11)">
+      <div class="post-num-badge">11</div>
+      <div class="post-item-info">
+        <div class="post-item-title">Métodos de strings</div>
+        <div class="post-item-sub">las herramientas que ya usabas sin saberlo</div>
+      </div>
+      <div class="post-item-arrow">›</div>
+    </div>
+    <div class="post-item" onclick="showPost(12)">
+      <div class="post-num-badge">12</div>
+      <div class="post-item-info">
+        <div class="post-item-title">Formateo de números</div>
+        <div class="post-item-sub">muestra los números como deben verse</div>
+      </div>
+      <div class="post-item-arrow">›</div>
+    </div>
+  </div>
+</div>
+
+<!-- POST VIEW -->
+<div id="post-view">
+  <div class="post-view-header">
+    <button class="back-btn" onclick="showList()">← lista</button>
+    <span class="post-view-tag" id="post-tag"></span>
+  </div>
+  <div class="post-content-wrap" id="post-content"></div>
+</div>
+
+<script>
+const POSTS = {
+  1: {
+    emoji: '📦',
+    title: 'Variables: guarda información para usarla después',
+    intro: 'El bloque más básico de cualquier programa. Antes de escribir código útil, necesitas entender cómo guardar información.',
+    tag: 'Fase 1 · Post 01 de 12',
+    prev: null,
+    next: 2,
+    nextTitle: 'Tipos de datos',
+    content: `
+    <div class="block">
+      <div class="text">
+        <p>Imagina que estás cocinando y necesitas la sal. No la produces cada vez que la necesitas. La guardas en un lugar, le pones una etiqueta que dice "sal", y la usas cuando quieras.</p>
+        <p><strong>Las variables funcionan exactamente igual.</strong></p>
+        <p>Son espacios en la memoria de tu computadora donde guardas información para usarla después. Les pones un nombre, les asignas un valor, y Python recuerda ese valor mientras el programa corre.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">sin variables, esto:</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="fn">print</span><span class="op">(</span><span class="str">"Ana"</span><span class="op">)</span>
+<span class="fn">print</span><span class="op">(</span><span class="str">"Ana tiene 25 años"</span><span class="op">)</span>
+<span class="fn">print</span><span class="op">(</span><span class="str">"Bienvenida, Ana"</span><span class="op">)</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+      <div class="highlight red">Se convierte en un problema cuando "Ana" cambia. Tienes que buscar cada lugar donde la escribiste y cambiarla una por una.</div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">con una variable:</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">nombre</span> <span class="op">=</span> <span class="str">"Ana"</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">nombre</span><span class="op">)</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">nombre</span><span class="op">,</span> <span class="str">"tiene 25 años"</span><span class="op">)</span>
+<span class="fn">print</span><span class="op">(</span><span class="str">"Bienvenida,"</span><span class="op">,</span> <span class="kw">nombre</span><span class="op">)</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+      <div class="highlight">Cambias el valor en un solo lugar. El resto del programa se actualiza solo. <strong>Eso no es comodidad. Es cómo se escribe código que se puede mantener.</strong></div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">crear una variable es simple</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">nombre</span> <span class="op">=</span> <span class="str">"Ana"</span>
+<span class="kw">edad</span> <span class="op">=</span> <span class="num">25</span>
+<span class="kw">altura</span> <span class="op">=</span> <span class="num">1.72</span>
+<span class="kw">tiene_cuenta</span> <span class="op">=</span> <span class="bl">True</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">el nombre importa más de lo que crees</span>
+      <div class="comparison">
+        <div class="comp-item">
+          <div class="comp-label bad">✗ mal nombre</div>
+          <div class="comp-code">x = 299.99</div>
+        </div>
+        <div class="comp-item">
+          <div class="comp-label good">✓ buen nombre</div>
+          <div class="comp-code">precio_final = 299.99</div>
+        </div>
+      </div>
+      <div class="rule-box">La regla: si lees el nombre sin ver el valor y no sabes qué guarda, el nombre está mal.</div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">en Python los nombres se escriben así</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="cm"># todo en minúsculas</span>
+<span class="cm"># palabras separadas por guión bajo</span>
+<span class="kw">nombre_completo</span> <span class="op">=</span> <span class="str">"Ana García"</span>
+<span class="kw">numero_de_intentos</span> <span class="op">=</span> <span class="num">3</span>
+<span class="kw">precio_con_descuento</span> <span class="op">=</span> <span class="num">249.99</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="error-box">
+      <div class="error-header">⚠️ el error más común</div>
+      <div class="error-text">Usar nombres cortos porque "es más rápido escribir". Escribir bien los nombres tarda segundos más ahora y te ahorra minutos de confusión después.</div>
+      <div class="code-wrap" style="margin-top:10px">
+        <div class="code-block"><span class="kw">n</span> <span class="op">=</span> <span class="str">"Ana"</span>      <span class="cm"># ¿qué es n?</span>
+<span class="kw">p</span> <span class="op">=</span> <span class="num">299.99</span>   <span class="cm"># ¿qué es p?</span>
+<span class="kw">act</span> <span class="op">=</span> <span class="bl">True</span>   <span class="cm"># ¿qué es act?</span></div>
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-header">
+        <span class="challenge-icon">🎯</span>
+        <span class="challenge-label">reto</span>
+      </div>
+      <div class="challenge-text">
+        Estás construyendo una app de música. Crea variables para el perfil de un usuario: su <strong>nombre</strong>, su <strong>edad</strong>, su <strong>artista favorito</strong> y si tiene <strong>cuenta premium</strong> o no. Luego imprime cada una con <strong>print()</strong>.
+      </div>
+    </div>
+
+    <div class="hashtags">#PythonHumano #Python #Fase1 #Variables #ProgramaciónDesde0</div>
+    `
+  },
+  2: {
+    emoji: '🗂️',
+    title: 'Tipos de datos: no toda la información es igual',
+    intro: 'Un nombre no es lo mismo que un precio. Un precio no es lo mismo que un sí o un no. Python lo sabe. Y los trata diferente.',
+    tag: 'Fase 1 · Post 02 de 12',
+    prev: 1,
+    prevTitle: 'Variables',
+    next: 3,
+    nextTitle: 'Operadores',
+    content: `
+    <div class="block">
+      <div class="text">
+        <p>Piensa en tu vida diaria. Tu nombre no es lo mismo que tu edad. Tu edad no es lo mismo que si tienes o no tienes algo.</p>
+        <p>Python los trata diferente porque <strong>cada tipo de dato tiene operaciones que le pertenecen</strong>. Si los mezclas sin darte cuenta, tu código falla.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">los 5 tipos que más vas a usar</span>
+      <div class="types-grid">
+        <div class="type-card">
+          <div class="type-name int">int</div>
+          <div class="type-desc">números enteros</div>
+          <div class="type-example">edad = 25
+canciones = 1500</div>
+        </div>
+        <div class="type-card">
+          <div class="type-name flt">float</div>
+          <div class="type-desc">números con decimales</div>
+          <div class="type-example">precio = 9.99
+altura = 1.72</div>
+        </div>
+        <div class="type-card">
+          <div class="type-name str">str</div>
+          <div class="type-desc">texto, entre comillas</div>
+          <div class="type-example">nombre = "Ana"
+plan = "premium"</div>
+        </div>
+        <div class="type-card">
+          <div class="type-name bool">bool</div>
+          <div class="type-desc">True o False</div>
+          <div class="type-example">activo = True
+premium = False</div>
+        </div>
+        <div class="type-card" style="grid-column: 1 / -1">
+          <div class="type-name none">None</div>
+          <div class="type-desc">ausencia de valor — "todavía no hay nada aquí"</div>
+          <div class="type-example">cancion_actual = None</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">¿cómo saber qué tipo tienes?</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="fn">print</span><span class="op">(</span><span class="fn">type</span><span class="op">(</span><span class="num">25</span><span class="op">))</span>        <span class="out"># &lt;class 'int'&gt;</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">type</span><span class="op">(</span><span class="num">9.99</span><span class="op">))</span>      <span class="out"># &lt;class 'float'&gt;</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">type</span><span class="op">(</span><span class="str">"Ana"</span><span class="op">))</span>     <span class="out"># &lt;class 'str'&gt;</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">type</span><span class="op">(</span><span class="bl">True</span><span class="op">))</span>      <span class="out"># &lt;class 'bool'&gt;</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">type</span><span class="op">(</span><span class="bl">None</span><span class="op">))</span>      <span class="out"># &lt;class 'NoneType'&gt;</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">convertir entre tipos — type casting</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="cm"># texto a número</span>
+<span class="kw">precio</span> <span class="op">=</span> <span class="str">"9.99"</span>
+<span class="kw">precio</span> <span class="op">=</span> <span class="fn">float</span><span class="op">(</span><span class="kw">precio</span><span class="op">)</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">precio</span> <span class="op">-</span> <span class="num">2</span><span class="op">)</span>   <span class="out"># 7.99 ✓</span>
+
+<span class="cm"># número a texto</span>
+<span class="kw">reproducciones</span> <span class="op">=</span> <span class="num">1500</span>
+<span class="fn">print</span><span class="op">(</span><span class="str">"Tienes "</span> <span class="op">+</span> <span class="fn">str</span><span class="op">(</span><span class="kw">reproducciones</span><span class="op">)</span> <span class="op">+</span> <span class="str">" reproducciones"</span><span class="op">)</span>
+
+<span class="cm"># bool desde número</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">bool</span><span class="op">(</span><span class="num">0</span><span class="op">))</span>    <span class="out"># False</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">bool</span><span class="op">(</span><span class="num">1</span><span class="op">))</span>    <span class="out"># True</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">bool</span><span class="op">(</span><span class="str">""</span><span class="op">))</span>   <span class="out"># False — texto vacío</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="error-box">
+      <div class="error-header">⚠️ el error más común</div>
+      <div class="error-text"><strong>"5"</strong> no es lo mismo que <strong>5</strong>. Con comillas → texto. Sin comillas → número. Python no puede sumarlos.</div>
+      <div class="code-wrap" style="margin-top:10px">
+        <div class="code-block"><span class="kw">precio</span> <span class="op">=</span> <span class="str">"9.99"</span>   <span class="cm"># str</span>
+<span class="kw">descuento</span> <span class="op">=</span> <span class="num">2.00</span>  <span class="cm"># float</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">precio</span> <span class="op">-</span> <span class="kw">descuento</span><span class="op">)</span>  <span class="out"># 💥 error</span>
+
+<span class="cm"># la solución:</span>
+<span class="kw">precio</span> <span class="op">=</span> <span class="num">9.99</span>     <span class="cm"># float ✓</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">precio</span> <span class="op">-</span> <span class="kw">descuento</span><span class="op">)</span>  <span class="out"># 7.99 ✓</span></div>
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-header">
+        <span class="challenge-icon">🎯</span>
+        <span class="challenge-label">reto</span>
+      </div>
+      <div class="challenge-text">
+        Toma las variables del reto anterior — el perfil de tu app de música — y usa <strong>type()</strong> en cada una. Luego convierte la edad a float y de vuelta a int. ¿Qué pasa con los decimales?
+      </div>
+    </div>
+
+    <div class="hashtags">#PythonHumano #Python #Fase1 #TiposDeDatos #ProgramaciónDesde0</div>
+    `
+  },
+  3: {
+    emoji: '⚙️',
+    title: 'Operadores: y el error que todos cometen',
+    intro: 'Los operadores son las herramientas con las que trabajas sobre los datos. Algunos ya los conoces. Otros son nuevos.',
+    tag: 'Fase 1 · Post 03 de 12',
+    prev: 2,
+    prevTitle: 'Tipos de datos',
+    next: 4,
+    nextTitle: 'Input',
+    content: `
+    <div class="block">
+      <span class="block-label">operadores aritméticos</span>
+      <div class="ops-list">
+        <div class="op-row"><span class="op-sym">+</span><span class="op-name">suma</span><span class="op-ex">10 + 3 = 13</span></div>
+        <div class="op-row"><span class="op-sym">-</span><span class="op-name">resta</span><span class="op-ex">10 - 3 = 7</span></div>
+        <div class="op-row"><span class="op-sym">*</span><span class="op-name">multiplicación</span><span class="op-ex">10 * 3 = 30</span></div>
+        <div class="op-row"><span class="op-sym">/</span><span class="op-name">división</span><span class="op-ex">10 / 3 = 3.33</span></div>
+        <div class="op-row"><span class="op-sym">//</span><span class="op-name">división entera</span><span class="op-ex">10 // 3 = 3</span></div>
+        <div class="op-row"><span class="op-sym">%</span><span class="op-name">resto de la división</span><span class="op-ex">10 % 3 = 1</span></div>
+        <div class="op-row"><span class="op-sym">**</span><span class="op-name">potencia</span><span class="op-ex">10 ** 3 = 1000</span></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">a</span> <span class="op">=</span> <span class="num">10</span>
+<span class="kw">b</span> <span class="op">=</span> <span class="num">3</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="kw">a</span> <span class="op">+</span> <span class="kw">b</span><span class="op">)</span>    <span class="out"># 13</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">a</span> <span class="op">-</span> <span class="kw">b</span><span class="op">)</span>    <span class="out"># 7</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">a</span> <span class="op">*</span> <span class="kw">b</span><span class="op">)</span>    <span class="out"># 30</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">a</span> <span class="op">/</span> <span class="kw">b</span><span class="op">)</span>    <span class="out"># 3.3333...</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">a</span> <span class="op">//</span> <span class="kw">b</span><span class="op">)</span>   <span class="out"># 3</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">a</span> <span class="op">%</span> <span class="kw">b</span><span class="op">)</span>    <span class="out"># 1</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">a</span> <span class="op">**</span> <span class="kw">b</span><span class="op">)</span>   <span class="out"># 1000</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">operadores de comparación</span>
+      <div class="text"><p>Las comparaciones siempre devuelven <strong>True</strong> o <strong>False</strong>. Eso es lo que Python usa para tomar decisiones.</p></div>
+      <div class="code-wrap" style="margin-top:10px">
+        <div class="code-block"><span class="kw">canciones</span> <span class="op">=</span> <span class="num">10</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="kw">canciones</span> <span class="op">></span> <span class="num">5</span><span class="op">)</span>    <span class="out"># True</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">canciones</span> <span class="op"><</span> <span class="num">5</span><span class="op">)</span>    <span class="out"># False</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">canciones</span> <span class="op">>=</span> <span class="num">10</span><span class="op">)</span>   <span class="out"># True</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">canciones</span> <span class="op"><=</span> <span class="num">9</span><span class="op">)</span>    <span class="out"># False</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">canciones</span> <span class="op">==</span> <span class="num">10</span><span class="op">)</span>   <span class="out"># True</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">canciones</span> <span class="op">!=</span> <span class="num">10</span><span class="op">)</span>   <span class="out"># False</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">concatenación de strings</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">nombre</span> <span class="op">=</span> <span class="str">"Bad"</span>
+<span class="kw">apellido</span> <span class="op">=</span> <span class="str">"Bunny"</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">nombre</span> <span class="op">+</span> <span class="str">" "</span> <span class="op">+</span> <span class="kw">apellido</span><span class="op">)</span>  <span class="out"># "Bad Bunny"</span>
+
+<span class="cm"># ojo: no puedes sumar texto y número</span>
+<span class="fn">print</span><span class="op">(</span><span class="str">"Canción número "</span> <span class="op">+</span> <span class="fn">str</span><span class="op">(</span><span class="num">1</span><span class="op">))</span>  <span class="out"># ✓</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="error-box">
+      <div class="error-header">⚠️ el error que todos cometen</div>
+      <div class="error-text">
+        <strong>=</strong> asigna un valor.<br>
+        <strong>==</strong> pregunta si dos valores son iguales.<br><br>
+        Son cosas distintas. Confundirlos da error o comportamiento inesperado.
+      </div>
+      <div class="code-wrap" style="margin-top:10px">
+        <div class="code-block"><span class="kw">edad</span> <span class="op">=</span> <span class="num">25</span>         <span class="cm"># asigno el valor 25</span>
+<span class="kw">edad</span> <span class="op">==</span> <span class="num">25</span>        <span class="out"># True  → ¿es igual a 25?</span>
+<span class="kw">edad</span> <span class="op">==</span> <span class="num">30</span>        <span class="out"># False → ¿es igual a 30?</span></div>
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-header">
+        <span class="challenge-icon">🎯</span>
+        <span class="challenge-label">reto</span>
+      </div>
+      <div class="challenge-text">
+        Tu app tiene un contador. El usuario lleva <strong>8 canciones</strong> escuchadas hoy y su límite es <strong>10</strong>. Calcula cuántas le quedan. Pregunta con <strong>==</strong> si ya llegó al límite. Y con <strong>%</strong> averigua si el número es par o impar.
+      </div>
+    </div>
+
+    <div class="hashtags">#PythonHumano #Python #Fase1 #Operadores #ProgramaciónDesde0</div>
+    `
+  },
+  4: {
+    emoji: '⌨️',
+    title: 'Input: cómo hacer que tu programa escuche al usuario',
+    intro: 'Hasta ahora tú escribiste los datos directamente en el código. En un programa real, los datos los escribe el usuario.',
+    tag: 'Fase 1 · Post 04 de 12',
+    prev: 3,
+    prevTitle: 'Operadores',
+    next: 5,
+    nextTitle: 'Condicionales',
+    content: `
+    <div class="block">
+      <span class="block-label">¿cómo funciona input()?</span>
+      <div class="text">
+        <p>Cuando Python llega a una línea con <strong>input()</strong> pasan tres cosas en orden:</p>
+      </div>
+      <div class="flow-diagram">
+        <div class="flow-node"><div class="flow-box start">1 — muestra el texto en pantalla</div></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-node"><div class="flow-box condition">2 — el programa se detiene y espera</div></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-node"><div class="flow-box action">3 — el usuario escribe y presiona Enter</div></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-node"><div class="flow-box end">4 — Python guarda lo que escribió en la variable</div></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">nombre</span> <span class="op">=</span> <span class="fn">input</span><span class="op">(</span><span class="str">"¿Cuál es tu nombre? "</span><span class="op">)</span>
+
+<span class="cm"># en pantalla aparece:</span>
+<span class="cm"># ¿Cuál es tu nombre? _</span>
+<span class="cm"># el cursor parpadea esperando...</span>
+<span class="cm"># el usuario escribe "Ana" y presiona Enter</span>
+<span class="cm"># Python guarda "Ana" en nombre</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="str">"Hola,"</span><span class="op">,</span> <span class="kw">nombre</span><span class="op">)</span>  <span class="out"># Hola, Ana</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">input() siempre devuelve texto — type casting</span>
+      <div class="highlight red">
+        Aunque el usuario escriba un número, llega como <strong>str</strong>. Si necesitas operar con ese número, tienes que convertirlo.
+      </div>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">edad</span> <span class="op">=</span> <span class="fn">input</span><span class="op">(</span><span class="str">"¿Cuántos años tienes? "</span><span class="op">)</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">type</span><span class="op">(</span><span class="kw">edad</span><span class="op">))</span>  <span class="out"># str — no int</span>
+
+<span class="cm"># la solución: convertir al leer</span>
+<span class="kw">edad</span> <span class="op">=</span> <span class="fn">int</span><span class="op">(</span><span class="fn">input</span><span class="op">(</span><span class="str">"¿Cuántos años tienes? "</span><span class="op">))</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">type</span><span class="op">(</span><span class="kw">edad</span><span class="op">))</span>  <span class="out"># int ✓</span>
+
+<span class="kw">precio</span> <span class="op">=</span> <span class="fn">float</span><span class="op">(</span><span class="fn">input</span><span class="op">(</span><span class="str">"¿Precio? "</span><span class="op">))</span>  <span class="cm"># para decimales</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="error-box">
+      <div class="error-header">⚠️ el error más común</div>
+      <div class="error-text">Si el usuario escribe "hola" cuando esperas un número, el programa falla. Eso lo resolvemos cuando veamos manejo de errores. Por ahora, confía en el usuario.</div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-header">
+        <span class="challenge-icon">🎯</span>
+        <span class="challenge-label">reto</span>
+      </div>
+      <div class="challenge-text">
+        Estás construyendo una app de música. Pídele al usuario su <strong>nombre</strong> y su <strong>artista favorito</strong>. Luego imprime: <em>"Hola [nombre], agregando a [artista] a tu biblioteca."</em>
+      </div>
+    </div>
+
+    <div class="hashtags">#PythonHumano #Python #Fase1 #Input #ProgramaciónDesde0</div>
+    `
+  },
+  5: {
+    emoji: '🔀',
+    title: 'Condicionales: tú das las rutas, Python decide la dirección',
+    intro: 'Sin condicionales tu código hace lo mismo siempre. Con condicionales puedes crear control de flujo — múltiples caminos que el programa toma según lo que ocurra.',
+    tag: 'Fase 1 · Post 05 de 12',
+    prev: 4,
+    prevTitle: 'Input',
+    next: 6,
+    nextTitle: 'Operadores lógicos',
+    content: `
+    <div class="block">
+      <span class="block-label">¿qué es el control de flujo?</span>
+      <div class="text">
+        <p>Flujo es la dirección que toma tu código mientras se ejecuta.</p>
+        <p><strong>Sin condicionales:</strong> una sola dirección, siempre la misma.</p>
+        <p><strong>Con condicionales:</strong> tú defines múltiples rutas y Python elige cuál tomar según lo que evalúa.</p>
+      </div>
+      <div class="flow-diagram">
+        <div class="flow-node"><div class="flow-box start">programa arranca</div></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-node"><div class="flow-box condition">¿condición se cumple?</div></div>
+        <div class="flow-branches">
+          <div>
+            <div class="flow-branch-label">✓ sí</div>
+            <div class="flow-node"><div class="flow-box action">ruta A</div></div>
+          </div>
+          <div>
+            <div class="flow-branch-label">✗ no</div>
+            <div class="flow-node"><div class="flow-box action">ruta B</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">tenemos 3 palabras clave</span>
+      <div class="text"><p>Cada una tiene un rol diferente. Juntas cubren cualquier decisión que tu programa necesite tomar.</p></div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">if — si esta condición se cumple, haz esto</span>
+      <div class="text"><p>Es la primera pregunta que Python hace. Siempre arranca por aquí.</p></div>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">tiene_premium</span> <span class="op">=</span> <span class="bl">True</span>
+
+<span class="bl">if</span> <span class="kw">tiene_premium</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Reproducción sin límites."</span><span class="op">)</span>
+
+<span class="cm"># ¿tiene_premium es True? Sí → entra y ejecuta</span>
+<span class="cm"># ¿tiene_premium es False? No → lo ignora completamente</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">else — si el if no se cumplió, toma esta ruta</span>
+      <div class="text"><p>else no hace ninguna pregunta. Solo existe para atrapar lo que el if rechazó. <strong>if y else son dos rutas — Python siempre toma exactamente una.</strong></p></div>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">tiene_premium</span> <span class="op">=</span> <span class="bl">False</span>
+
+<span class="bl">if</span> <span class="kw">tiene_premium</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Reproducción sin límites."</span><span class="op">)</span>
+<span class="bl">else</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Tienes 5 reproducciones hoy."</span><span class="op">)</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">elif — si if no se cumplió, prueba con esta otra condición</span>
+      <div class="text"><p>elif sí hace una pregunta nueva. A diferencia del else que no pregunta nada.</p></div>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">plan</span> <span class="op">=</span> <span class="str">"familiar"</span>
+
+<span class="bl">if</span> <span class="kw">plan</span> <span class="op">==</span> <span class="str">"premium"</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Reproducción sin límites."</span><span class="op">)</span>
+<span class="bl">elif</span> <span class="kw">plan</span> <span class="op">==</span> <span class="str">"familiar"</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Hasta 6 cuentas en tu plan."</span><span class="op">)</span>
+<span class="bl">elif</span> <span class="kw">plan</span> <span class="op">==</span> <span class="str">"estudiante"</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"50% de descuento aplicado."</span><span class="op">)</span>
+<span class="bl">else</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Plan no reconocido."</span><span class="op">)</span>
+
+<span class="cm"># Python evalúa de arriba hacia abajo.</span>
+<span class="cm"># En cuanto encuentra una que se cumple,</span>
+<span class="cm"># ejecuta ese bloque y se olvida del resto.</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">el operador ternario — un condicional en una línea</span>
+      <div class="comparison">
+        <div class="comp-item">
+          <div class="comp-label">forma larga</div>
+          <div class="comp-code">if tiene_premium:
+    acceso = "completo"
+else:
+    acceso = "limitado"</div>
+        </div>
+        <div class="comp-item">
+          <div class="comp-label good">forma corta ✓</div>
+          <div class="comp-code">acceso = "completo" if tiene_premium else "limitado"</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="error-box">
+      <div class="error-header">⚠️ los dos errores más comunes</div>
+      <div class="error-text">
+        <strong>1. Olvidar los dos puntos:</strong>
+      </div>
+      <div class="code-wrap" style="margin-top:8px">
+        <div class="code-block"><span class="bl">if</span> <span class="kw">plan</span> <span class="op">==</span> <span class="str">"premium"</span>     <span class="out"># 💥 falta :</span>
+<span class="bl">if</span> <span class="kw">plan</span> <span class="op">==</span> <span class="str">"premium"</span><span class="op">:</span>    <span class="out"># ✓</span></div>
+      </div>
+      <div class="error-text" style="margin-top:10px"><strong>2. Olvidar la indentación:</strong></div>
+      <div class="code-wrap" style="margin-top:8px">
+        <div class="code-block"><span class="bl">if</span> <span class="kw">plan</span> <span class="op">==</span> <span class="str">"premium"</span><span class="op">:</span>
+<span class="fn">print</span><span class="op">(</span><span class="str">"Sin límites"</span><span class="op">)</span>     <span class="out"># 💥 no indentado</span>
+
+<span class="bl">if</span> <span class="kw">plan</span> <span class="op">==</span> <span class="str">"premium"</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Sin límites"</span><span class="op">)</span>  <span class="out"># ✓</span></div>
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-header">
+        <span class="challenge-icon">🎯</span>
+        <span class="challenge-label">reto</span>
+      </div>
+      <div class="challenge-text">
+        Tu app tiene 4 planes: <strong>"premium"</strong>, <strong>"familiar"</strong>, <strong>"estudiante"</strong> y <strong>"free"</strong>. Crea una variable plan y escribe un condicional que imprima un mensaje diferente para cada uno. Cambia el valor de plan y prueba los 4 casos.
+      </div>
+    </div>
+
+    <div class="hashtags">#PythonHumano #Python #Fase1 #Condicionales #ProgramaciónDesde0</div>
+    `
+  },
+  6: {
+    emoji: '🔗',
+    title: 'Operadores lógicos: cuando la decisión tiene matices',
+    intro: 'A veces una sola condición no es suficiente. Necesitas combinar varias. Para eso existen and, or y not.',
+    tag: 'Fase 1 · Post 06 de 12',
+    prev: 5,
+    prevTitle: 'Condicionales',
+    next: 7,
+    nextTitle: 'Bucle while',
+    content: `
+    <div class="block">
+      <div class="text"><p>En la vida real las decisiones rara vez dependen de una sola cosa. ¿Puedo entrar al concierto? Depende de si tengo entrada <strong>Y</strong> si soy mayor de edad. ¿Me dan descuento? Depende de si soy estudiante <strong>O</strong> si tengo cupón.</p></div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">and — las dos condiciones tienen que cumplirse</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">tiene_entrada</span> <span class="op">=</span> <span class="bl">True</span>
+<span class="kw">es_mayor</span> <span class="op">=</span> <span class="bl">False</span>
+
+<span class="bl">if</span> <span class="kw">tiene_entrada</span> <span class="bl">and</span> <span class="kw">es_mayor</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Puedes entrar"</span><span class="op">)</span>
+<span class="bl">else</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"No puedes entrar"</span><span class="op">)</span>
+<span class="cm"># → "No puedes entrar" — es_mayor es False</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">or — con que una se cumpla es suficiente</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">es_estudiante</span> <span class="op">=</span> <span class="bl">False</span>
+<span class="kw">tiene_cupon</span> <span class="op">=</span> <span class="bl">True</span>
+
+<span class="bl">if</span> <span class="kw">es_estudiante</span> <span class="bl">or</span> <span class="kw">tiene_cupon</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Descuento aplicado"</span><span class="op">)</span>
+<span class="cm"># → "Descuento aplicado" — tiene_cupon es True</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">not — invierte el resultado</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">shuffle_activo</span> <span class="op">=</span> <span class="bl">False</span>
+
+<span class="bl">if</span> <span class="bl">not</span> <span class="kw">shuffle_activo</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Shuffle está apagado"</span><span class="op">)</span>
+<span class="cm"># shuffle_activo es False</span>
+<span class="cm"># not lo convierte en True → entra al if</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">combinando los tres</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">tiene_premium</span> <span class="op">=</span> <span class="bl">True</span>
+<span class="kw">canciones_descargadas</span> <span class="op">=</span> <span class="num">8</span>
+<span class="kw">limite_descarga</span> <span class="op">=</span> <span class="num">10</span>
+
+<span class="bl">if</span> <span class="kw">tiene_premium</span> <span class="bl">and</span> <span class="kw">canciones_descargadas</span> <span class="op"><</span> <span class="kw">limite_descarga</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Puedes descargar más canciones"</span><span class="op">)</span>
+<span class="bl">else</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"No puedes descargar más"</span><span class="op">)</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="error-box">
+      <div class="error-header">⚠️ el error más común</div>
+      <div class="error-text">Escribir condiciones incompletas. Python no completa la idea por ti.</div>
+      <div class="code-wrap" style="margin-top:10px">
+        <div class="code-block"><span class="cm"># ✗ esto no hace lo que crees</span>
+<span class="bl">if</span> <span class="kw">plan</span> <span class="op">==</span> <span class="str">"free"</span> <span class="bl">or</span> <span class="str">"basic"</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Plan limitado"</span><span class="op">)</span>
+
+<span class="cm"># ✓ cada condición completa</span>
+<span class="bl">if</span> <span class="kw">plan</span> <span class="op">==</span> <span class="str">"free"</span> <span class="bl">or</span> <span class="kw">plan</span> <span class="op">==</span> <span class="str">"basic"</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Plan limitado"</span><span class="op">)</span></div>
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-header">
+        <span class="challenge-icon">🎯</span>
+        <span class="challenge-label">reto</span>
+      </div>
+      <div class="challenge-text">
+        Un usuario puede acceder a la radio solo si tiene <strong>premium</strong> O si lleva más de <strong>30 días</strong> usando la app. Crea las variables y escribe el condicional. Prueba los 4 casos posibles cambiando los valores.
+      </div>
+    </div>
+
+    <div class="hashtags">#PythonHumano #Python #Fase1 #OperadoresLógicos #ProgramaciónDesde0</div>
+    `
+  },
+  7: {
+    emoji: '🔁',
+    title: 'Bucle while: repite hasta que algo cambie',
+    intro: 'Para situaciones donde necesitas repetir algo sin saber cuántas veces — mientras una condición sea verdadera.',
+    tag: 'Fase 1 · Post 07 de 12',
+    prev: 6,
+    prevTitle: 'Operadores lógicos',
+    next: 8,
+    nextTitle: 'Bucle for',
+    content: `
+    <div class="block">
+      <div class="text"><p>Mientras esta condición sea <strong>True</strong>, sigue repitiendo. Cuando se vuelve <strong>False</strong>, para.</p></div>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">canciones_escuchadas</span> <span class="op">=</span> <span class="num">0</span>
+
+<span class="bl">while</span> <span class="kw">canciones_escuchadas</span> <span class="op"><</span> <span class="num">3</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Reproduciendo canción"</span><span class="op">,</span> <span class="kw">canciones_escuchadas</span> <span class="op">+</span> <span class="num">1</span><span class="op">)</span>
+    <span class="kw">canciones_escuchadas</span> <span class="op">+=</span> <span class="num">1</span>
+
+<span class="out"># Reproduciendo canción 1</span>
+<span class="out"># Reproduciendo canción 2</span>
+<span class="out"># Reproduciendo canción 3</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">estructura fija del while</span>
+      <div class="flow-diagram">
+        <div class="flow-node"><div class="flow-box start">variable = valor inicial</div></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-node"><div class="flow-box condition">while condición:</div></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-node"><div class="flow-box action">ejecuta el bloque</div></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-node"><div class="flow-box action">actualiza la variable</div></div>
+        <div class="flow-arrow">↓ vuelve a evaluar la condición</div>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">+= y -= — forma corta de actualizar</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">canciones_escuchadas</span> <span class="op">=</span> <span class="kw">canciones_escuchadas</span> <span class="op">+</span> <span class="num">1</span>
+<span class="cm"># es lo mismo que:</span>
+<span class="kw">canciones_escuchadas</span> <span class="op">+=</span> <span class="num">1</span>
+
+<span class="cm"># también existe:</span>
+<span class="kw">intentos</span> <span class="op">-=</span> <span class="num">1</span>   <span class="cm"># resta</span>
+<span class="kw">total</span> <span class="op">*=</span> <span class="num">2</span>      <span class="cm"># multiplica</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">while cuando no sabes cuántas veces repetir</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">plan</span> <span class="op">=</span> <span class="str">""</span>
+
+<span class="bl">while</span> <span class="kw">plan</span> <span class="op">!=</span> <span class="str">"free"</span> <span class="bl">and</span> <span class="kw">plan</span> <span class="op">!=</span> <span class="str">"premium"</span><span class="op">:</span>
+    <span class="kw">plan</span> <span class="op">=</span> <span class="fn">input</span><span class="op">(</span><span class="str">"Escribe tu plan (free/premium): "</span><span class="op">)</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="str">"Plan seleccionado:"</span><span class="op">,</span> <span class="kw">plan</span><span class="op">)</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="error-box">
+      <div class="error-header">⚠️ el error más común — bucle infinito</div>
+      <div class="error-text">Si olvidas actualizar la variable dentro del bucle, la condición nunca se vuelve False y el programa no para. <strong>Ctrl + C</strong> detiene el programa.</div>
+      <div class="code-wrap" style="margin-top:10px">
+        <div class="code-block"><span class="kw">canciones_escuchadas</span> <span class="op">=</span> <span class="num">0</span>
+
+<span class="bl">while</span> <span class="kw">canciones_escuchadas</span> <span class="op"><</span> <span class="num">3</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Reproduciendo..."</span><span class="op">)</span>
+    <span class="cm"># 💥 olvidé actualizar la variable</span>
+    <span class="cm"># el bucle nunca para</span></div>
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-header">
+        <span class="challenge-icon">🎯</span>
+        <span class="challenge-label">reto</span>
+      </div>
+      <div class="challenge-text">
+        Tu app tiene un límite de <strong>5 canciones por día</strong> en plan free. Escribe un bucle while que simule la reproducción. Por cada vuelta imprime <em>"Reproduciendo canción X de 5"</em>. Cuando llegue al límite imprime <em>"Límite diario alcanzado. Hazte premium."</em>
+      </div>
+    </div>
+
+    <div class="hashtags">#PythonHumano #Python #Fase1 #BucleWhile #ProgramaciónDesde0</div>
+    `
+  },
+  8: {
+    emoji: '🔂',
+    title: 'Bucle for: recorre cosas una a una',
+    intro: 'Cuando sabes cuántas veces vas a repetir algo — o cuando quieres recorrer una colección completa.',
+    tag: 'Fase 1 · Post 08 de 12',
+    prev: 7,
+    prevTitle: 'Bucle while',
+    next: 9,
+    nextTitle: 'break, continue y pass',
+    content: `
+    <div class="block">
+      <span class="block-label">con range() — genera una secuencia de números</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="bl">for</span> <span class="kw">i</span> <span class="bl">in</span> <span class="fn">range</span><span class="op">(</span><span class="num">5</span><span class="op">):</span>
+    <span class="fn">print</span><span class="op">(</span><span class="kw">i</span><span class="op">)</span>
+<span class="out"># 0, 1, 2, 3, 4  — empieza en 0, no llega al 5</span>
+
+<span class="bl">for</span> <span class="kw">i</span> <span class="bl">in</span> <span class="fn">range</span><span class="op">(</span><span class="num">1</span><span class="op">,</span> <span class="num">6</span><span class="op">):</span>
+    <span class="fn">print</span><span class="op">(</span><span class="kw">i</span><span class="op">)</span>
+<span class="out"># 1, 2, 3, 4, 5  — empieza en 1, llega hasta 5</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">recorriendo un string</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">artista</span> <span class="op">=</span> <span class="str">"Rosalía"</span>
+
+<span class="bl">for</span> <span class="kw">letra</span> <span class="bl">in</span> <span class="kw">artista</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="kw">letra</span><span class="op">)</span>
+<span class="out"># R, o, s, a, l, í, a</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">recorriendo una lista</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">playlist</span> <span class="op">=</span> <span class="op">[</span><span class="str">"Bzrp"</span><span class="op">,</span> <span class="str">"Bad Bunny"</span><span class="op">,</span> <span class="str">"Rosalía"</span><span class="op">]</span>
+
+<span class="bl">for</span> <span class="kw">artista</span> <span class="bl">in</span> <span class="kw">playlist</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Reproduciendo:"</span><span class="op">,</span> <span class="kw">artista</span><span class="op">)</span>
+
+<span class="out"># Reproduciendo: Bzrp</span>
+<span class="out"># Reproduciendo: Bad Bunny</span>
+<span class="out"># Reproduciendo: Rosalía</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">enumerate() — índice y elemento juntos</span>
+      <div class="highlight cyan">La forma correcta cuando necesitas el número de posición junto al elemento. Sin contador manual.</div>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">playlist</span> <span class="op">=</span> <span class="op">[</span><span class="str">"Bzrp"</span><span class="op">,</span> <span class="str">"Bad Bunny"</span><span class="op">,</span> <span class="str">"Rosalía"</span><span class="op">]</span>
+
+<span class="bl">for</span> <span class="kw">i</span><span class="op">,</span> <span class="kw">cancion</span> <span class="bl">in</span> <span class="fn">enumerate</span><span class="op">(</span><span class="kw">playlist</span><span class="op">,</span> <span class="num">1</span><span class="op">):</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Canción {i}: {cancion}"</span><span class="op">)</span>
+
+<span class="out"># Canción 1: Bzrp</span>
+<span class="out"># Canción 2: Bad Bunny</span>
+<span class="out"># Canción 3: Rosalía</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">¿cuándo usar for y cuándo while?</span>
+      <div class="comparison">
+        <div class="comp-item">
+          <div class="comp-label good">for</div>
+          <div class="comp-code">Sabes cuántas veces.
+Recorres una colección.
+
+→ playlist de 10 canciones
+→ letras de un nombre</div>
+        </div>
+        <div class="comp-item">
+          <div class="comp-label">while</div>
+          <div class="comp-code">Repites hasta que algo cambie.
+
+→ pedir contraseña hasta acertar
+→ reproducir hasta pausar</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="error-box">
+      <div class="error-header">⚠️ el error más común</div>
+      <div class="error-text">El segundo número de range() es el límite <strong>sin incluir</strong>.</div>
+      <div class="code-wrap" style="margin-top:10px">
+        <div class="code-block"><span class="bl">for</span> <span class="kw">i</span> <span class="bl">in</span> <span class="fn">range</span><span class="op">(</span><span class="num">10</span><span class="op">):</span>
+    <span class="fn">print</span><span class="op">(</span><span class="kw">i</span><span class="op">)</span>  <span class="out"># llega hasta 9, no 10</span>
+
+<span class="bl">for</span> <span class="kw">i</span> <span class="bl">in</span> <span class="fn">range</span><span class="op">(</span><span class="num">1</span><span class="op">,</span> <span class="num">11</span><span class="op">):</span>
+    <span class="fn">print</span><span class="op">(</span><span class="kw">i</span><span class="op">)</span>  <span class="out"># ahora sí llega hasta 10 ✓</span></div>
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-header">
+        <span class="challenge-icon">🎯</span>
+        <span class="challenge-label">reto</span>
+      </div>
+      <div class="challenge-text">
+        Tu app tiene esta playlist: <strong>["Tití Me Preguntó", "Shakira", "BZRP Session 53", "La Canción", "Hawái"]</strong>. Usa <strong>enumerate()</strong> para mostrar el número y nombre de cada canción. Luego recorre el nombre del primer artista letra por letra.
+      </div>
+    </div>
+
+    <div class="hashtags">#PythonHumano #Python #Fase1 #BucleFor #ProgramaciónDesde0</div>
+    `
+  },
+  9: {
+    emoji: '⛔',
+    title: 'break, continue y pass: controla tus bucles desde adentro',
+    intro: 'Tres instrucciones que cambian el comportamiento de un bucle desde adentro. Cada una con un rol diferente.',
+    tag: 'Fase 1 · Post 09 de 12',
+    prev: 8,
+    prevTitle: 'Bucle for',
+    next: 10,
+    nextTitle: 'F-strings, None y múltiple asignación',
+    content: `
+    <div class="block">
+      <div class="rule-box">
+        break → termina el bucle completamente (freno de mano)<br>
+        continue → termina esta vuelta y pasa a la siguiente (skip)<br>
+        pass → no hace nada, solo ocupa el espacio (placeholder)
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">break — sal del bucle ahora mismo</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">playlist</span> <span class="op">=</span> <span class="op">[</span><span class="str">"Tití"</span><span class="op">,</span> <span class="str">"Shakira"</span><span class="op">,</span> <span class="str">"BZRP"</span><span class="op">,</span> <span class="str">"La Canción"</span><span class="op">]</span>
+
+<span class="bl">for</span> <span class="kw">cancion</span> <span class="bl">in</span> <span class="kw">playlist</span><span class="op">:</span>
+    <span class="bl">if</span> <span class="kw">cancion</span> <span class="op">==</span> <span class="str">"BZRP"</span><span class="op">:</span>
+        <span class="fn">print</span><span class="op">(</span><span class="str">"El usuario pausó."</span><span class="op">)</span>
+        <span class="bl">break</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Reproduciendo:"</span><span class="op">,</span> <span class="kw">cancion</span><span class="op">)</span>
+
+<span class="out"># Reproduciendo: Tití</span>
+<span class="out"># Reproduciendo: Shakira</span>
+<span class="out"># El usuario pausó.</span>
+<span class="cm"># "La Canción" nunca se reproduce</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">continue — salta esta vuelta y sigue con la siguiente</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">ya_escuchadas</span> <span class="op">=</span> <span class="op">[</span><span class="str">"Tití"</span><span class="op">,</span> <span class="str">"Shakira"</span><span class="op">]</span>
+<span class="kw">playlist</span> <span class="op">=</span> <span class="op">[</span><span class="str">"Tití"</span><span class="op">,</span> <span class="str">"Shakira"</span><span class="op">,</span> <span class="str">"BZRP"</span><span class="op">,</span> <span class="str">"Hawái"</span><span class="op">]</span>
+
+<span class="bl">for</span> <span class="kw">cancion</span> <span class="bl">in</span> <span class="kw">playlist</span><span class="op">:</span>
+    <span class="bl">if</span> <span class="kw">cancion</span> <span class="bl">in</span> <span class="kw">ya_escuchadas</span><span class="op">:</span>
+        <span class="fn">print</span><span class="op">(</span><span class="str">"Saltando:"</span><span class="op">,</span> <span class="kw">cancion</span><span class="op">)</span>
+        <span class="bl">continue</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Reproduciendo:"</span><span class="op">,</span> <span class="kw">cancion</span><span class="op">)</span>
+
+<span class="out"># Saltando: Tití</span>
+<span class="out"># Saltando: Shakira</span>
+<span class="out"># Reproduciendo: BZRP</span>
+<span class="out"># Reproduciendo: Hawái</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">pass — no hagas nada, solo sigue</span>
+      <div class="text"><p>Python no acepta bloques vacíos. Si abres un if o un for, espera al menos una instrucción. <strong>pass</strong> resuelve eso — marca el lugar sin hacer nada.</p></div>
+      <div class="code-wrap">
+        <div class="code-block"><span class="cm"># útil cuando defines la estructura primero</span>
+<span class="kw">plan</span> <span class="op">=</span> <span class="str">"estudiante"</span>
+
+<span class="bl">if</span> <span class="kw">plan</span> <span class="op">==</span> <span class="str">"premium"</span><span class="op">:</span>
+    <span class="bl">pass</span>   <span class="cm"># aquí irá la lógica premium</span>
+<span class="bl">elif</span> <span class="kw">plan</span> <span class="op">==</span> <span class="str">"familiar"</span><span class="op">:</span>
+    <span class="bl">pass</span>   <span class="cm"># aquí irá la lógica familiar</span>
+<span class="bl">else</span><span class="op">:</span>
+    <span class="bl">pass</span>   <span class="cm"># aquí el manejo por defecto</span>
+
+<span class="cm"># el programa corre sin errores</span>
+<span class="cm"># defines las rutas, las completas después</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+      <div class="comparison">
+        <div class="comp-item">
+          <div class="comp-label">continue</div>
+          <div class="comp-code">Salta el resto de la vuelta.
+Lo que sigue en el bucle
+no se ejecuta para este elemento.</div>
+        </div>
+        <div class="comp-item">
+          <div class="comp-label good">pass</div>
+          <div class="comp-code">No salta nada. Solo ocupa el espacio.
+Lo que sigue en el bucle
+sí se ejecuta normalmente.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-header">
+        <span class="challenge-icon">🎯</span>
+        <span class="challenge-label">reto</span>
+      </div>
+      <div class="challenge-text">
+        Playlist: <strong>["Tití", "Shakira", "BZRP", "La Canción", "Hawái"]</strong>. Ya escuchadas: <strong>["Shakira", "Hawái"]</strong>. Recorre la playlist con for. Salta las ya escuchadas con <strong>continue</strong>. Si llegas a "La Canción" detén todo con <strong>break</strong>.
+      </div>
+    </div>
+
+    <div class="hashtags">#PythonHumano #Python #Fase1 #BreakContinuePass #ProgramaciónDesde0</div>
+    `
+  },
+  10: {
+    emoji: '👀',
+    title: 'F-strings, None y múltiple asignación',
+    intro: 'Tres cosas pequeñas pero importantes que vas a ver en código real desde muy temprano.',
+    tag: 'Fase 1 · Post 10 de 12',
+    prev: 9,
+    prevTitle: 'break, continue y pass',
+    next: 11,
+    nextTitle: 'Métodos de strings',
+    content: `
+    <div class="block">
+      <span class="block-label">1. f-strings — la forma correcta de combinar texto y variables</span>
+      <div class="comparison">
+        <div class="comp-item">
+          <div class="comp-label bad">✗ forma antigua</div>
+          <div class="comp-code">"Hola " + nombre + ", tu plan es " + plan</div>
+        </div>
+        <div class="comp-item">
+          <div class="comp-label good">✓ f-string</div>
+          <div class="comp-code">f"Hola {nombre}, tu plan es {plan}."</div>
+        </div>
+      </div>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">nombre</span> <span class="op">=</span> <span class="str">"Ana"</span>
+<span class="kw">plan</span> <span class="op">=</span> <span class="str">"premium"</span>
+<span class="kw">reproducciones</span> <span class="op">=</span> <span class="num">150</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Hola {nombre}, tu plan es {plan}."</span><span class="op">)</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Llevas {reproducciones} reproducciones."</span><span class="op">)</span>
+
+<span class="cm"># también puedes operar dentro:</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Te quedan {10 - reproducciones % 10} canciones."</span><span class="op">)</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+      <div class="error-box">
+        <div class="error-header">⚠️ error más común</div>
+        <div class="error-text">Olvidar la <strong>f</strong> antes de las comillas.</div>
+        <div class="code-wrap" style="margin-top:8px">
+          <div class="code-block"><span class="fn">print</span><span class="op">(</span><span class="str">"Hola {nombre}"</span><span class="op">)</span>    <span class="out"># Hola {nombre} — no reemplaza</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Hola {nombre}"</span><span class="op">)</span>   <span class="out"># Hola Ana ✓</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">2. None — cuando no hay ningún valor</span>
+      <div class="text"><p>No es cero. No es False. No es texto vacío. Es ausencia de valor.</p></div>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">cancion_actual</span> <span class="op">=</span> <span class="bl">None</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="fn">type</span><span class="op">(</span><span class="kw">cancion_actual</span><span class="op">))</span>  <span class="out"># NoneType</span>
+
+<span class="bl">if</span> <span class="kw">cancion_actual</span> <span class="bl">is</span> <span class="bl">None</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"No hay canción reproduciéndose."</span><span class="op">)</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+      <div class="types-grid">
+        <div class="type-card"><div class="type-name int">0</div><div class="type-desc">hay un valor — es cero</div></div>
+        <div class="type-card"><div class="type-name bool">False</div><div class="type-desc">hay un valor — es falso</div></div>
+        <div class="type-card"><div class="type-name str">""</div><div class="type-desc">hay un valor — texto vacío</div></div>
+        <div class="type-card"><div class="type-name none">None</div><div class="type-desc">no hay ningún valor</div></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">3. múltiple asignación — Python te deja hacer esto</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="cm"># asignar varios valores en una línea</span>
+<span class="kw">nombre</span><span class="op">,</span> <span class="kw">edad</span><span class="op">,</span> <span class="kw">plan</span> <span class="op">=</span> <span class="str">"Ana"</span><span class="op">,</span> <span class="num">25</span><span class="op">,</span> <span class="str">"premium"</span>
+
+<span class="cm"># intercambiar dos variables sin una tercera</span>
+<span class="kw">a</span><span class="op">,</span> <span class="kw">b</span> <span class="op">=</span> <span class="num">10</span><span class="op">,</span> <span class="num">20</span>
+<span class="kw">a</span><span class="op">,</span> <span class="kw">b</span> <span class="op">=</span> <span class="kw">b</span><span class="op">,</span> <span class="kw">a</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="kw">a</span><span class="op">)</span>  <span class="out"># 20</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">b</span><span class="op">)</span>  <span class="out"># 10</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-header">
+        <span class="challenge-icon">🎯</span>
+        <span class="challenge-label">reto</span>
+      </div>
+      <div class="challenge-text">
+        Crea el perfil de tu app de música con <strong>múltiple asignación</strong>. Muéstralo todo en un print() usando <strong>f-strings</strong>. Crea una variable <strong>cancion_actual = None</strong> y escribe un condicional que imprima si hay música reproduciéndose o no.
+      </div>
+    </div>
+
+    <div class="hashtags">#PythonHumano #Python #Fase1 #Fstrings #None #ProgramaciónDesde0</div>
+    `
+  },
+  11: {
+    emoji: '🔤',
+    title: 'Métodos de strings: las herramientas que ya usabas sin saberlo',
+    intro: 'Un método es una función que pertenece a un tipo de dato. Se llama con un punto después del valor.',
+    tag: 'Fase 1 · Post 11 de 12',
+    prev: 10,
+    prevTitle: 'F-strings, None y múltiple asignación',
+    next: 12,
+    nextTitle: 'Formateo de números',
+    content: `
+    <div class="block">
+      <span class="block-label">los métodos más importantes</span>
+      <div class="methods-list">
+        <div class="method-row"><span class="method-name">.upper()</span><span class="method-desc">convierte todo a MAYÚSCULAS</span></div>
+        <div class="method-row"><span class="method-name">.lower()</span><span class="method-desc">convierte todo a minúsculas</span></div>
+        <div class="method-row"><span class="method-name">.strip()</span><span class="method-desc">elimina espacios al inicio y al final</span></div>
+        <div class="method-row"><span class="method-name">.replace()</span><span class="method-desc">reemplaza texto dentro del string</span></div>
+        <div class="method-row"><span class="method-name">.split()</span><span class="method-desc">divide el string en partes</span></div>
+        <div class="method-row"><span class="method-name">.startswith()</span><span class="method-desc">¿empieza con esto? → True/False</span></div>
+        <div class="method-row"><span class="method-name">.endswith()</span><span class="method-desc">¿termina con esto? → True/False</span></div>
+        <div class="method-row"><span class="method-name">.count()</span><span class="method-desc">¿cuántas veces aparece esto?</span></div>
+        <div class="method-row"><span class="method-name">.find()</span><span class="method-desc">¿en qué posición está? (-1 si no existe)</span></div>
+        <div class="method-row"><span class="method-name">in</span><span class="method-desc">¿esto está dentro? → True/False</span></div>
+        <div class="method-row"><span class="method-name">len()</span><span class="method-desc">cuántos caracteres tiene</span></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">encadenar métodos</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">nombre</span> <span class="op">=</span> <span class="str">"  Ana García  "</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="kw">nombre</span><span class="op">.</span><span class="fn">strip</span><span class="op">())</span>           <span class="out"># "Ana García"</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">nombre</span><span class="op">.</span><span class="fn">strip</span><span class="op">().</span><span class="fn">upper</span><span class="op">())</span>   <span class="out"># "ANA GARCÍA"</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">nombre</span><span class="op">.</span><span class="fn">strip</span><span class="op">().</span><span class="fn">lower</span><span class="op">())</span>   <span class="out"># "ana garcía"</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">strip() con caracteres específicos</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">precio</span> <span class="op">=</span> <span class="str">"$299.99$"</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">precio</span><span class="op">.</span><span class="fn">strip</span><span class="op">(</span><span class="str">"$"</span><span class="op">))</span>   <span class="out"># "299.99"</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">in vs find()</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">email</span> <span class="op">=</span> <span class="str">"usuario@gmail.com"</span>
+
+<span class="cm"># in — solo quieres saber si existe</span>
+<span class="fn">print</span><span class="op">(</span><span class="str">"@"</span> <span class="bl">in</span> <span class="kw">email</span><span class="op">)</span>       <span class="out"># True</span>
+<span class="fn">print</span><span class="op">(</span><span class="str">"@"</span> <span class="bl">not</span> <span class="bl">in</span> <span class="kw">email</span><span class="op">)</span>   <span class="out"># False</span>
+
+<span class="cm"># find() — quieres saber la posición</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">email</span><span class="op">.</span><span class="fn">find</span><span class="op">(</span><span class="str">"@"</span><span class="op">))</span>    <span class="out"># 7</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">email</span><span class="op">.</span><span class="fn">find</span><span class="op">(</span><span class="str">"xyz"</span><span class="op">))</span>  <span class="out"># -1 — no existe</span>
+
+<span class="cm"># endswith y startswith</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">email</span><span class="op">.</span><span class="fn">endswith</span><span class="op">(</span><span class="str">".com"</span><span class="op">))</span>      <span class="out"># True</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">email</span><span class="op">.</span><span class="fn">startswith</span><span class="op">(</span><span class="str">"usuario"</span><span class="op">))</span>  <span class="out"># True</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="error-box">
+      <div class="error-header">⚠️ el error más común</div>
+      <div class="error-text">Los métodos no modifican el original. Devuelven un valor nuevo. Tienes que asignarlo.</div>
+      <div class="code-wrap" style="margin-top:10px">
+        <div class="code-block"><span class="kw">email</span> <span class="op">=</span> <span class="str">"  usuario@gmail.com  "</span>
+<span class="kw">email</span><span class="op">.</span><span class="fn">strip</span><span class="op">()</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">email</span><span class="op">)</span>   <span class="out"># "  usuario@gmail.com  " — no cambió</span>
+
+<span class="kw">email</span> <span class="op">=</span> <span class="kw">email</span><span class="op">.</span><span class="fn">strip</span><span class="op">()</span>
+<span class="fn">print</span><span class="op">(</span><span class="kw">email</span><span class="op">)</span>   <span class="out"># "usuario@gmail.com" ✓</span></div>
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-header">
+        <span class="challenge-icon">🎯</span>
+        <span class="challenge-label">reto</span>
+      </div>
+      <div class="challenge-text">
+        Tienes este string mal formateado:<br><br>
+        <code style="background:var(--code-bg);padding:4px 8px;border-radius:4px;font-size:0.75rem;color:var(--accent2)">usuario = "  ANA GARCÍA  |  ana@gmail.com  |  plan_premium  "</code><br><br>
+        Usando los métodos que aprendiste: elimina espacios, convierte el nombre a formato normal, verifica que el email contiene "@" con <strong>in</strong>, verifica que termina en ".com" con <strong>.endswith()</strong> y reemplaza el guión bajo del plan.
+      </div>
+    </div>
+
+    <div class="hashtags">#PythonHumano #Python #Fase1 #Strings #MétodosDeStrings #ProgramaciónDesde0</div>
+    `
+  },
+  12: {
+    emoji: '🔢',
+    title: 'Formateo de números: muestra los números como deben verse',
+    intro: 'Hay una diferencia entre un número correcto y un número que se ve correcto. Para eso existe el formateo.',
+    tag: 'Fase 1 · Post 12 de 12',
+    prev: 11,
+    prevTitle: 'Métodos de strings',
+    next: null,
+    content: `
+    <div class="block">
+      <span class="block-label">el problema con los decimales</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="fn">print</span><span class="op">(</span><span class="num">0.1</span> <span class="op">+</span> <span class="num">0.2</span><span class="op">)</span>   <span class="out"># 0.30000000000000004 😱</span>
+<span class="fn">print</span><span class="op">(</span><span class="num">19.99</span> <span class="op">+</span> <span class="num">29.99</span><span class="op">)</span>  <span class="out"># 49.980000000000004</span></div>
+      </div>
+      <div class="highlight red">No es un error de Python. Es cómo los computadores manejan los decimales internamente. Pero sí es <strong>tu responsabilidad</strong> mostrarlo correctamente.</div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">round() — para cálculos</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="fn">print</span><span class="op">(</span><span class="fn">round</span><span class="op">(</span><span class="num">59.97000000000001</span><span class="op">,</span> <span class="num">2</span><span class="op">))</span>  <span class="out"># 59.97</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">round</span><span class="op">(</span><span class="num">9.555</span><span class="op">,</span> <span class="num">2</span><span class="op">))</span>             <span class="out"># 9.56</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">round</span><span class="op">(</span><span class="num">9.555</span><span class="op">,</span> <span class="num">1</span><span class="op">))</span>             <span class="out"># 9.6</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">round</span><span class="op">(</span><span class="num">9.555</span><span class="op">))</span>               <span class="out"># 10</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">:.2f en f-strings — para mostrar</span>
+      <div class="code-wrap">
+        <div class="code-block"><span class="kw">precio</span> <span class="op">=</span> <span class="num">59.97000000000001</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Total: ${precio:.2f}"</span><span class="op">)</span>   <span class="out"># Total: $59.97</span>
+
+<span class="cm"># :.2f → 2 decimales, número float</span>
+<span class="cm"># :,   → separador de miles</span>
+<span class="cm"># :.0% → porcentaje sin decimales</span>
+<span class="cm"># :05d → entero con ceros a la izquierda</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">tabla de formatos</span>
+      <div class="format-table">
+        <div class="format-row header">
+          <div class="format-cell">formato</div>
+          <div class="format-cell">ejemplo</div>
+          <div class="format-cell">resultado</div>
+        </div>
+        <div class="format-row">
+          <div class="format-cell accent">:.2f</div>
+          <div class="format-cell">f"{9.99:.2f}"</div>
+          <div class="format-cell">9.99</div>
+        </div>
+        <div class="format-row">
+          <div class="format-cell accent">:,</div>
+          <div class="format-cell">f"{1500:,}"</div>
+          <div class="format-cell">1,500</div>
+        </div>
+        <div class="format-row">
+          <div class="format-cell accent">:,.2f</div>
+          <div class="format-cell">f"{1500.5:,.2f}"</div>
+          <div class="format-cell">1,500.50</div>
+        </div>
+        <div class="format-row">
+          <div class="format-cell accent">:.0%</div>
+          <div class="format-cell">f"{0.10:.0%}"</div>
+          <div class="format-cell">10%</div>
+        </div>
+        <div class="format-row">
+          <div class="format-cell accent">:05d</div>
+          <div class="format-cell">f"{7:05d}"</div>
+          <div class="format-cell">00007</div>
+        </div>
+        <div class="format-row">
+          <div class="format-cell accent">:&lt;15</div>
+          <div class="format-cell">f"{'Café':&lt;15}"</div>
+          <div class="format-cell">Café&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">¿cuándo usar round() y cuándo :.2f?</span>
+      <div class="rule-box">
+        round() → cuando vas a seguir operando con el número<br>
+        :.2f → cuando solo lo vas a mostrar
+      </div>
+      <div class="code-wrap">
+        <div class="code-block"><span class="cm"># ✓ round para operar</span>
+<span class="kw">total</span> <span class="op">=</span> <span class="fn">round</span><span class="op">(</span><span class="num">19.99</span> <span class="op">+</span> <span class="num">29.99</span><span class="op">,</span> <span class="num">2</span><span class="op">)</span>
+<span class="kw">descuento</span> <span class="op">=</span> <span class="fn">round</span><span class="op">(</span><span class="kw">total</span> <span class="op">*</span> <span class="num">0.10</span><span class="op">,</span> <span class="num">2</span><span class="op">)</span>
+
+<span class="cm"># ✓ :.2f para mostrar</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Total: ${total:.2f}"</span><span class="op">)</span></div>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="challenge-header">
+        <span class="challenge-icon">🎯</span>
+        <span class="challenge-label">reto final de la fase</span>
+      </div>
+      <div class="challenge-text">
+        Construye un recibo con: Laptop $15,999.99 · Mouse $299.50 · Teclado $599.00.<br><br>
+        Debe mostrar: número de orden <strong>Orden #00001</strong>, cada producto alineado con precio a la derecha, subtotal con separador de miles, descuento del 15% como porcentaje, total final y <em>"Ahorraste $X,XXX.XX con tu descuento"</em>.
+      </div>
+    </div>
+
+    <div class="hashtags">#PythonHumano #Python #Fase1 #FormateoDeNúmeros #ProgramaciónDesde0</div>
+    `
+  }
+};
+
+// ─── NAVIGATION ───
+function showPost(id) {
+  const post = POSTS[id];
+  if (!post) return;
+
+  document.getElementById('post-tag').textContent = post.tag;
+
+  document.getElementById('post-content').innerHTML = `
+    <div class="post-hero fade-in">
+      <span class="post-emoji">${post.emoji}</span>
+      <div class="post-title">${post.title}</div>
+      <div class="post-intro">${post.intro}</div>
+    </div>
+    <div class="fade-in">
+      ${post.content}
+      <div class="post-nav">
+        ${post.prev ? `<div class="nav-btn-post" onclick="showPost(${post.prev})">
+          <span class="nav-post-label">← anterior</span>
+          <span class="nav-post-title">${post.prevTitle}</span>
+        </div>` : '<div></div>'}
+        ${post.next ? `<div class="nav-btn-post next" onclick="showPost(${post.next})">
+          <span class="nav-post-label">siguiente →</span>
+          <span class="nav-post-title">${post.nextTitle}</span>
+        </div>` : '<div></div>'}
+      </div>
+    </div>
+  `;
+
+  document.getElementById('post-list').style.display = 'none';
+  document.getElementById('post-view').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+function showList() {
+  document.getElementById('post-view').style.display = 'none';
+  document.getElementById('post-list').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+function copyCode(btn) {
+  const code = btn.previousElementSibling.innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = '✓ copiado';
+    setTimeout(() => btn.textContent = 'copiar', 2000);
+  });
+}
+
+// Auto-load post from URL hash e.g. #post-3
+window.addEventListener('load', () => {
+  const hash = window.location.hash;
+  if (hash && hash.startsWith('#post-')) {
+    const num = parseInt(hash.replace('#post-', ''));
+    if (num && POSTS[num]) showPost(num);
+  }
+});
+</script>
+</body>
+</html>
