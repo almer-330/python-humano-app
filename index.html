@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Humano</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* ── HOME-SPECIFIC STYLES ── */
+
+.hero {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 72px 24px 60px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 22px;
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.hero-desc {
+  font-size: 1.05rem;
+  font-weight: 300;
+  color: var(--text2);
+  line-height: 1.75;
+  max-width: 380px;
+  margin-bottom: 32px;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--accent);
+  padding: 14px 26px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.hero-cta:hover { opacity: 0.85; }
+
+.hero-right {}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.stat-item { background: var(--surface); padding: 20px; }
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.hero-quote {
+  border-left: 2px solid var(--accent);
+  padding: 14px 18px;
+  background: var(--accent-dim);
+}
+.hero-quote p {
+  font-size: 0.93rem;
+  font-style: italic;
+  color: var(--text2);
+  line-height: 1.65;
+}
+
+/* ── PHASES GRID ── */
+.phases-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 24px 60px;
+}
+
+.phases-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  margin-top: 0;
+}
+
+.phase-card {
+  background: var(--surface);
+  padding: 26px 22px;
+  cursor: pointer;
+  transition: background 0.15s;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  display: block;
+  color: inherit;
+}
+.phase-card.available:hover { background: var(--surface2); }
+.phase-card.locked { opacity: 0.32; cursor: default; pointer-events: none; }
+
+.phase-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 10px;
+}
+.phase-icon { font-size: 1.5rem; margin-bottom: 10px; display: block; }
+.phase-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.phase-desc {
+  font-size: 0.82rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text2);
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+.phase-prog-bar {
+  height: 2px;
+  background: var(--border2);
+  margin-bottom: 6px;
+  overflow: hidden;
+}
+.phase-prog-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.5s ease;
+}
+.phase-prog-text {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.08em;
+  color: var(--text3);
+}
+.phase-arrow {
+  position: absolute;
+  bottom: 22px;
+  right: 22px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text3);
+  transition: color 0.15s, transform 0.15s;
+}
+.phase-card.available:hover .phase-arrow { color: var(--accent); transform: translateX(3px); }
+
+/* ── ABOUT ── */
+.about-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  border-top: 1px solid var(--border);
+}
+.about-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 18px;
+  line-height: 1.1;
+}
+.about-body { font-size: 0.97rem; font-weight: 300; color: var(--text2); line-height: 1.82; }
+.about-body p { margin-bottom: 14px; }
+.about-body strong { color: var(--text); font-weight: 600; }
+
+.principles { list-style: none; }
+.principle-item {
+  display: flex;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.principle-item:first-child { border-top: 1px solid var(--border); }
+.principle-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  padding-top: 2px;
+  letter-spacing: 0.06em;
+}
+.principle-text { font-size: 0.92rem; color: var(--text2); line-height: 1.6; }
+.principle-text strong { color: var(--text); font-weight: 600; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; gap: 40px; }
+  .phases-grid { grid-template-columns: 1fr; }
+  .about-section { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .hero { padding: 48px 16px 40px; }
+  .hero-title { font-size: 2.8rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-top">
+    <a class="site-logo" href="index.html">🐍 Python Humano</a>
+    <span class="header-meta" id="global-progress-text">cargando...</span>
+  </div>
+  <div class="progress-bar-global">
+    <div class="progress-bar-global-fill" id="global-progress-bar" style="width:0%"></div>
+  </div>
+  <nav class="header-nav">
+    <a class="nav-item active" href="index.html">Inicio</a>
+    <a class="nav-item" href="fase1.html">Fase 1 — Pensar como Python</a>
+    <a class="nav-item" href="fase2.html">Fase 2 — Pensar como programador</a>
+    <a class="nav-item" href="fase3.html">Fase 3 — Organizar información</a>
+    <span class="nav-item locked">Fase 4 — Próximamente</span>
+    <span class="nav-item locked">Fase 5 — Próximamente</span>
+    <span class="nav-item locked">Fase 6 — Próximamente</span>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Canal de Python · Edición 2025</div>
+    <h1 class="hero-title">Python<br><em>Humano</em></h1>
+    <p class="hero-desc">Aprende Python como nadie te lo ha enseñado. Sin tecnicismos, sin memorización. Con la lógica de quien ya lo domina y el lenguaje de quien acaba de aprenderlo.</p>
+    <a class="hero-cta" href="fase1.html">Empezar desde el principio →</a>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stats">
+      <div class="stat-item"><div class="stat-num">6</div><div class="stat-label">Fases de aprendizaje</div></div>
+      <div class="stat-item"><div class="stat-num">80</div><div class="stat-label">Posts en total</div></div>
+      <div class="stat-item"><div class="stat-num">5</div><div class="stat-label">Proyectos reales</div></div>
+      <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Tutores con IA</div></div>
+    </div>
+    <div class="hero-quote">
+      <p>"No te enseñamos a escribir código. Te enseñamos a pensar como programador. El código viene solo después de eso."</p>
+    </div>
+  </div>
+</section>
+
+<!-- PHASES -->
+<section class="phases-section">
+  <div class="section-header" style="margin-bottom:1px">
+    <span class="section-eyebrow">La ruta completa</span>
+    <h2 class="section-title">6 fases · 80 posts · 5 proyectos reales</h2>
+  </div>
+  <div class="phases-grid">
+    <a class="phase-card available" href="fase1.html">
+      <div class="phase-num">Fase 01</div>
+      <span class="phase-icon">🧠</span>
+      <div class="phase-name">Aprende a pensar como Python</div>
+      <div class="phase-desc">Variables, tipos, operadores, condicionales, bucles, strings y formateo.</div>
+      <div class="phase-prog-bar"><div class="phase-prog-fill" id="prog-1" style="width:0%"></div></div>
+      <div class="phase-prog-text" id="prog-text-1">0 / 12 posts</div>
+      <span class="phase-arrow">→</span>
+    </a>
+    <a class="phase-card available" href="fase2.html">
+      <div class="phase-num">Fase 02</div>
+      <span class="phase-icon">⚙️</span>
+      <div class="phase-name">Aprende a pensar como programador</div>
+      <div class="phase-desc">Algoritmos, pseudocódigo, patrones, trazabilidad y refactorización.</div>
+      <div class="phase-prog-bar"><div class="phase-prog-fill" id="prog-2" style="width:0%"></div></div>
+      <div class="phase-prog-text" id="prog-text-2">0 / 18 posts</div>
+      <span class="phase-arrow">→</span>
+    </a>
+    <a class="phase-card available" href="fase3.html">
+      <div class="phase-num">Fase 03</div>
+      <span class="phase-icon">🏗️</span>
+      <div class="phase-name">Organiza la información como un pro</div>
+      <div class="phase-desc">Listas, tuplas, sets, diccionarios, comprehensions y estructuras anidadas.</div>
+      <div class="phase-prog-bar"><div class="phase-prog-fill" id="prog-3" style="width:0%"></div></div>
+      <div class="phase-prog-text" id="prog-text-3">0 / 14 posts</div>
+      <span class="phase-arrow">→</span>
+    </a>
+    <div class="phase-card locked">
+      <div class="phase-num">Fase 04</div>
+      <span class="phase-icon">⚡</span>
+      <div class="phase-name">Escribe código que no se repite</div>
+      <div class="phase-desc">Funciones, errores, módulos y primer proyecto real.</div>
+      <span class="phase-arrow">🔒</span>
+    </div>
+    <div class="phase-card locked">
+      <div class="phase-num">Fase 05</div>
+      <span class="phase-icon">🧩</span>
+      <div class="phase-name">Piensa en objetos, no en instrucciones</div>
+      <div class="phase-desc">POO, archivos, JSON. El salto que cambia todo.</div>
+      <span class="phase-arrow">🔒</span>
+    </div>
+    <div class="phase-card locked">
+      <div class="phase-num">Fase 06</div>
+      <span class="phase-icon">🚀</span>
+      <div class="phase-name">Construye cosas que funcionan</div>
+      <div class="phase-desc">APIs, scraping, bases de datos, automatización.</div>
+      <span class="phase-arrow">🔒</span>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section">
+  <div>
+    <h2 class="about-title">¿Por qué existe Python Humano?</h2>
+    <div class="about-body">
+      <p>Los cursos de programación enseñan sintaxis. Te dicen cómo escribir un <strong>for</strong>, pero no cómo pensar el problema que el for va a resolver.</p>
+      <p>Python Humano nació de esa frustración. De aprender Python solo para darse cuenta que lo que faltaba no era conocer más comandos — era aprender a pensar diferente.</p>
+      <p>Cada post está escrito como si te lo explicara un amigo que ya domina el tema. Sin tecnicismos innecesarios. Sin dar cosas por sabidas. Con ejemplos reales y el contexto que los cursos omiten.</p>
+    </div>
+  </div>
+  <div>
+    <ul class="principles">
+      <li class="principle-item"><span class="principle-num">01</span><span class="principle-text"><strong>Primero el pensamiento, luego el código.</strong> Antes de escribir una línea, entiendes qué problema resuelve.</span></li>
+      <li class="principle-item"><span class="principle-num">02</span><span class="principle-text"><strong>Un concepto por post.</strong> Cada publicación cubre exactamente lo que necesitas. Sin relleno.</span></li>
+      <li class="principle-item"><span class="principle-num">03</span><span class="principle-text"><strong>El error siempre tiene su lugar.</strong> Cada post incluye el error más común y cómo entenderlo.</span></li>
+      <li class="principle-item"><span class="principle-num">04</span><span class="principle-text"><strong>La IA como tutor, no como atajo.</strong> El prompt de cada fase te da un tutor que se adapta a ti.</span></li>
+      <li class="principle-item"><span class="principle-num">05</span><span class="principle-text"><strong>Proyectos reales al final de cada etapa.</strong> Lo que aprendes tiene que servir para algo concreto.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="site-footer">
+    <span class="footer-brand">Python Humano · 2025</span>
+    <a class="footer-link" href="https://t.me/PythonHumano" target="_blank">→ Canal de Telegram</a>
+  </div>
+</footer>
+
+<script>
+// ── PROGRESS COMPARTIDO ──
+const TOTALS = { 1: 12, 2: 18, 3: 14 };
+
+function updateHomeProgress() {
+  const completed = JSON.parse(localStorage.getItem('ph_completed') || '[]');
+  const total = Object.values(TOTALS).reduce((a,b) => a+b, 0);
+  const done  = completed.length;
+  const pct   = total > 0 ? (done / total * 100) : 0;
+
+  document.getElementById('global-progress-bar').style.width = pct + '%';
+  document.getElementById('global-progress-text').textContent = `${done} / ${total} posts completados`;
+
+  [1,2,3].forEach(ph => {
+    const phDone  = completed.filter(id => id.startsWith('p' + ph + '_')).length;
+    const phTotal = TOTALS[ph];
+    const phPct   = phTotal > 0 ? (phDone / phTotal * 100) : 0;
+    const bar  = document.getElementById('prog-' + ph);
+    const text = document.getElementById('prog-text-' + ph);
+    if (bar)  bar.style.width  = phPct + '%';
+    if (text) text.textContent = `${phDone} / ${phTotal} posts`;
+  });
+}
+
+updateHomeProgress();
+</script>
+</body>
+</html>
