@@ -19,7 +19,7 @@
     <a class="nav-item" href="fase1.html">Fase 1 &mdash; Pensar como Python</a>
     <a class="nav-item active" href="fase2.html">Fase 2 &mdash; Pensar como programador</a>
     <a class="nav-item" href="fase3.html">Fase 3 &mdash; Organizar informaci&oacute;n</a>
-    <span class="nav-item locked">Fase 4 &mdash; Pr&oacute;ximamente</span>
+    <a class="nav-item" href="fase4.html">Fase 4 &mdash; C&oacute;digo que no se repite</a>
     <span class="nav-item locked">Fase 5 &mdash; Pr&oacute;ximamente</span>
     <span class="nav-item locked">Fase 6 &mdash; Pr&oacute;ximamente</span>
   </nav>
@@ -270,10 +270,10 @@ suma el valor real
     <span class="kw">nombre</span> <span class="op">=</span> <span class="fn">input</span><span class="op">(</span><span class="str">"Producto: "</span><span class="op">)</span>
     <span class="kw">precio</span> <span class="op">=</span> <span class="fn">float</span><span class="op">(</span><span class="fn">input</span><span class="op">(</span><span class="str">"Precio: "</span><span class="op">))</span>
     <span class="kw">total</span>  <span class="op">+=</span> <span class="kw">precio</span>
-    <span class="kw">recibo</span> <span class="op">+=</span> <span class="fn">f</span><span class="str">"{nombre}: ${precio:.2f}\n"</span>
+    <span class="kw">recibo</span> <span class="op">+=</span> <span class="fn">f</span><span class="str">"{nombre}: \${precio:.2f}\n"</span>
 
 <span class="fn">print</span><span class="op">(</span><span class="kw">recibo</span><span class="op">)</span>
-<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Total: ${total:.2f}"</span><span class="op">)</span></div><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div></div>
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Total: \${total:.2f}"</span><span class="op">)</span></div><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div></div>
 <div class="block"><div class="note cyan">El enunciado dice <strong>"total", "suma", "acumula", "construye el recibo"</strong>. Eso siempre es un acumulador.</div></div>
 <div class="challenge"><div class="challenge-header">🎯 Reto</div><div class="challenge-body">La caja necesita: total de todos los productos, total solo de los que tienen descuento, total sin descuento, y un recibo con nombre y precio de cada producto. Cada uno es un acumulador diferente.</div></div>
 <div class="hashtags">#PythonHumano #Python #Fase2 #Acumulador #Patrones</div>` },
@@ -310,7 +310,7 @@ if bandera: ...     ← se consulta DESPUÉS del bucle</div></div>
     <span class="bl">if</span> <span class="kw">precio</span> <span class="op">&gt;</span> <span class="kw">maximo</span><span class="op">:</span>
         <span class="kw">maximo</span> <span class="op">=</span> <span class="kw">precio</span>   <span class="cm"># actualiza si es mayor</span>
 
-<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"El precio más caro: ${maximo:.2f}"</span><span class="op">)</span></div><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div></div>
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"El precio más caro: \${maximo:.2f}"</span><span class="op">)</span></div><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div></div>
 <div class="block"><div class="block-label">Patrón Mínimo — por qué None y no 0</div>
 <div class="code-wrap"><div class="code-block" data-label="python"><span class="kw">minimo</span> <span class="op">=</span> <span class="bl">None</span>   <span class="cm"># None, no 0 — explicación abajo</span>
 
@@ -319,7 +319,7 @@ if bandera: ...     ← se consulta DESPUÉS del bucle</div></div>
     <span class="bl">if</span> <span class="kw">minimo</span> <span class="bl">is</span> <span class="bl">None</span> <span class="bl">or</span> <span class="kw">precio</span> <span class="op">&lt;</span> <span class="kw">minimo</span><span class="op">:</span>
         <span class="kw">minimo</span> <span class="op">=</span> <span class="kw">precio</span>
 
-<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"El más barato: ${minimo:.2f}"</span><span class="op">)</span></div><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"El más barato: \${minimo:.2f}"</span><span class="op">)</span></div><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
 <div class="note red"><strong>¿Por qué None y no 0?</strong> Si arrancas en 0, cualquier precio real es mayor que 0. La condición <code>precio &lt; minimo</code> nunca se cumple y el mínimo nunca se actualiza. None te fuerza a aceptar el primer valor real como punto de partida.</div></div>
 <div class="block"><div class="block-label">Guardar el nombre junto con el valor extremo</div>
 <div class="code-wrap"><div class="code-block" data-label="python"><span class="kw">nombre_mas_caro</span> <span class="op">=</span> <span class="str">""</span>
@@ -332,7 +332,7 @@ if bandera: ...     ← se consulta DESPUÉS del bucle</div></div>
         <span class="kw">precio_mas_caro</span> <span class="op">=</span> <span class="kw">precio</span>
         <span class="kw">nombre_mas_caro</span> <span class="op">=</span> <span class="kw">nombre</span>   <span class="cm"># se actualiza junto</span>
 
-<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Más caro: {nombre_mas_caro} — ${precio_mas_caro:.2f}"</span><span class="op">)</span></div><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Más caro: {nombre_mas_caro} — \${precio_mas_caro:.2f}"</span><span class="op">)</span></div><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
 <div class="note">Cuando actualizas el extremo, actualiza también todos los datos relacionados — nombre, categoría, índice. Así sabes <em>cuál</em> fue el extremo, no solo <em>cuánto</em>.</div></div>
 <div class="block"><div class="note cyan">El enunciado dice <strong>"el mayor", "el menor", "el más caro", "el que más", "el que menos"</strong>. Eso siempre es máximo o mínimo.</div></div>
 <div class="challenge"><div class="challenge-header">🎯 Reto</div><div class="challenge-body">Registra 5 ventas con nombre y precio. Muestra: el producto más caro con su precio, el más barato con su precio, y la diferencia entre ambos. Prueba el caso donde todos los precios son iguales.</div></div>
@@ -386,7 +386,7 @@ if bandera: ...     ← se consulta DESPUÉS del bucle</div></div>
     <span class="kw">cantidad</span> <span class="op">+=</span> <span class="num">1</span>
 
 <span class="kw">promedio</span> <span class="op">=</span> <span class="kw">total</span> <span class="op">/</span> <span class="kw">cantidad</span>   <span class="cm"># DESPUÉS del bucle</span>
-<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Precio promedio: ${promedio:.2f}"</span><span class="op">)</span></div><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div></div>
+<span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Precio promedio: \${promedio:.2f}"</span><span class="op">)</span></div><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div></div>
 <div class="block"><div class="block-label">La trampa — división entre cero</div>
 <div class="code-wrap"><div class="code-block" data-label="python"><span class="cm"># ✗ peligroso — si no ingresó nada, cantidad = 0</span>
 <span class="kw">promedio</span> <span class="op">=</span> <span class="kw">total</span> <span class="op">/</span> <span class="kw">cantidad</span>   <span class="out"># 💥 ZeroDivisionError</span>
@@ -394,7 +394,7 @@ if bandera: ...     ← se consulta DESPUÉS del bucle</div></div>
 <span class="cm"># ✓ siempre verificar antes de dividir</span>
 <span class="bl">if</span> <span class="kw">cantidad</span> <span class="op">&gt;</span> <span class="num">0</span><span class="op">:</span>
     <span class="kw">promedio</span> <span class="op">=</span> <span class="fn">round</span><span class="op">(</span><span class="kw">total</span> <span class="op">/</span> <span class="kw">cantidad</span><span class="op">,</span> <span class="num">2</span><span class="op">)</span>
-    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Promedio: ${promedio:.2f}"</span><span class="op">)</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Promedio: \${promedio:.2f}"</span><span class="op">)</span>
 <span class="bl">else</span><span class="op">:</span>
     <span class="fn">print</span><span class="op">(</span><span class="str">"No se registraron precios."</span><span class="op">)</span></div><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
 <div class="note red">Antes de dividir, <strong>siempre verifica que el divisor no sea cero</strong>. Es el caso extremo más común del patrón promedio.</div></div>
@@ -712,7 +712,7 @@ y si alguno entrenó más de 3 horas."
     <span class="kw">precio</span>   <span class="op">=</span> <span class="fn">float</span><span class="op">(</span><span class="fn">input</span><span class="op">(</span><span class="str">"Precio: "</span><span class="op">))</span>
     <span class="kw">total</span>   <span class="op">+=</span> <span class="kw">precio</span>
     <span class="kw">contador</span><span class="op">+=</span> <span class="num">1</span>
-    <span class="kw">recibo</span>  <span class="op">+=</span> <span class="fn">f</span><span class="str">"{nombre}: ${precio:.2f}\n"</span>
+    <span class="kw">recibo</span>  <span class="op">+=</span> <span class="fn">f</span><span class="str">"{nombre}: \${precio:.2f}\n"</span>
     <span class="bl">if</span> <span class="kw">precio</span> <span class="op">&gt;</span> <span class="kw">precio_mas_caro</span><span class="op">:</span>
         <span class="kw">precio_mas_caro</span> <span class="op">=</span> <span class="kw">precio</span>
         <span class="kw">nombre_mas_caro</span> <span class="op">=</span> <span class="kw">nombre</span>
@@ -731,9 +731,9 @@ y si alguno entrenó más de 3 horas."
     <span class="fn">print</span><span class="op">(</span><span class="str">"─── Recibo ───"</span><span class="op">)</span>
     <span class="fn">print</span><span class="op">(</span><span class="kw">recibo</span><span class="op">)</span>
     <span class="bl">if</span> <span class="kw">descuento_aplicado</span><span class="op">:</span> <span class="fn">print</span><span class="op">(</span><span class="str">"Descuento 10% aplicado."</span><span class="op">)</span>
-    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Total:    ${total:.2f}"</span><span class="op">)</span>
-    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Promedio: ${promedio:.2f}"</span><span class="op">)</span>
-    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Más caro: {nombre_mas_caro} (${precio_mas_caro:.2f})"</span><span class="op">)</span></div><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div></div>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Total:    \${total:.2f}"</span><span class="op">)</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Promedio: \${promedio:.2f}"</span><span class="op">)</span>
+    <span class="fn">print</span><span class="op">(</span><span class="fn">f</span><span class="str">"Más caro: {nombre_mas_caro} (\${precio_mas_caro:.2f})"</span><span class="op">)</span></div><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div></div>
 <div class="challenge"><div class="challenge-header">🎯 Reto</div><div class="challenge-body">Aplica el ciclo completo — los 7 pasos — a este problema: <em>"Un restaurante quiere saber del día: total recaudado, número de mesas, ticket promedio, la mesa que más gastó, la que menos gastó, y si alguna mesa pidió más de 5 platos."</em></div></div>
 <div class="hashtags">#PythonHumano #Python #Fase2 #CicloCompleto</div>` },
 
